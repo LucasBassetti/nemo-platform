@@ -24,13 +24,33 @@
 	href="core/sb-admin/bower-components/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet">
     
-   
+<!--    	<link href="core/rappid-api/css/joint.ui.inspector.css" rel="stylesheet"> -->
+<!--    	<link href="core/rappid-api/css/joint.ui.freeTransform.css" rel="stylesheet"> -->
     
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+   
+    
+    <link href="core/rappid-api/css/joint.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.halo.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.freeTransform.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.selectionView.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.tooltip.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.navigator.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.snaplines.css" rel="stylesheet">
+    <link href="core/rappid-api/css/joint.ui.textEditor.css" rel="stylesheet">
+    
     
     <link rel="stylesheet" type="text/css" href="frontend/mlt/css/toolbar.css" />
     <link rel="stylesheet" type="text/css" href="frontend/mlt/css/stencil.css" />
     <link rel="stylesheet" type="text/css" href="frontend/mlt/css/paper.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/mlt/css/inspector.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/mlt/css/halo.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/mlt/css/freetransform.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/mlt/css/selection.css" />
+    
+    
+    
+    
     
 </head>
 <body>
@@ -52,11 +72,26 @@
     <script src="frontend/mlt/js/stencil.js"></script>
     <script src="frontend/mlt/js/main.js"></script>
 	
-
-
 	<script>
 	
-
+	
+			$("#inspector-icon").click(
+				function() {
+					if ($(".inspector-container").is(":visible")){
+						$(".inspector-container").hide();
+						$(this).css({
+							marginRight : "30px"
+						});
+					} else{
+						$(".inspector-container").show();
+						$(this).css({
+							marginRight : "250px"
+						});
+					}
+				});
+		
+		
+	
 		(function() {
 			$(function() {
 				var collapseMyMenu, expandMyMenu, hideMenuTexts, showMenuTexts;
@@ -76,7 +111,7 @@
 				hideMenuTexts = function() {
 					return $("nav.sidebar ul a span.expanded-element").hide();
 				};
-				return $("#justify-icon").click(
+				return $("#stencil-icon").click(
 						function(e) {
 							if ($("nav.sidebar").hasClass(
 									"sidebar-menu-collapsed")) {

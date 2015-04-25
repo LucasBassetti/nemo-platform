@@ -1,10 +1,20 @@
-#justify-icon {
+#stencil-icon {
 	outline: 0;
 	color: black;
 	font-size: 24px;
 	font-style: normal;
 	margin-left: 260px;
 }
+
+#inspector-icon {
+	outline: 0;
+	float: right;
+	color: black;
+	font-size: 24px;
+	font-style: normal;
+	margin-right: 250px;
+}
+
 
 nav.sidebar-menu-collapsed {
 	display: none;

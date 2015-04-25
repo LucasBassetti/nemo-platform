@@ -47,14 +47,18 @@
 
 <nav class='sidebar sidebar-menu-expanded'>
 	<div class="stencil-container">
-
 			<button class="btn-expand" title="Expand all">+</button>
 			<button class="btn-collapse" title="Collapse all">-</button>
-		
 	</div>
 </nav>
 
-<a href='#' id='justify-icon'> <span
+<a href='#' id='stencil-icon'> <span
+	class='glyphicon glyphicon-align-justify'></span>
+</a>
+
+<div class="inspector-container"></div>
+    
+<a href='#' id='inspector-icon'> <span
 	class='glyphicon glyphicon-align-justify'></span>
 </a>
 
