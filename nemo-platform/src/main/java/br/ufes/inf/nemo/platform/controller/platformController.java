@@ -13,4 +13,23 @@ public class platformController {
 		return "index";
 	}
 	
+	@RequestMapping("/models")
+	public String models(HttpServletRequest request) {		
+		return "dashboard/pages/models";
+	}
+	
+	@RequestMapping("/about")
+	public String about(HttpServletRequest request) {		
+		return "dashboard/pages/about";
+	}
+	
+	@RequestMapping("/mlt")
+	public String mlt(HttpServletRequest request) {		
+		return "dashboard/pages/mlt";
+	}
+	
+	@RequestMapping("/mlt-model")
+	public String mltModel(HttpServletRequest request) {		
+		return "mlt/mlt-model";
+	}
 }
