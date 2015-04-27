@@ -23,8 +23,9 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
     }
 
     body:before {
-        content: 'JointJS';
-        font-size: 15mm;
+        content: 'NEMO Platform';
+/*         content: 'JointJS'; */
+        font-size: 8mm;
         position: absolute;
         top: 5mm;
         right: 5mm;

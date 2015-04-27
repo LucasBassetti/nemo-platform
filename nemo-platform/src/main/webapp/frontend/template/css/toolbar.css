@@ -12,9 +12,15 @@
 	color: black;
 	font-size: 24px;
 	font-style: normal;
+	margin-top: -34px;
 	margin-right: 250px;
 }
 
+.panel-toolbar {
+	position: relative;
+	display: inline-block;
+	margin: 16px 0 0 5px;
+}
 
 nav.sidebar-menu-collapsed {
 	display: none;
