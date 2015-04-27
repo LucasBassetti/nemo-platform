@@ -10,6 +10,7 @@
 <body>
 
 	<%@include file="/frontend/template/template-body.jsp"%>
+	<script src="frontend/mlt/src/stencil.js"></script>
 
 	<script>
 		// Uncomment the following line and comment the line after if you

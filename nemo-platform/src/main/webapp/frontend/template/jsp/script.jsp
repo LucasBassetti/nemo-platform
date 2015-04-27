@@ -8,10 +8,9 @@
 <%@include file="/core/rappid-api/rappid-api-script.jsp"%>
 
 <!-- Template -->
-<script src="frontend/template/libs/keyboard.js"></script>
-<script src="frontend/template/libs/inspector.js"></script>
-<script src="frontend/template/libs/stencil.js"></script>
-<script src="frontend/template/libs/main.js"></script>
+<script src="frontend/template/src/keyboard.js"></script>
+<script src="frontend/template/src/inspector.js"></script>
+<script src="frontend/template/src/main.js"></script>
 
 <!-- JS -->
 <script src="frontend/template/js/toolbar.js"></script>

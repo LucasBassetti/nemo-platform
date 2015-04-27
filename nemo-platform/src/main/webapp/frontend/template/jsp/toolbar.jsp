@@ -41,28 +41,6 @@
 							<img style="height: 24px" src="frontend/template/img/print.png"
 								alt="Open a Print Dialog">
 						</button>
-						<button id="btn-to-front" class="btn btn-default navbar-btn"
-							data-tooltip="Bring Object to Front">
-							<img style="height: 24px"
-								src="frontend/template/img/to-front-to-back.png"
-								alt="Bring Object to Front"> to front
-						</button>
-						<button id="btn-to-back" class="btn btn-default navbar-btn"
-							data-tooltip="Send Object to Back">
-							<img style="height: 24px"
-								src="frontend/template/img/to-front-to-back.png"
-								alt="Bring Object to Back"> to back
-						</button>
-						<button id="btn-layout" class="btn btn-default navbar-btn"
-							data-tooltip="Auto-layout Graph">
-							<img style="height: 24px" src="frontend/template/img/layout.png"
-								alt="Auto-layout Graph"> layout
-						</button>
-						<button id="btn-zoom-to-fit" class="btn btn-default navbar-btn"
-							data-tooltip="Zoom To Fit">
-							<img style="height: 24px"
-								src="frontend/template/img/zoomtofit.png" alt="Zoom To Fit">
-						</button>
 						<button id="btn-zoom-in" class="btn btn-default navbar-btn"
 							data-tooltip="Zoom in">
 							<img style="height: 24px" src="frontend/template/img/zoomin.png"
@@ -72,19 +50,65 @@
 							data-tooltip="Zoom out">
 							<img style="height: 24px" src="frontend/template/img/zoomout.png"
 								alt="Zoom out">
-						</button>
+						</button>	
+					</div>
+											
 						<div class="panel-toolbar">
 			              <span id="zoom-level">100</span>
 			              <span>%</span>
 			            </div>
-					</div>
+		
+					<div class="btn-group" role="group">
+						<button id="btn-zoom-to-fit" class="btn btn-default navbar-btn"
+							data-tooltip="Zoom To Fit">
+							<img style="height: 24px"
+								src="frontend/template/img/zoomtofit.png" alt="Zoom To Fit">
+						</button>
+						
+						<div class="btn-group">
+						
+							<button type="button" class="btn btn-default navbar-btn"
+								data-toggle="dropdown">
+								<img style="height: 24px" src="frontend/template/img/to-front-to-back.png"
+											alt="Auto-layout Graph">
+								Options <span class="caret"></span>
+							</button>
+						
+							<ul class="dropdown-menu">
+								<li>
+									<a id="btn-to-front"
+										data-tooltip="Bring Object to Front">
+										to front
+									</a>
+								</li>
+								<li>
+									<a id="btn-to-back"
+										data-tooltip="Send Object to Back">
+										to back
+									</a>
+								</li>
+								<li>
+									<a id="btn-layout"
+										data-tooltip="Auto-layout Graph">
+										layout
+									</a>
+								</li>
+								
+							</ul>
+							
+						</div>
 
+					</div>
+					
+	
 				</div>
 
 			</li>
 		</ul>
 
 	</div>
+	
+	
 	<!-- /.navbar-header -->
 
 </nav>
