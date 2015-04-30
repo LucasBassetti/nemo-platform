@@ -18,37 +18,37 @@
 					<div class="btn-group" role="group">
 						<button id="btn-undo" class="btn btn-default navbar-btn"
 							data-tooltip="Undo">
-							<img style="height: 24px" src="frontend/template/img/undo.png"
+							<img style="height: 20px" src="frontend/template/img/undo.png"
 								alt="Undo">
 						</button>
 						<button id="btn-redo" class="btn btn-default navbar-btn"
 							data-tooltip="Redo">
-							<img style="height: 24px" src="frontend/template/img/redo.png"
+							<img style="height: 20px" src="frontend/template/img/redo.png"
 								alt="Undo">
 						</button>
 						<button id="btn-clear" class="btn btn-default navbar-btn"
 							data-tooltip="Clear">
-							<img style="height: 24px" src="frontend/template/img/clear.png"
+							<img style="height: 20px" src="frontend/template/img/clear.png"
 								alt="Clear">
 						</button>
 						<button id="btn-png" class="btn btn-default navbar-btn"
 							data-tooltip="Open as PNG">
-							<img style="height: 24px" src="frontend/template/img/pngfile.png"
+							<img style="height: 20px" src="frontend/template/img/pngfile.png"
 								alt="Open as PNG">
 						</button>
 						<button id="btn-print" class="btn btn-default navbar-btn"
 							data-tooltip="Open a Print Dialog">
-							<img style="height: 24px" src="frontend/template/img/print.png"
+							<img style="height: 20px" src="frontend/template/img/print.png"
 								alt="Open a Print Dialog">
 						</button>
 						<button id="btn-zoom-in" class="btn btn-default navbar-btn"
 							data-tooltip="Zoom in">
-							<img style="height: 24px" src="frontend/template/img/zoomin.png"
+							<img style="height: 20px" src="frontend/template/img/zoomin.png"
 								alt="Zoom in">
 						</button>
 						<button id="btn-zoom-out" class="btn btn-default navbar-btn"
 							data-tooltip="Zoom out">
-							<img style="height: 24px" src="frontend/template/img/zoomout.png"
+							<img style="height: 20px" src="frontend/template/img/zoomout.png"
 								alt="Zoom out">
 						</button>	
 					</div>
@@ -61,7 +61,7 @@
 					<div class="btn-group" role="group">
 						<button id="btn-zoom-to-fit" class="btn btn-default navbar-btn"
 							data-tooltip="Zoom To Fit">
-							<img style="height: 24px"
+							<img style="height: 20px"
 								src="frontend/template/img/zoomtofit.png" alt="Zoom To Fit">
 						</button>
 						
@@ -69,7 +69,7 @@
 						
 							<button type="button" class="btn btn-default navbar-btn"
 								data-toggle="dropdown">
-								<img style="height: 24px" src="frontend/template/img/to-front-to-back.png"
+								<img style="height: 20px" src="frontend/template/img/to-front-to-back.png"
 											alt="Auto-layout Graph">
 								Options <span class="caret"></span>
 							</button>

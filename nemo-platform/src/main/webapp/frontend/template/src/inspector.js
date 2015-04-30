@@ -625,6 +625,54 @@ var InspectorDefs = {
         groups: CommonInspectorGroups
     },
 
+    // ArchiMate
+    
+    'archimate.Actor': {
+    	
+        inputs: _.extend({
+            attrs: {
+                '.name-text': inp({
+                    'font-size': { group: 'name', index: 2 },
+                    'font-family': { group: 'name', index: 3 }
+                }),
+                '.name-rect': inp({
+                    fill: { group: 'name', index: 4 },
+                    'stroke-width': { group: 'name', index: 5, min: 0, max: 30, defaultValue: 1 },
+                    'stroke-dasharray': { group: 'name', index: 6 },
+                }),
+            },
+            name: { type: 'text', group: 'name', index: 1, label: 'Name' },
+        }, CommonInspectorInputs),
+        groups: {
+            name: { label: 'name', index: 1 },
+            geometry: { label: 'Geometry', index: 2 },
+            data: { label: 'Data', index: 3 }
+        }
+    },
+    
+    'archimate.Role': {
+    	
+        inputs: _.extend({
+            attrs: {
+                '.name-text': inp({
+                    'font-size': { group: 'name', index: 2 },
+                    'font-family': { group: 'name', index: 3 }
+                }),
+                '.name-rect': inp({
+                    fill: { group: 'name', index: 4 },
+                    'stroke-width': { group: 'name', index: 5, min: 0, max: 30, defaultValue: 1 },
+                    'stroke-dasharray': { group: 'name', index: 6 },
+                }),
+            },
+            name: { type: 'text', group: 'name', index: 1, label: 'Name' },
+        }, CommonInspectorInputs),
+        groups: {
+            name: { label: 'name', index: 1 },
+            geometry: { label: 'Geometry', index: 2 },
+            data: { label: 'Data', index: 3 }
+        }
+    },
+    
     // UML
     // ---
 

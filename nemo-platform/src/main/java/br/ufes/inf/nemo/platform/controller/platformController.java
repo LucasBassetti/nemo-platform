@@ -28,8 +28,15 @@ public class platformController {
 		return "dashboard/pages/mlt";
 	}
 	
+	@RequestMapping("/archimate-model")
+	public String archmateModel(HttpServletRequest request) {		
+		return "archimate/archimate-model";
+	}
+	
 	@RequestMapping("/mlt-model")
 	public String mltModel(HttpServletRequest request) {		
 		return "mlt/mlt-model";
 	}
+	
+	
 }

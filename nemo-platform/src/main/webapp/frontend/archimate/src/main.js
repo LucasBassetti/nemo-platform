@@ -58,11 +58,11 @@ var Rappid = Backbone.Router.extend({
             gridSize: 10,
             perpendicularLinks: true,
             model: this.graph,
-            defaultLink: new joint.dia.Link({
+            defaultLink: new joint.shapes.archimate.Relationships({
                 attrs: {
                     // @TODO: scale(0) fails in Firefox
-                    '.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z', transform: 'scale(0.001)' },
-                    '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' },
+//                    '.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z' },
+//                    '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' },
                     '.connection': {
                         stroke: 'black'
                         // filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 2 } }
@@ -122,7 +122,7 @@ var Rappid = Backbone.Router.extend({
             width: 240,
             groups: Stencil.groups,
             search: {
-                '*': ['type','attrs/text/text','attrs/.label/text'],
+                '*': ['subType','attrs/text/text','attrs/.label/text'],
                 'org.Member': ['attrs/.rank/text','attrs/.name/text']
             }
         });
@@ -168,7 +168,7 @@ var Rappid = Backbone.Router.extend({
 
                 new joint.ui.Tooltip({
                     target: '.stencil [model-id="' + cell.id + '"]',
-                    content: cell.get('type').split('.').join(' '),
+                    content: cell.get('subType').split('.').join(' '),
                     left: '.stencil',
                     direction: 'left'
                 });

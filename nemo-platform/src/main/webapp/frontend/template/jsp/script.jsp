@@ -9,8 +9,6 @@
 
 <!-- Template -->
 <script src="frontend/template/src/keyboard.js"></script>
-<script src="frontend/template/src/inspector.js"></script>
-<script src="frontend/template/src/main.js"></script>
 
 <!-- JS -->
 <script src="frontend/template/js/toolbar.js"></script>

@@ -1,6 +1,6 @@
 <!-- Bootstrap Core CSS -->
 <link href="core/sb-admin/bower-components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> -->
 
 <!-- Joint -->
 <link href="core/rappid-api/css/joint.css" rel="stylesheet">

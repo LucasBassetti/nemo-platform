@@ -10,6 +10,7 @@
 <body>
 
 	<%@include file="/frontend/template/template-body.jsp"%>
+	<script src="frontend/archimate/src/archimate.js"></script>
 	<script src="frontend/mlt/src/stencil.js"></script>
 
 	<script>

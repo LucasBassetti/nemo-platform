@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-	<%@include file="/frontend/content/header.jsp"%>
+	<%@include file="/frontend/dashboard/content/header.jsp"%>
 </head>
 
 <body>
 
 	<div id="wrapper">
-		<%@include file="/frontend/content/menu.jsp"%>
-		<%@include file="/frontend/content/about-content.jsp"%>
+		<%@include file="/frontend/dashboard/content/menu.jsp"%>
+		<%@include file="/frontend/dashboard/content/about-content.jsp"%>
 	</div>
 	<!-- /#wrapper -->
 	
