@@ -1,9 +1,13 @@
 var Stencil = {};
 
 Stencil.groups = {
+		
 	businessLayer: { index: 1, label: 'Business Layer' },
-	applicationLayer: { index: 1, label: 'Application Layer' },
-	technologyLayer: { index: 1, label: 'Technology Layer' }
+	applicationLayer: { index: 2, label: 'Application Layer' },
+	technologyLayer: { index: 3, label: 'Technology Layer' },
+	motivationalLayer: { index: 4, label: 'Motivational Layer' },
+	migrationLayer: { index: 5, label: 'Migration Layer' },
+	
 };
 
 Stencil.shapes = {
@@ -47,6 +51,23 @@ Stencil.shapes = {
 	   new joint.shapes.archimate.InfrastructureFunction({name: 'Function', attrs: { '.name-text': { 'font-size': 8 } }}),
 	   new joint.shapes.archimate.InfrastructureService({name: 'Service', attrs: { '.name-text': { 'font-size': 8 } }}),
 	   new joint.shapes.archimate.Artifact({name: 'Artifact', attrs: { '.name-text': { 'font-size': 8 } }}),
+	],
+	
+	motivationalLayer: [
+	   new joint.shapes.archimate.Stakeholder({name: 'Stakeholder', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Driver({name: 'Driver', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Assessment({name: 'Assessment', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Goal({name: 'Goal', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Requirement({name: 'Requirement', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Constraint({name: 'Constraint', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Principle({name: 'Principle', attrs: { '.name-text': { 'font-size': 8 } }}),
+	],
+	
+	migrationLayer: [
+	   new joint.shapes.archimate.WorkPackage({name: 'Work Package', attrs: { '.name-text': { 'font-size': 7 } }}),
+	   new joint.shapes.archimate.Deliverable({name: 'Deliverable', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Plateau({name: 'Plateau', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Gap({name: 'Gap', attrs: { '.name-text': { 'font-size': 8 } }}),
 	]
     
 };
