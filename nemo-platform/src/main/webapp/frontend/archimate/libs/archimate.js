@@ -16,6 +16,20 @@ if (typeof exports === 'object') {
 
 joint.shapes.archimate = {}
 
+//Generic View
+
+joint.shapes.basic.GenericView = joint.dia.ElementView.extend({
+	
+    initialize: function() {
+
+        joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+
+        this.listenTo(this.model, 'update', function() {
+            this.update();
+            this.resize();
+        });
+    }
+});
 
 /** BUSINESS LAYER */
 
@@ -41,6 +55,7 @@ joint.shapes.archimate.Actor = joint.shapes.basic.Generic.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Actor',
 		 subType: 'Business Actor',
 
 	        attrs: {
@@ -105,19 +120,7 @@ joint.shapes.archimate.Actor = joint.shapes.basic.Generic.extend({
 	    }
 
 });
-
-joint.shapes.basic.GenericView = joint.dia.ElementView.extend({
-	
-    initialize: function() {
-
-        joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-
-        this.listenTo(this.model, 'update', function() {
-            this.update();
-            this.resize();
-        });
-    }
-});
+joint.shapes.archimate.ActorView = joint.shapes.basic.GenericView; 
 
 //Role
 
@@ -139,11 +142,13 @@ joint.shapes.archimate.Role = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Role',
 		 subType: 'Business Role',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.RoleView = joint.shapes.basic.GenericView;
 
 //Collaboration
 
@@ -164,11 +169,13 @@ joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.Actor.exte
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessCollaboration',
 		 subType: 'Business Collaboration',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 	
 });
+joint.shapes.archimate.BusinessCollaborationView = joint.shapes.basic.GenericView;
 
 //Business Interface
 
@@ -189,12 +196,13 @@ joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessInterface',
 		 subType: 'Business Interface',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
-
+joint.shapes.archimate.BusinessInterfaceView = joint.shapes.basic.GenericView;
 
 //Location
 
@@ -214,11 +222,13 @@ joint.shapes.archimate.Location = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Location',
 		 subType: 'Interface',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.LocationView = joint.shapes.basic.GenericView;
 
 //Business Process
 
@@ -238,6 +248,7 @@ joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessProcess',
 		 subType: 'Business Process',
 		 
 		 attrs: {
@@ -250,6 +261,7 @@ joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.Actor.extend({
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.BusinessProcessView = joint.shapes.basic.GenericView;
 
 //Business Function
 
@@ -269,11 +281,13 @@ joint.shapes.archimate.BusinessFunction = joint.shapes.archimate.BusinessProcess
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessFunction',
 		 subType: 'Business Function',
 		 
 	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
 
 });
+joint.shapes.archimate.BusinessFunctionView = joint.shapes.basic.GenericView;
 
 //Business Interaction
 
@@ -294,11 +308,13 @@ joint.shapes.archimate.BusinessInteraction = joint.shapes.archimate.BusinessProc
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessInteraction',
 		 subType: 'Business Interaction',
 		 
 	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
 
 });
+joint.shapes.archimate.BusinessInteractionView = joint.shapes.basic.GenericView;
 
 //Business Event
 
@@ -318,11 +334,15 @@ joint.shapes.archimate.BusinessEvent = joint.shapes.archimate.BusinessProcess.ex
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessEvent',
 		 subType: 'Business Event',
 		 
 	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
 
 });
+joint.shapes.archimate.BusinessEventView = joint.shapes.basic.GenericView;
+
+//Business Service
 
 joint.shapes.archimate.BusinessService = joint.shapes.archimate.BusinessProcess.extend({
 	
@@ -337,6 +357,7 @@ joint.shapes.archimate.BusinessService = joint.shapes.archimate.BusinessProcess.
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessService',
 		 subType: 'Business Service',
 		 
 		 attrs: {
@@ -349,6 +370,7 @@ joint.shapes.archimate.BusinessService = joint.shapes.archimate.BusinessProcess.
 	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
 
 });
+joint.shapes.archimate.BusinessServiceView = joint.shapes.basic.GenericView;
 
 //Business Object
 
@@ -366,11 +388,13 @@ joint.shapes.archimate.BusinessObject = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.BusinessObject',
 		 subType: 'Business Object',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.BusinessObjectView = joint.shapes.basic.GenericView;
 
 //Representation
 
@@ -387,11 +411,13 @@ joint.shapes.archimate.Representation = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Representation',
 		 subType: 'Representation',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.RepresentationView = joint.shapes.basic.GenericView;
 
 //Meaning
 
@@ -408,11 +434,13 @@ joint.shapes.archimate.Meaning = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Meaning',
 		 subType: 'Meaning',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.MeaningView = joint.shapes.basic.GenericView;
 
 //Value
 
@@ -429,11 +457,13 @@ joint.shapes.archimate.Value = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Value',
 		 subType: 'Value',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.ValueView = joint.shapes.basic.GenericView;
 
 //Product
 
@@ -451,11 +481,13 @@ joint.shapes.archimate.Product = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Product',
 		 subType: 'Product',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.ProductView = joint.shapes.basic.GenericView;
 
 //Contract
 
@@ -473,11 +505,13 @@ joint.shapes.archimate.Contract = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Contract',
 		 subType: 'Contract',
 		 
 	 }, joint.shapes.archimate.Actor.prototype.defaults),
 
 });
+joint.shapes.archimate.ContractView = joint.shapes.basic.GenericView;
 
 /** APPLICATION LAYER */
 
@@ -498,6 +532,7 @@ joint.shapes.archimate.ApplicationComponent = joint.shapes.basic.Generic.extend(
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.ApplicationComponent',
 		 subType: 'Application Component',
 
 	        attrs: {
@@ -559,6 +594,7 @@ joint.shapes.archimate.ApplicationComponent = joint.shapes.basic.Generic.extend(
 	    }
 
 });
+joint.shapes.archimate.ApplicationComponentView = joint.shapes.basic.GenericView;
 
 //Application Collaboration
 
@@ -579,11 +615,13 @@ joint.shapes.archimate.ApplicationCollaboration = joint.shapes.archimate.Applica
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.ApplicationCollaboration',
 		 subType: 'Application Collaboration',
 		 
 	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
 	
 });
+joint.shapes.archimate.ApplicationCollaborationView = joint.shapes.basic.GenericView;
 
 //Application Interface
 
@@ -604,11 +642,13 @@ joint.shapes.archimate.ApplicationInterface = joint.shapes.archimate.Application
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.ApplicationInterface',
 		 subType: 'Application Interface',
 		 
 	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
 
 });
+joint.shapes.archimate.ApplicationInterfaceView = joint.shapes.basic.GenericView;
 
 //Application Function
 
@@ -628,6 +668,7 @@ joint.shapes.archimate.ApplicationFunction = joint.shapes.archimate.ApplicationC
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.ApplicationFunction',
 		 subType: 'Application Function',
 		 
 		 attrs: {
@@ -640,6 +681,7 @@ joint.shapes.archimate.ApplicationFunction = joint.shapes.archimate.ApplicationC
 	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
 
 });
+joint.shapes.archimate.ApplicationFunctionView = joint.shapes.basic.GenericView;
 
 //Application Interaction
 
@@ -660,11 +702,13 @@ joint.shapes.archimate.ApplicationInteraction = joint.shapes.archimate.Applicati
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.ApplicationInteraction',
 		 subType: 'Application Interaction',
 		 
 	 }, joint.shapes.archimate.ApplicationFunction.prototype.defaults),
 
 });
+joint.shapes.archimate.ApplicationInteractionView = joint.shapes.basic.GenericView;
 
 //Application Service
 
@@ -681,6 +725,7 @@ joint.shapes.archimate.ApplicationService = joint.shapes.archimate.ApplicationFu
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.ApplicationService',
 		 subType: 'Application Service',
 		 
 		 attrs: {
@@ -693,6 +738,7 @@ joint.shapes.archimate.ApplicationService = joint.shapes.archimate.ApplicationFu
 	 }, joint.shapes.archimate.ApplicationFunction.prototype.defaults),
 
 });
+joint.shapes.archimate.ApplicationServiceView = joint.shapes.basic.GenericView;
 
 //Data Object
 
@@ -710,15 +756,17 @@ joint.shapes.archimate.DataObject = joint.shapes.archimate.ApplicationComponent.
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.DataObject',
 		 subType: 'Data Object',
 		 
 	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
 
 });
+joint.shapes.archimate.DataObjectView = joint.shapes.basic.GenericView;
 
 /** TECHNOLOGY LAYER */
 
-//Application Component
+//Node
 
 joint.shapes.archimate.Node = joint.shapes.basic.Generic.extend({
 	
@@ -738,7 +786,8 @@ joint.shapes.archimate.Node = joint.shapes.basic.Generic.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
-		 subType: 'Application Component',
+		 type: 'archimate.Node',
+		 subType: 'Node',
 
 	        attrs: {
 	        	rect: {
@@ -799,6 +848,7 @@ joint.shapes.archimate.Node = joint.shapes.basic.Generic.extend({
 	    }
 
 });
+joint.shapes.archimate.NodeView = joint.shapes.basic.GenericView;
 
 //Device
 
@@ -823,11 +873,13 @@ joint.shapes.archimate.Device = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Device',
 		 subType: 'Device',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.DeviceView = joint.shapes.basic.GenericView;
 
 //Network
 
@@ -851,11 +903,13 @@ joint.shapes.archimate.Network = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Network',
 		 subType: 'Network',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.NetworkView = joint.shapes.basic.GenericView;
 
 //Communication Path
 
@@ -877,11 +931,13 @@ joint.shapes.archimate.CommunicationPath = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.CommunicationPath',
 		 subType: 'Communication Path',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.CommunicationPathView = joint.shapes.basic.GenericView;
 
 //Infrastructure Interface
 
@@ -902,11 +958,13 @@ joint.shapes.archimate.InfrastructureInterface = joint.shapes.archimate.Node.ext
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.InfrastructureInterface',
 		 subType: 'Infrastructure Interface',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.InfrastructureInterfaceView = joint.shapes.basic.GenericView;
 
 //System Software
 
@@ -927,11 +985,13 @@ joint.shapes.archimate.SystemSoftware = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.SystemSoftware',
 		 subType: 'System Software',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.SystemSoftwareView = joint.shapes.basic.GenericView;
 
 //Infrastructure Function
 
@@ -951,6 +1011,7 @@ joint.shapes.archimate.InfrastructureFunction = joint.shapes.archimate.Node.exte
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.InfrastructureFunction',
 		 subType: 'Infrastructure Function',
 		 
 		 attrs: {
@@ -963,6 +1024,7 @@ joint.shapes.archimate.InfrastructureFunction = joint.shapes.archimate.Node.exte
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.InfrastructureFunctionView = joint.shapes.basic.GenericView;
 
 //Infrastructure Service
 
@@ -979,6 +1041,7 @@ joint.shapes.archimate.InfrastructureService = joint.shapes.archimate.Infrastruc
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.InfrastructureService',
 		 subType: 'Infrastructure Service',
 		 
 		 attrs: {
@@ -991,6 +1054,7 @@ joint.shapes.archimate.InfrastructureService = joint.shapes.archimate.Infrastruc
 	 }, joint.shapes.archimate.InfrastructureFunction.prototype.defaults),
 
 });
+joint.shapes.archimate.InfrastructureServiceView = joint.shapes.basic.GenericView;
 
 //Artifact
 
@@ -1009,11 +1073,13 @@ joint.shapes.archimate.Artifact = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Artifact',
 		 subType: 'Artifact',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.ArtifactView = joint.shapes.basic.GenericView;
 
 /** MOTIVATIONAL LAYER*/
 
@@ -1037,6 +1103,7 @@ joint.shapes.archimate.Stakeholder = joint.shapes.basic.Generic.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Stakeholder',
 		 subType: 'Stakeholder',
 
 	        attrs: {
@@ -1098,6 +1165,7 @@ joint.shapes.archimate.Stakeholder = joint.shapes.basic.Generic.extend({
 	    }
 
 });
+joint.shapes.archimate.StakeholderView = joint.shapes.basic.GenericView;
 
 //Driver
 
@@ -1117,11 +1185,13 @@ joint.shapes.archimate.Driver = joint.shapes.archimate.Stakeholder.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Driver',
 		 subType: 'Driver',
 		 
 	 }, joint.shapes.archimate.Stakeholder.prototype.defaults),
 
 });
+joint.shapes.archimate.DriverView = joint.shapes.basic.GenericView;
 
 //Assessment
 
@@ -1142,11 +1212,13 @@ joint.shapes.archimate.Assessment = joint.shapes.archimate.Stakeholder.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Assessment',
 		 subType: 'Assessment',
 		 
 	 }, joint.shapes.archimate.Stakeholder.prototype.defaults),
 
 });
+joint.shapes.archimate.AssessmentView = joint.shapes.basic.GenericView;
 
 //Goal
 
@@ -1168,6 +1240,7 @@ joint.shapes.archimate.Goal = joint.shapes.basic.Generic.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Goal',
 		 subType: 'Goal',
 
 	        attrs: {
@@ -1229,6 +1302,7 @@ joint.shapes.archimate.Goal = joint.shapes.basic.Generic.extend({
 	    }
 
 });
+joint.shapes.archimate.GoalView = joint.shapes.basic.GenericView;
 
 //Requirement
 
@@ -1248,11 +1322,13 @@ joint.shapes.archimate.Requirement = joint.shapes.archimate.Goal.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Requirement',
 		 subType: 'Requirement',
 		 
 	 }, joint.shapes.archimate.Goal.prototype.defaults),
 
 });
+joint.shapes.archimate.RequirementView = joint.shapes.basic.GenericView;
 
 //Constraint
 
@@ -1272,11 +1348,13 @@ joint.shapes.archimate.Constraint = joint.shapes.archimate.Goal.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Constraint',
 		 subType: 'Constraint',
 		 
 	 }, joint.shapes.archimate.Goal.prototype.defaults),
 
 });
+joint.shapes.archimate.ConstraintView = joint.shapes.basic.GenericView;
 
 //Principle
 
@@ -1298,11 +1376,13 @@ joint.shapes.archimate.Principle = joint.shapes.archimate.Goal.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.',
 		 subType: 'Principle',
 		 
 	 }, joint.shapes.archimate.Goal.prototype.defaults),
 
 });
+joint.shapes.archimate.PrincipleView = joint.shapes.basic.GenericView;
 
 /** IMPLEMENTATION AND MIGRATION LAYER*/
 
@@ -1321,6 +1401,7 @@ joint.shapes.archimate.WorkPackage = joint.shapes.basic.Generic.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.WorkPackage',
 		 subType: 'Work Package',
 
 	        attrs: {
@@ -1384,6 +1465,7 @@ joint.shapes.archimate.WorkPackage = joint.shapes.basic.Generic.extend({
 	    }
 
 });
+joint.shapes.archimate.WorkPackageView = joint.shapes.basic.GenericView;
 
 //Deliverable
 
@@ -1400,11 +1482,13 @@ joint.shapes.archimate.Deliverable = joint.shapes.archimate.WorkPackage.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Deliverable',
 		 subType: 'Deliverable',
 		 
 	 }, joint.shapes.archimate.WorkPackage.prototype.defaults),
 
 });
+joint.shapes.archimate.DeliverableView = joint.shapes.basic.GenericView;
 
 //Plateau
 
@@ -1428,12 +1512,13 @@ joint.shapes.archimate.Plateau = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Plateau',
 		 subType: 'Plateau',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
-
+joint.shapes.archimate.PlateauView = joint.shapes.basic.GenericView;
 
 //Gap
 
@@ -1454,11 +1539,13 @@ joint.shapes.archimate.Gap = joint.shapes.archimate.Node.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
+		 type: 'archimate.Gap',
 		 subType: 'Gap',
 		 
 	 }, joint.shapes.archimate.Node.prototype.defaults),
 
 });
+joint.shapes.archimate.GapView = joint.shapes.basic.GenericView;
 
 /** RELATIONSHIPS */
 
@@ -1487,6 +1574,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
             }
         },
 
+        label: [],
         flowType: "association"
     },
 
@@ -1700,3 +1788,9 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
     }
 
 });
+
+if (typeof exports === 'object') {
+
+    module.exports = joint.shapes.archimate;
+}
+

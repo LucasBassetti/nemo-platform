@@ -15,6 +15,7 @@
 	
 	<script src="frontend/archimate/src/main.js"></script>
 	<script src="frontend/archimate/src/inspector.js"></script>
+	<script src="frontend/archimate/src/keyboard.js"></script>
 	<script src="frontend/archimate/src/stencil.js"></script>
 	<script src="frontend/archimate/src/resizing.js"></script>
 	<script src="frontend/archimate/src/embed.js"></script>

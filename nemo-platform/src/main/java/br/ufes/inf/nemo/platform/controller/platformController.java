@@ -23,6 +23,11 @@ public class platformController {
 		return "dashboard/pages/about";
 	}
 	
+	@RequestMapping("/archimate")
+	public String archimate(HttpServletRequest request) {		
+		return "dashboard/pages/archimate";
+	}
+	
 	@RequestMapping("/mlt")
 	public String mlt(HttpServletRequest request) {		
 		return "dashboard/pages/mlt";

@@ -123,7 +123,6 @@ var Rappid = Backbone.Router.extend({
             groups: Stencil.groups,
             search: {
                 '*': ['subType','attrs/text/text','attrs/.label/text'],
-                'org.Member': ['attrs/.rank/text','attrs/.name/text']
             }
         });
 
@@ -413,14 +412,14 @@ var Rappid = Backbone.Router.extend({
             // Make sure pasted elements get selected immediately. This makes the UX better as
             // the user can immediately manipulate the pasted elements.
             this.clipboard.each(function(cell) {
-
+            	
                 if (cell.get('type') === 'link') return;
 
                 // Push to the selection not to the model from the clipboard but put the model into the graph.
                 // Note that they are different models. There is no views associated with the models
                 // in clipboard.
                 this.selection.add(this.graph.getCell(cell.id));
-		this.selectionView.createSelectionBox(cell.findView(this.paper));
+                this.selectionView.createSelectionBox(cell.findView(this.paper));
 
             }, this);
 

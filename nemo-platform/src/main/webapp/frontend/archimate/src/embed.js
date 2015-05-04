@@ -11,7 +11,7 @@ function embed(paper, graph){
 		if(cellView.model instanceof joint.shapes.basic.Generic){
 			
 			var cell = cellView.model;
-			console.log('cell: ' + cell.get('name'));
+			//console.log('cell: ' + cell.get('name'));
 			
 			var elements = [];
 			

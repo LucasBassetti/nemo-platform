@@ -11,29 +11,45 @@ function resizing(graph){
 		
 		var type = cell.get('type');
 		
-		// configuration of resizing
-		var sizeMultiplier = { 	
-				'basic.Generic': 2,
-		}[type];
-
-		if (sizeMultiplier) {
-			var originalSize = cell.get('size');
-			
-			if(cell.get('subType') === "Business Service" || cell.get('subType') === "Application Service" || cell.get('subType') === "Infrastructure Service"  || cell.get('subType') === "Value"){
-				cell.set('size', {
-					width: originalSize.width * sizeMultiplier,
-					height: (originalSize.height * sizeMultiplier)/1.5
-				});
-			}
-			else{
-				cell.set('size', {
-					width: originalSize.width * sizeMultiplier,
-					height: originalSize.height * sizeMultiplier
-				});
-			}
+		var originalSize = cell.get('size');
+		
+		if(cell.get('subType') === "Business Service" || cell.get('subType') === "Application Service" || cell.get('subType') === "Infrastructure Service"  || cell.get('subType') === "Value"){
+			cell.set('size', {
+				width: originalSize.width * 2,
+				height: (originalSize.height * 2)/1.5
+			});
 		}
+		else{
+			cell.set('size', {
+				width: originalSize.width * 2,
+				height: originalSize.height * 2
+			});
+		}
+		
+		
+		// configuration of resizing
+//		var sizeMultiplier = { 	
+//				'basic.Generic': 2,
+//		}[type];
 
-		sizeMultiplier = 0;
+//		if (sizeMultiplier) {
+//			var originalSize = cell.get('size');
+//			
+//			if(cell.get('subType') === "Business Service" || cell.get('subType') === "Application Service" || cell.get('subType') === "Infrastructure Service"  || cell.get('subType') === "Value"){
+//				cell.set('size', {
+//					width: originalSize.width * 2,
+//					height: (originalSize.height * 2)/1.5
+//				});
+//			}
+//			else{
+//				cell.set('size', {
+//					width: originalSize.width * 2,
+//					height: originalSize.height * 2
+//				});
+//			}
+//		}
+//
+//		sizeMultiplier = 0;
 	}, this);
 	
 };

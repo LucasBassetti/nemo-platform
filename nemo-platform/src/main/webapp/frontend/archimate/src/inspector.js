@@ -60,27 +60,7 @@ function inp(defs) {
     return ret;
 }
 
-var InspectorDefs = {
-		
-
-	'archimate.Relationships': {
-		
-		inputs: _.extend({
-			flowType: {
-	            type: 'select',
-	            options: ['access', 'aggregation', 'assignment', 'association', 'composition', 'flow', 'realization', 'specialization', 'triggering', 'usedBy'],
-	            label: 'Type',
-	            group: 'general',
-	            index: 1
-			} 
-			
-	        
-		})
-    },
-		
-    //ArchiMate
-    
-	'basic.Generic': {
+var archimateInputs = {
 		
 	    inputs: _.extend({
 	        attrs: {
@@ -99,7 +79,75 @@ var InspectorDefs = {
 	    groups: {
 	        name: { label: 'name', index: 1 },
 	    }
-	},
+}
 
+var InspectorDefs = {
+		
+	'archimate.Relationships': {
+		
+		inputs: _.extend({
+			label: { 
+				type: 'text', group: 'label', index: 1, label: 'Label' 
+			},
+			flowType: {
+	            type: 'select',
+	            options: ['access', 'aggregation', 'assignment', 'association', 'composition', 'flow', 'realization', 'specialization', 'triggering', 'usedBy'],
+	            label: 'Type',
+	            group: 'general',
+	            index: 2
+			},
+	        
+		})
+    },
+		
+    //ArchiMate
+    
+	'archimate.Actor': archimateInputs,	
+	'archimate.Role': archimateInputs,
+    'archimate.BusinessCollaboration': archimateInputs,
+    'archimate.BusinessInterface': archimateInputs,
+    'archimate.Location': archimateInputs,
+    'archimate.BusinessProcess': archimateInputs,
+    'archimate.BusinessFunction': archimateInputs,
+    'archimate.BusinessInteraction': archimateInputs,
+    'archimate.BusinessEvent': archimateInputs,
+    'archimate.BusinessService': archimateInputs,
+    'archimate.BusinessObject': archimateInputs,
+    'archimate.Representation': archimateInputs,
+    'archimate.Value': archimateInputs,
+    'archimate.Meaning': archimateInputs,
+    'archimate.Product': archimateInputs,
+    'archimate.Contract': archimateInputs,
+    
+    'archimate.ApplicationComponent': archimateInputs,     
+    'archimate.ApplicationCollaboration': archimateInputs,
+    'archimate.ApplicationInterface': archimateInputs,
+    'archimate.ApplicationFunction': archimateInputs,
+    'archimate.ApplicationInteraction': archimateInputs,
+    'archimate.ApplicationService': archimateInputs,
+    'archimate.DataObject': archimateInputs,
+    
+	'archimate.Node': archimateInputs,
+	'archimate.Device': archimateInputs,
+	'archimate.Network': archimateInputs,
+	'archimate.CommunicationPath': archimateInputs,
+	'archimate.InfrastructureInterface': archimateInputs,
+	'archimate.SystemSoftware': archimateInputs,
+	'archimate.InfrastructureFunction': archimateInputs,
+	'archimate.InfrastructureService': archimateInputs,
+	'archimate.Artifact': archimateInputs,
+	
+	'archimate.Stakeholder': archimateInputs,
+	'archimate.Driver': archimateInputs,
+	'archimate.Assessment': archimateInputs,
+	'archimate.Goal': archimateInputs,
+	'archimate.Requirement': archimateInputs,
+	'archimate.Constraint': archimateInputs,
+	'archimate.Principle': archimateInputs,
+	
+	'archimate.WorkPackage': archimateInputs,
+	'archimate.Deliverable': archimateInputs,
+	'archimate.Plateau': archimateInputs,
+	'archimate.Gap': archimateInputs,
 
 };
