@@ -133,12 +133,12 @@ var Rappid = Backbone.Router.extend({
         $('.stencil-paper-drag').on('contextmenu', function(evt) { evt.preventDefault(); });
 
         var layoutOptions = {
-            columnWidth: this.stencil.options.width / 3 - 10,
-            columns: 3,
-            rowHeight: 80,
+            columnWidth: this.stencil.options.width / 3.5 - 10,
+            columns: 4,
+            rowHeight: 60,
             resizeToFit: true,
-            dy: 10,
-            dx: 10
+            dy: 5,
+            dx: 5
         };
 
         _.each(Stencil.groups, function(group, name) {

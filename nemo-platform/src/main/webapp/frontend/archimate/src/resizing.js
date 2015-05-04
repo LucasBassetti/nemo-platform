@@ -18,10 +18,19 @@ function resizing(graph){
 
 		if (sizeMultiplier) {
 			var originalSize = cell.get('size');
-			cell.set('size', {
-				width: originalSize.width * sizeMultiplier,
-				height: originalSize.height * sizeMultiplier
-			});
+			
+			if(cell.get('subType') === "Business Service" || cell.get('subType') === "Application Service" || cell.get('subType') === "Infrastructure Service"  || cell.get('subType') === "Value"){
+				cell.set('size', {
+					width: originalSize.width * sizeMultiplier,
+					height: (originalSize.height * sizeMultiplier)/1.5
+				});
+			}
+			else{
+				cell.set('size', {
+					width: originalSize.width * sizeMultiplier,
+					height: originalSize.height * sizeMultiplier
+				});
+			}
 		}
 
 		sizeMultiplier = 0;

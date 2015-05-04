@@ -1,5 +1,11 @@
+/**
+ * Procedure to embed cell on another
+ * @param paper
+ * @param graph
+ */
 function embed(paper, graph){
 	
+	// EMBED ELEMENTS WHEN CELL POINTERUP
 	paper.on('cell:pointerup', function(cellView, evt, opt) {
 		
 		if(cellView.model instanceof joint.shapes.basic.Generic){
@@ -9,38 +15,36 @@ function embed(paper, graph){
 			
 			var elements = [];
 			
-			$.each(graph.getElements(), function(index, element){
-				
-				elements[index] = element;
-				
+			// GET ALL ELEMENTS
+			$.each(graph.getElements(), function(index, element){	
+				elements[index] = element;		
 			});
 			
 			for(var i = elements.length-1; i >= 0; i--){
 				
+				// IF CELL IS EMBEDDED IN SOMO ELEMENT -> UNEMBED THEM
 				if(cell.isEmbeddedIn(elements[i])){
-					console.log('UN: ' + elements[i].get('name'));
+					//console.log('UN: ' + elements[i].get('name'));
 					elements[i].unembed(cell);
 					
+					//AJUST POSITION IF ELEMENT DOES'T HAVE MORE EMBEDDED CELLS
 					if(elements[i].getEmbeddedCells().length == 0){
-						elements[i].attr('.name-text/ref-x', .5);
-						elements[i].attr('.name-text/ref-y', .5);
-						elements[i].attr('.name-text/text-anchor', "middle");
-						elements[i].attr('.name-text/y-alignment', "middle");
+						adjustmentPosition(elements[i], false);
 					}
 
 				}
 				
 			}
 			
-			
-			//console.log(cellView.model.id);
 			var position = cell.get('position');
 			var size = cell.get('size');
 			var area = g.rect(position.x, position.y, size.width, size.height);
 			var count = 0;
 			
 			var hasParent = false;
-			var parent = [];			
+			var parent = [];		
+			
+			// GET ALL PARENTS
 			_.each(graph.getElements(), function(e) {
 
 				var position = e.get('position');
@@ -55,7 +59,7 @@ function embed(paper, graph){
 				
 			});
 
-			
+			// IF HAS PARENT -> EMBED THE PARENT WITH SIZE MORE NEXT TO SIZE OF CELL
 			if(hasParent){
 				
 				var maxParentSize = 0;
@@ -64,66 +68,107 @@ function embed(paper, graph){
 				for(var i = 0; i < parent.length; i++){
 					
 					if(cell.get('z') > parent[i].get('z') && parent[i].get('z') > maxParentSize){
-						
 						maxParentSize = parent[i].get('z');
 						maxParent = i;
-						
 					}
 					
 				}
 				
-				if(maxParent >= 0){
-					
-					console.log('EM: ' + parent[maxParent].get('name'));
-
-					console.log(cell.get('z'));
-					console.log(parent[maxParent].get('z'));
-					
+				if(maxParent >= 0){			
+					//console.log('EM: ' + parent[maxParent].get('name'));
 					parent[maxParent].embed(cell);
-					
-					parent[maxParent].attr('.name-text/ref-x', .001);
-					parent[maxParent].attr('.name-text/ref-y', 1);
-					parent[maxParent].attr('.name-text/text-anchor', "start");
-					parent[maxParent].attr('.name-text/y-alignment', "top");
-					
+					adjustmentPosition(parent[maxParent], true);
 				}	
-				
 			}
 		}
 		
 	});
 	
-	// some types of the elements need resizing after they are dropped
-	graph.on('add', function(cell, collection, opt) {
+	// AJUST PARENT POSITION WHEN REMOV A CELL
+	graph.on('remove', function(cell) {
 
-		if (!opt.stencil) return;
-		if(cell.get('type') === 'link') return;
+		if(cell instanceof joint.shapes.basic.Generic){
 		
-		var position = cell.get('position');
-		var size = cell.get('size');
-		var area = g.rect(position.x, position.y, size.width, size.height);
+			var elements = [];
+			
+			$.each(graph.getElements(), function(index, element){		
+				elements[index] = element;		
+			});
+			
+			for(var i = elements.length-1; i >= 0; i--){
+				
+				if(cell.isEmbeddedIn(elements[i])){
+					console.log('UN: ' + elements[i].get('name'));
+					elements[i].unembed(cell);
+					
+					if(elements[i].getEmbeddedCells().length == 0){
+						adjustmentPosition(elements[i], false);
+					}
 
-		var parent;			
-		_.each(graph.getElements(), function(e) {
-
-			var position = e.get('position');
-			var size = e.get('size');
-			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-				parent = e;
+				}
+				
 			}
-		});
-
-
-		if(parent) {
-			parent.embed(cell);
 			
-			//alert(JSON.stringify(parent.attr('.name-text')));
-			
-			parent.attr('.name-text/ref-x', .001);
-			parent.attr('.name-text/ref-y', 1);
-			parent.attr('.name-text/text-anchor', "start");
-			parent.attr('.name-text/y-alignment', "top");
 		}
 	});
+	
+	// EMEBED ELEMENTS ON ADD IF A CELL IS PUTTED INSIDE A ANOTHER CELL
+	graph.on('add', function(cell) {
+
+		if(cell instanceof joint.shapes.basic.Generic){
+		
+			var position = cell.get('position');
+			var size = cell.get('size');
+			var area = g.rect(position.x, position.y, size.width, size.height);
+	
+			var parent;			
+			_.each(graph.getElements(), function(e) {
+	
+				var position = e.get('position');
+				var size = e.get('size');
+				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+					parent = e;
+				}
+			});
+	
+	
+			if(parent) {
+				parent.embed(cell);
+				adjustmentPosition(parent, true);
+			}
+		}
+	});
+	
+	/**
+	 * Procedure to adjustment position of a cell
+	 */
+	function adjustmentPosition(cell, embedded){
+		
+		if(embedded){
+			if(cell.get('subType') === 'Meaning'){
+				cell.attr('.name-text/ref-x', .5);
+				cell.attr('.name-text/ref-y', .2);
+			}
+			else if(cell.get('subType') === 'Business Object' || cell.get('subType') === 'Contract' ||  cell.get('subType') === 'Product'){
+				cell.attr('.name-text/ref-x', .5);
+				cell.attr('.name-text/ref-y', .2);
+			}
+			else{
+				cell.attr('.name-text/ref-x', .5);
+				cell.attr('.name-text/ref-y', .01);	
+			}
+			
+			//cell.attr('.name-text/text-anchor', "start");
+			cell.attr('.name-text/y-alignment', "top");
+		}
+		else{
+			cell.attr('.name-text/ref-x', .5);
+			cell.attr('.name-text/ref-y', .5);
+			cell.attr('.name-text/text-anchor', "middle");
+			cell.attr('.name-text/y-alignment', "middle");
+		}
+		
+		
+	}
 	
 }
