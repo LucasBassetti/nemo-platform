@@ -1,0 +1,15 @@
+@media (min-width: 768px) {
+	.navbar-header {
+	  float: none;
+	}
+} 
+
+@media (max-width: 768px) {
+	nav.sidebar {
+		top: 65px;
+	}
+}
+
+.navbar {
+	min-height: 55px;
+}
