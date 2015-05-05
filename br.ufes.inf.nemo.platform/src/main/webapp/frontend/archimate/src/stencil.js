@@ -13,8 +13,8 @@ Stencil.groups = {
 Stencil.shapes = {
 
     businessLayer: [
-        new joint.shapes.archimate.Actor({name: 'Actor', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.Role({name: 'Role', attrs: { '.name-text': { 'font-size': 8 } }}),
+        new joint.shapes.archimate.BusinessActor({name: 'Actor', attrs: { '.name-text': { 'font-size': 8 } }}),
+        new joint.shapes.archimate.BusinessRole({name: 'Role', attrs: { '.name-text': { 'font-size': 8 } }}),
         new joint.shapes.archimate.BusinessCollaboration({name: 'Collaboration', attrs: { '.name-text': { 'font-size': 8 } }}),
         new joint.shapes.archimate.BusinessInterface({name: 'Interface', attrs: { '.name-text': { 'font-size': 8 } }}),
         new joint.shapes.archimate.Location({name: 'Location', attrs: { '.name-text': { 'font-size': 8 } }}),

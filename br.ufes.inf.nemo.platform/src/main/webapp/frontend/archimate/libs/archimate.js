@@ -33,9 +33,9 @@ joint.shapes.basic.GenericView = joint.dia.ElementView.extend({
 
 /** BUSINESS LAYER */
 
-//Actor
+//BusinessActor
 
-joint.shapes.archimate.Actor = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.BusinessActor = joint.shapes.basic.Generic.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -55,7 +55,7 @@ joint.shapes.archimate.Actor = joint.shapes.basic.Generic.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
-		 type: 'archimate.Actor',
+		 type: 'archimate.BusinessActor',
 		 subType: 'Business Actor',
 
 	        attrs: {
@@ -120,11 +120,11 @@ joint.shapes.archimate.Actor = joint.shapes.basic.Generic.extend({
 	    }
 
 });
-joint.shapes.archimate.ActorView = joint.shapes.basic.GenericView; 
+joint.shapes.archimate.BusinessActorView = joint.shapes.basic.GenericView; 
 
-//Role
+//BusinessRole
 
-joint.shapes.archimate.Role = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.BusinessRole = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -142,17 +142,17 @@ joint.shapes.archimate.Role = joint.shapes.archimate.Actor.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
-		 type: 'archimate.Role',
+		 type: 'archimate.BusinessRole',
 		 subType: 'Business Role',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
-joint.shapes.archimate.RoleView = joint.shapes.basic.GenericView;
+joint.shapes.archimate.BusinessRoleView = joint.shapes.basic.GenericView;
 
 //Collaboration
 
-joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -172,14 +172,14 @@ joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.Actor.exte
 		 type: 'archimate.BusinessCollaboration',
 		 subType: 'Business Collaboration',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 	
 });
 joint.shapes.archimate.BusinessCollaborationView = joint.shapes.basic.GenericView;
 
 //Business Interface
 
-joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -199,14 +199,14 @@ joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.BusinessInterface',
 		 subType: 'Business Interface',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessInterfaceView = joint.shapes.basic.GenericView;
 
 //Location
 
-joint.shapes.archimate.Location = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.Location = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -225,14 +225,14 @@ joint.shapes.archimate.Location = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.Location',
 		 subType: 'Interface',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.LocationView = joint.shapes.basic.GenericView;
 
 //Business Process
 
-joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -258,7 +258,7 @@ joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.Actor.extend({
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessProcessView = joint.shapes.basic.GenericView;
@@ -374,7 +374,7 @@ joint.shapes.archimate.BusinessServiceView = joint.shapes.basic.GenericView;
 
 //Business Object
 
-joint.shapes.archimate.BusinessObject = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.BusinessObject = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -391,14 +391,14 @@ joint.shapes.archimate.BusinessObject = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.BusinessObject',
 		 subType: 'Business Object',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessObjectView = joint.shapes.basic.GenericView;
 
 //Representation
 
-joint.shapes.archimate.Representation = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.Representation = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -414,14 +414,14 @@ joint.shapes.archimate.Representation = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.Representation',
 		 subType: 'Representation',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.RepresentationView = joint.shapes.basic.GenericView;
 
 //Meaning
 
-joint.shapes.archimate.Meaning = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.Meaning = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -437,14 +437,14 @@ joint.shapes.archimate.Meaning = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.Meaning',
 		 subType: 'Meaning',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.MeaningView = joint.shapes.basic.GenericView;
 
 //Value
 
-joint.shapes.archimate.Value = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.Value = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -460,14 +460,14 @@ joint.shapes.archimate.Value = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.Value',
 		 subType: 'Value',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.ValueView = joint.shapes.basic.GenericView;
 
 //Product
 
-joint.shapes.archimate.Product = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.Product = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -484,14 +484,14 @@ joint.shapes.archimate.Product = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.Product',
 		 subType: 'Product',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.ProductView = joint.shapes.basic.GenericView;
 
 //Contract
 
-joint.shapes.archimate.Contract = joint.shapes.archimate.Actor.extend({
+joint.shapes.archimate.Contract = joint.shapes.archimate.BusinessActor.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -508,7 +508,7 @@ joint.shapes.archimate.Contract = joint.shapes.archimate.Actor.extend({
 		 type: 'archimate.Contract',
 		 subType: 'Contract',
 		 
-	 }, joint.shapes.archimate.Actor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
 });
 joint.shapes.archimate.ContractView = joint.shapes.basic.GenericView;

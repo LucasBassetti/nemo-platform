@@ -102,8 +102,8 @@ var InspectorDefs = {
 		
     //ArchiMate
     
-	'archimate.Actor': archimateInputs,	
-	'archimate.Role': archimateInputs,
+	'archimate.BusinessActor': archimateInputs,	
+	'archimate.BusinessRole': archimateInputs,
     'archimate.BusinessCollaboration': archimateInputs,
     'archimate.BusinessInterface': archimateInputs,
     'archimate.Location': archimateInputs,
