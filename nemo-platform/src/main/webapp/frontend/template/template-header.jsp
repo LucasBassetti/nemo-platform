@@ -1,1 +1,0 @@
-<%@include file="/frontend/template/jsp/style.jsp"%>
