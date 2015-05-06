@@ -26,6 +26,7 @@ var Rappid = Backbone.Router.extend({
         this.initializeClipboard();
         this.initializeCommandManager();
         this.initializeToolbar();
+        this.initializeValidator();
         // Intentionally commented out. See the `initializeValidator()` method for reasons.
         // Uncomment for demo purposes.
         // this.initializeValidator();
@@ -459,21 +460,21 @@ var Rappid = Backbone.Router.extend({
         
         this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-        this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
-
-            if (command.action === 'add' && command.batch) return next();
-
-            var cell = command.data.attributes || this.graph.getCell(command.data.id).toJSON();
-            var area = g.rect(cell.position.x, cell.position.y, cell.size.width, cell.size.height);
-
-            if (_.find(this.graph.getElements(), function(e) {
-
-	        var position = e.get('position');
-                var size = e.get('size');
-	        return (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height)));
-
-            })) return next("Another cell in the way!");
-        }, this));
+//        this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
+//
+//            if (command.action === 'add' && command.batch) return next();
+//
+//            var cell = command.data.attributes || this.graph.getCell(command.data.id).toJSON();
+//            var area = g.rect(cell.position.x, cell.position.y, cell.size.width, cell.size.height);
+//
+//            if (_.find(this.graph.getElements(), function(e) {
+//
+//	        var position = e.get('position');
+//                var size = e.get('size');
+//	        return (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height)));
+//
+//            })) return next("Another cell in the way!");
+//        }, this));
 
         this.validator.on('invalid',function(message) {
             

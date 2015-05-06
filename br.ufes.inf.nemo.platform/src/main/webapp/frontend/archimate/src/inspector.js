@@ -77,7 +77,23 @@ var archimateInputs = {
 	        name: { type: 'text', group: 'name', index: 1, label: 'Name' },
 	    }),
 	    groups: {
-	        name: { label: 'name', index: 1 },
+	        name: { label: 'General', index: 1 },
+	    }
+}
+
+var archimateRelationshipsInputs = {
+		
+	    inputs: _.extend({
+	        attrs: {
+	            '.name-rect': inp({
+	                fill: { group: 'name', index: 4 },
+	                'stroke-width': { group: 'name', index: 5, min: 0, max: 30, defaultValue: 1 },
+	                'stroke-dasharray': { group: 'name', index: 6 },
+	            }),
+	        },
+	    }),
+	    groups: {
+	        name: { label: 'General', index: 1 },
 	    }
 }
 
@@ -89,13 +105,13 @@ var InspectorDefs = {
 			label: { 
 				type: 'text', group: 'label', index: 1, label: 'Label' 
 			},
-			flowType: {
-	            type: 'select',
-	            options: ['access', 'aggregation', 'assignment', 'association', 'composition', 'flow', 'realization', 'specialization', 'triggering', 'usedBy'],
-	            label: 'Type',
-	            group: 'general',
-	            index: 2
-			},
+//			flowType: {
+//	            type: 'select',
+//	            options: ['access', 'aggregation', 'assignment', 'association', 'composition', 'flow', 'realization', 'specialization', 'triggering', 'usedBy'],
+//	            label: 'Type',
+//	            group: 'general',
+//	            index: 2
+//			},
 	        
 		})
     },
@@ -149,5 +165,7 @@ var InspectorDefs = {
 	'archimate.Deliverable': archimateInputs,
 	'archimate.Plateau': archimateInputs,
 	'archimate.Gap': archimateInputs,
+	
+	'archimate.Junction': archimateRelationshipsInputs,
 
 };

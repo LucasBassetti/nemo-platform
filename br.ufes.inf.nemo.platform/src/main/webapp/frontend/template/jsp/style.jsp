@@ -26,3 +26,4 @@
 <link rel="stylesheet" type="text/css" href="frontend/template/css/selection.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/statusbar.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/style.css" />
+<link rel="stylesheet" type="text/css" href="frontend/template/css/dialog.css" />

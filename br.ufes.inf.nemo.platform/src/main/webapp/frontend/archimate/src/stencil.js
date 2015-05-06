@@ -7,6 +7,7 @@ Stencil.groups = {
 	technologyLayer: { index: 3, label: 'Technology Layer' },
 	motivationalLayer: { index: 4, label: 'Motivational Layer' },
 	migrationLayer: { index: 5, label: 'Migration Layer' },
+	relationships: { index: 6, label: 'Relationships' },
 	
 };
 
@@ -68,6 +69,10 @@ Stencil.shapes = {
 	   new joint.shapes.archimate.Deliverable({name: 'Deliverable', attrs: { '.name-text': { 'font-size': 8 } }}),
 	   new joint.shapes.archimate.Plateau({name: 'Plateau', attrs: { '.name-text': { 'font-size': 8 } }}),
 	   new joint.shapes.archimate.Gap({name: 'Gap', attrs: { '.name-text': { 'font-size': 8 } }}),
-	]
+	],
+	
+	relationships: [
+	   new joint.shapes.archimate.Junction({attrs: { '.name-text': { 'font-size': 7 } }}),             
+	],
     
 };

@@ -1549,6 +1549,54 @@ joint.shapes.archimate.GapView = joint.shapes.basic.GenericView;
 
 /** RELATIONSHIPS */
 
+//Junction
+
+joint.shapes.archimate.Junction = joint.shapes.basic.Generic.extend({
+	
+	markup: [
+		'<g class="rotatable">',
+        	'<g class="scalable">',
+	        	'<circle class="name-rect" cx="10" cy="10" r="10"/>',	        		
+			'</g>',
+		'</g>'
+	].join(''),
+	
+	 defaults: joint.util.deepSupplement({
+		 
+		 type: 'archimate.Junction',
+		 subType: 'Junction',
+
+	        attrs: {
+	        	rect: {
+	        		rx: 2,
+	        		ry: 2,
+	                width: 100,
+	                height: 100
+	            },
+	            '.name-rect': { 'stroke': 'black', 'stroke-width': 0, 'fill': '#000' },
+	            '.name-text': {
+	                'ref': '.name-rect', 'ref-y': .5, 'ref-x': .5, 'text-anchor': 'middle', 'y-alignment': 'middle', 'font-weight': 'normal',
+	                'fill': 'black', 'font-size': 12, 'font-family': 'Arial'
+	            },
+	            '.object': {
+	            	'ref': '.name-rect', 'ref-y': 1, 'ref-x': 0.999, 'text-anchor': 'end',
+	            }
+	            
+	        },
+	        
+		 
+	 }, joint.shapes.basic.Generic.prototype.defaults),
+	
+	 initialize: function() {
+		 joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
+	 },
+
+
+
+});
+
+//Relations
+
 joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 
     defaults: {
@@ -1664,7 +1712,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 
             break;  
             
-        case 'realization':
+        case 'realisation':
 
             attrs = {
         		'.marker-target': {
@@ -1678,7 +1726,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 
             break; 
             
-        case 'specialization':
+        case 'specialisation':
 
             attrs = {
         		'.marker-target': {
@@ -1710,75 +1758,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
             };
 
             break;  
-            
-            
-            
-            
-            
-
-        case 'conditional':
-
-            attrs = {
-                '.marker-source': {
-                    d: 'M 20 8 L 10 0 L 0 8 L 10 16 z',
-                    fill: '#FFF'
-                }
-            };
-
-            break;
-
-        case 'normal':
-
-            attrs = {};
-
-            break;
-
-        case 'message':
-
-            attrs = {
-                '.marker-target': {
-                    fill: '#FFF'
-                },
-                '.connection': {
-                    'stroke-dasharray': '4,4'
-                }
-            };
-
-            break;
-
-        case 'association':
-
-            attrs = {
-                '.marker-target': {
-                    d: 'M 0 0'
-                },
-            };
-
-            break;
-
-        case 'conversation':
-
-            // The only way how to achieved 'spaghetti insulation effect' on links is to
-            // have the .connection-wrap covering the inner part of the .connection.
-            // The outer part of the .connection then looks like two parallel lines.
-            attrs = {
-                '.marker-target': {
-                    d: 'M 0 0'
-                },
-                '.connection': {
-                    'stroke-width': '7px'
-                },
-                '.connection-wrap': {
-                    // As the css takes priority over the svg attributes, that's only way
-                    // how to overwrite default jointjs styling.
-                    style: 'stroke: #fff; stroke-width: 5px; opacity: 1;',
-                    onMouseOver: "var s=this.style;s.stroke='#000';s.strokeWidth=15;s.opacity=.4",
-                    onMouseOut: "var s=this.style;s.stroke='#fff';s.strokeWidth=5;s.opacity=1"
-                }
-            };
-
-            break;
-
+      
         default:
 
             throw "ArchiMate: Unknown Connector Type: " + type;

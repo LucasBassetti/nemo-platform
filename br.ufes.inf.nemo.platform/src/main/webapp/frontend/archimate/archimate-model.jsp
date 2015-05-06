@@ -12,6 +12,7 @@
 	<%@include file="/frontend/template/template-body.jsp"%>
 	
 	<script src="frontend/archimate/libs/archimate.js"></script>
+	<script src="frontend/archimate/libs/relationships.js"></script>
 	
 	<script src="frontend/archimate/src/main.js"></script>
 	<script src="frontend/archimate/src/inspector.js"></script>
@@ -19,6 +20,7 @@
 	<script src="frontend/archimate/src/stencil.js"></script>
 	<script src="frontend/archimate/src/resizing.js"></script>
 	<script src="frontend/archimate/src/embed.js"></script>
+	<script src="frontend/archimate/src/magicConnector.js"></script>
 
 	<script>
 		// Uncomment the following line and comment the line after if you
@@ -28,7 +30,11 @@
 		Backbone.history.start();
 		
 		resizing(app.graph);
-		embed(app.paper, app.graph)
+		embed(app.paper, app.graph);
+		magicConnector(app.validator, app.graph);
+		
+		
+		
 		
 	</script>
 

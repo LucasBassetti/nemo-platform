@@ -13,7 +13,13 @@ function resizing(graph){
 		
 		var originalSize = cell.get('size');
 		
-		if(cell.get('subType') === "Business Service" || cell.get('subType') === "Application Service" || cell.get('subType') === "Infrastructure Service"  || cell.get('subType') === "Value"){
+		if(cell.get('subType') === "Junction"){
+			cell.set('size', {
+				width: originalSize.width/2,
+				height: originalSize.height/2
+			});
+		}	
+		else if(cell.get('subType') === "Business Service" || cell.get('subType') === "Application Service" || cell.get('subType') === "Infrastructure Service"  || cell.get('subType') === "Value"){
 			cell.set('size', {
 				width: originalSize.width * 2,
 				height: (originalSize.height * 2)/1.5
