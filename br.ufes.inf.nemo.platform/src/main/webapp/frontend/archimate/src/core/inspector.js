@@ -28,7 +28,8 @@ var CommonInspectorTextInputs = {
     'stroke': { type: 'color', group: 'text', index: 6, defaultValue: '#000000' },
     'stroke-width': { type: 'range', min: 0, max: 5, step: .5, defaultValue: 0, unit: 'px', group: 'text', index: 7 },
     'ref-x': { type: 'range', min: 0, max: .9, step: .1, defaultValue: .5, group: 'text', index: 8 },
-    'ref-y': { type: 'range', min: 0, max: .9, step: .1, defaultValue: .5, group: 'text', index: 9 }
+    'ref-y': { type: 'range', min: 0, max: .9, step: .1, defaultValue: .5, group: 'text', index: 9 },
+    'opacity': { type: 'range', min: 0, max: .9, step: .1, defaultValue: .9, group: 'text', index: 10 }
 };
 
 var InputDefs = {
@@ -65,19 +66,20 @@ var archimateInputs = {
 	    inputs: _.extend({
 	        attrs: {
 	            '.name-text': inp({
-	                'font-size': { group: 'name', index: 2 },
-	                'font-family': { group: 'name', index: 3 }
+	                'font-size': { group: 'general', index: 3 },
+	                'font-family': { group: 'general', index: 4 }
 	            }),
 	            '.name-rect': inp({
-	                fill: { group: 'name', index: 4 },
-	                'stroke-width': { group: 'name', index: 5, min: 0, max: 30, defaultValue: 1 },
-	                'stroke-dasharray': { group: 'name', index: 6 },
+	                fill: { group: 'general', index: 5 },
+	                'stroke-width': { group: 'general', index: 6, min: 0, max: 30, defaultValue: 1 },
+	                'stroke-dasharray': { group: 'general', index: 7 },
 	            }),
 	        },
-	        name: { type: 'text', group: 'name', index: 1, label: 'Name' },
+	        name: { type: 'textarea', group: 'general', index: 1, label: 'Name' },
+	        documentation: { type: 'textarea', group: 'general', index: 2, label: 'Documentation' },
 	    }),
 	    groups: {
-	        name: { label: 'General', index: 1 },
+	    	general: { label: 'General', index: 1 },
 	    }
 }
 
@@ -92,6 +94,7 @@ var archimateRelationshipsInputs = {
 	            }),
 	        },
 	    }),
+	    
 	    groups: {
 	        name: { label: 'General', index: 1 },
 	    }
@@ -102,17 +105,7 @@ var InspectorDefs = {
 	'archimate.Relationships': {
 		
 		inputs: _.extend({
-			label: { 
-				type: 'text', group: 'label', index: 1, label: 'Label' 
-			},
-//			flowType: {
-//	            type: 'select',
-//	            options: ['access', 'aggregation', 'assignment', 'association', 'composition', 'flow', 'realization', 'specialization', 'triggering', 'usedBy'],
-//	            label: 'Type',
-//	            group: 'general',
-//	            index: 2
-//			},
-	        
+			label: { type: 'textarea', group: 'label', index: 1, label: 'Label' }, 
 		})
     },
 		

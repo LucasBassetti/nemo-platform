@@ -3,10 +3,13 @@ function magicConnector(validator, graph){
 	validator.validate('change:target change:source', function(err, command, next) {
 
 		if(!(command.data.type === "archimate.Relationships")) return;
-		
-		console.log(command.data.type);
+
 		var link = graph.getCell(command.data.id);
-		console.log(JSON.stringify(link));
+		createMagicConnection(link);
+		
+	});
+	
+	function createMagicConnection(link){
 		
 		var sourceElement = graph.getCell(link.get('source').id);
 		var targetElement = graph.getCell(link.get('target').id);
@@ -15,20 +18,22 @@ function magicConnector(validator, graph){
 		var target = targetElement.get('subType').replace(" ", "");
 
 		var connections = getConnections(source, target);
-		generateMagicConnectionDialog(connections, link);
+		generateMagicConnectionDialog(sourceElement.get('name'), targetElement.get('name'), connections, link);
 		
-	});
+	}
 
-	function generateMagicConnectionDialog(connections, link){
+	function generateMagicConnectionDialog(source, target, connections, link){
 
 		console.log(JSON.stringify(connections));
-		var content = '<form id="magicConnection">';
+		var content = '<form class="magic-connector">';
 
+		var content = content + '<label>' + source + '</label> -> <label>' + target + '</label><br>';
+		
 		$.each(connections, function(index, value){
 			console.log(value)
 			if(index == 0){
 				content = content + '<input type="radio" name="connection" value="' + value + '" checked>' 
-				+ '<label>' + value + '</label> <br>';
+				+ '<label>' + value + '</label><br>';
 			}
 			else{
 				content = content + '<input type="radio" name="connection" value="' + value + '">' 
@@ -53,9 +58,15 @@ function magicConnector(validator, graph){
 		dialog.on('action:close', cancel);
 		dialog.open();
 
-
+		$(".magic-connector").keypress(function(e) {
+		    if(e.which == 13) {
+		    	createConnection();
+		    }
+		});
+		
+		
 		function createConnection(){
-			var connectionType = $('input[name=connection]:checked', '#magicConnection').val();
+			var connectionType = $('input[name=connection]:checked', '.magic-connector').val();
 			link.set('flowType', connectionType);
 			dialog.close();
 		}

@@ -50,6 +50,16 @@
 							data-tooltip="Zoom out">
 							<img style="height: 20px" src="frontend/template/img/zoomout.png"
 								alt="Zoom out">
+						</button>
+						<button id="btn-t" class="btn btn-default navbar-btn"
+							data-tooltip="Zoom in">
+							<img style="height: 20px" src="frontend/template/img/zoomin.png"
+								alt="Zoom in">
+						</button>
+						<button id="btn-o" class="btn btn-default navbar-btn"
+							data-tooltip="Zoom out">
+							<img style="height: 20px" src="frontend/template/img/zoomout.png"
+								alt="Zoom out">
 						</button>	
 					</div>
 											

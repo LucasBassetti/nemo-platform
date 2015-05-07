@@ -13,14 +13,18 @@
 	
 	<script src="frontend/archimate/libs/archimate.js"></script>
 	<script src="frontend/archimate/libs/relationships.js"></script>
+	<script src="frontend/archimate/libs/viewpoint.js"></script>
 	
-	<script src="frontend/archimate/src/main.js"></script>
-	<script src="frontend/archimate/src/inspector.js"></script>
-	<script src="frontend/archimate/src/keyboard.js"></script>
-	<script src="frontend/archimate/src/stencil.js"></script>
+	<script src="frontend/archimate/src/core/main.js"></script>
+	<script src="frontend/archimate/src/core/inspector.js"></script>
+	<script src="frontend/archimate/src/core/keyboard.js"></script>
+	<script src="frontend/archimate/src/core/stencil.js"></script>
+	
 	<script src="frontend/archimate/src/resizing.js"></script>
 	<script src="frontend/archimate/src/embed.js"></script>
+	<script src="frontend/archimate/src/attributes.js"></script>
 	<script src="frontend/archimate/src/magicConnector.js"></script>
+	<script src="frontend/archimate/src/viewpointHandle.js"></script>
 
 	<script>
 		// Uncomment the following line and comment the line after if you
@@ -31,10 +35,16 @@
 		
 		resizing(app.graph);
 		embed(app.paper, app.graph);
+		attributes(app.paper, app.graph);
 		magicConnector(app.validator, app.graph);
 		
+		$('#btn-t').click(function(){
+			viewpointHanlde(app.graph, "Total");
+		});
 		
-		
+		$('#btn-o').click(function(){
+			viewpointHanlde(app.graph, "Organisation");
+		});
 		
 	</script>
 

@@ -13,3 +13,17 @@
 .navbar {
 	min-height: 55px;
 }
+
+.attributes textarea {
+   -webkit-box-sizing: initial;
+   width: 200px;
+   color: #000;
+   border: 1px solid rgb(231, 231, 231);
+   border-radius: 2px;
+   height: 20px;
+   line-height: 20px;
+}
+
+.attributes label {
+	vertical-align: super;
+}

@@ -223,7 +223,7 @@ joint.shapes.archimate.Location = joint.shapes.archimate.BusinessActor.extend({
 	 defaults: joint.util.deepSupplement({
 		 
 		 type: 'archimate.Location',
-		 subType: 'Interface',
+		 subType: 'Location',
 		 
 	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
 
@@ -1376,7 +1376,7 @@ joint.shapes.archimate.Principle = joint.shapes.archimate.Goal.extend({
 	
 	 defaults: joint.util.deepSupplement({
 		 
-		 type: 'archimate.',
+		 type: 'archimate.Principle',
 		 subType: 'Principle',
 		 
 	 }, joint.shapes.archimate.Goal.prototype.defaults),
@@ -1596,9 +1596,8 @@ joint.shapes.archimate.Junction = joint.shapes.basic.Generic.extend({
 });
 
 //Relations
-
 joint.shapes.archimate.Relationships = joint.dia.Link.extend({
-
+	
     defaults: {
 
         type: "archimate.Relationships",
@@ -1619,10 +1618,10 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
                 style: '',
                 onMouseOver: '',
                 onMouseOut: ''
-            }
+            },
         },
 
-        label: [],
+        labels: [],
         flowType: "association"
     },
 
@@ -1631,10 +1630,10 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
         joint.dia.Link.prototype.initialize.apply(this, arguments);
 
         this.listenTo(this, 'change:flowType', this.onFlowTypeChange);
-
+        
         this.onFlowTypeChange(this, this.get('flowType'));
     },
-
+    
     onFlowTypeChange: function(cell, type) {
 
         var attrs;
@@ -1768,6 +1767,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
     }
 
 });
+joint.shapes.archimate.RelationshipsView = joint.dia.LinkView;
 
 if (typeof exports === 'object') {
 
