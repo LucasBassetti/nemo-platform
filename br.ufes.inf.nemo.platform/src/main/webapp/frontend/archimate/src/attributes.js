@@ -1,6 +1,5 @@
 function attributes(paper, graph){
 	
-	
 	paper.on('cell:pointerdblclick', function(cellView, evt, opt) {
 		
 		if(cellView.model.get('type') === 'archimate.Relationships') return;
@@ -10,6 +9,9 @@ function attributes(paper, graph){
 	});
 	
 	graph.on('add', function(cell) {
+		
+		$('.inspector-paper-container').hide();
+		$('.inspector-container').show();
 		
 		if(cell.get('type') === 'archimate.Relationships') return;
 		if(cell.get('type') === 'archimate.Junction') return;
@@ -22,9 +24,11 @@ function attributes(paper, graph){
 		console.log(JSON.stringify(cell));
 		
 		var name = cell.get('name');
+		var documentation = cell.get('documentation');
 		
 		var content = '<div class="attributes">'
 		content = content + '<label class="name-label">Name:</label> <textarea rows="1" class="name" onclick="this.focus();this.select()">' + name + "</textarea>"
+		content = content + '<label class="name-label">Documentation:</label> <textarea rows="4" class="documentation">' + documentation + "</textarea>"
 		content = content + "</div>"
 		 
 		var dialog = new joint.ui.Dialog({
@@ -58,6 +62,7 @@ function attributes(paper, graph){
 		
 		function setName(){
 			cell.set('name', $('.name').val());
+			cell.set('documentation', $('.documentation').val());
 			dialog.close();
 		}
 	}

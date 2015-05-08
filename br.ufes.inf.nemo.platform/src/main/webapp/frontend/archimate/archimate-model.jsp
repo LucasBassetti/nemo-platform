@@ -33,6 +33,8 @@
 		var app = new Rappid;
 		Backbone.history.start();
 		
+		toolbar(app.paper, app.graph);
+		
 		resizing(app.graph);
 		embed(app.paper, app.graph);
 		attributes(app.paper, app.graph);

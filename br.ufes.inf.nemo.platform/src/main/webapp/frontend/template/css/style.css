@@ -8,6 +8,10 @@
 	nav.sidebar {
 		top: 65px;
 	}
+	
+	.inspector-paper-container, .inspector-container{
+		top: 105px;
+	} 
 }
 
 .navbar {
@@ -16,14 +20,15 @@
 
 .attributes textarea {
    -webkit-box-sizing: initial;
-   width: 200px;
+   width: 270px;
    color: #000;
    border: 1px solid rgb(231, 231, 231);
    border-radius: 2px;
-   height: 20px;
+/*    height: 20px; */
    line-height: 20px;
 }
 
-.attributes label {
+.dialog .attributes label {
+	padding: 0;
 	vertical-align: super;
 }

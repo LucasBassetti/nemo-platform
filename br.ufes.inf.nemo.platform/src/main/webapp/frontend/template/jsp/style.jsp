@@ -21,6 +21,7 @@
 <link rel="stylesheet" type="text/css" href="frontend/template/css/stencil.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/paper.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/inspector.css" />
+<link rel="stylesheet" type="text/css" href="frontend/template/css/inspector-paper.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/halo.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/freetransform.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/selection.css" />

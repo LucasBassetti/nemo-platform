@@ -145,6 +145,23 @@
 <!-- INSPECTOR -->
 <div class="inspector-container"></div>
 
+<div class="inspector-paper-container">
+	<div class="inspector-paper">
+		<div class="group" data-name="general">
+		    <h3 class="group-label">Model Information</h3>
+			<div class="field" data-field="name">
+				<label>Name:</label>
+				<textarea class="textarea" data-type="textarea" data-attribute="name"></textarea>
+			</div>
+			<div class="field" data-field="documentation">
+				<label>Documentation:</label>
+				<textarea class="textarea" data-type="textarea" data-attribute="documentation"></textarea>
+			</div>
+		</div>	
+	</div>
+</div>
+
+
 <div class="inpector-icon">
 	<a href='#' id='inspector-icon'> <span
 		class='glyphicon glyphicon-align-justify'></span>

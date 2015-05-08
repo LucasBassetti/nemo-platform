@@ -1,4 +1,4 @@
-.inspector-container {
+.inspector-paper-container {
    border: 1px solid #e7e7e7	;
    border-top: 1px solid #e7e7e7;
    color: #000;
@@ -11,11 +11,11 @@
    width: 240px;
 }
 
-.inspector-container output{
+.inspector-paper-container output{
 	display: inline;
 }
 
-.inspector {
+.inspector-paper {
    position: absolute;
    top: 0;
    bottom: 0;
@@ -24,14 +24,14 @@
    overflow: auto;
 }
 
-.inspector label {
+.inspector-paper label {
    display: block;
    margin-top: 5px;
    margin-bottom: 10px;
    font-size: 12px;
 }
-.inspector input,
-.inspector textarea {
+.inspector-paper input,
+.inspector-paper textarea {
 	-webkit-box-sizing: initial;
    width: 200px;
    color: #000;
@@ -43,18 +43,18 @@
    line-height: 20px;
 }
 
-.inspector textarea[data-attribute="documentation"] {
+.inspector-paper textarea[data-attribute="documentation"] {
 	height: 80px;
 }
 
-.inspector input[type="range"] {
+.inspector-paper input[type="range"] {
    height: 1px;
    line-height: 1px;
 }
 
 @media screen and (min-width:0\0) {
     /* IE9 & IE10 */
-    .inspector input[type="range"] {
+    .inspector-paper input[type="range"] {
 	height: 20px;
 	line-height: 20px;
     }
@@ -62,51 +62,51 @@
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     /* IE10 only */
-    .inspector .group > .field > form {
+    .inspector-paper .group > .field > form {
 	height: 60px;
     }
 
-    .inspector input[type="range"] {
+    .inspector-paper input[type="range"] {
 	height: 10px;
 	border-style: hidden;
 	box-shadow: none;
     }
 
-    .inspector input[type="range"]::-ms-fill-lower {
+    .inspector-paper input[type="range"]::-ms-fill-lower {
 	background-color: lightgray;
     }
 
-    .inspector input[type="range"]::-ms-fill-upper {
+    .inspector-paper input[type="range"]::-ms-fill-upper {
 	background-color: white;
     }
-    .inspector input[type="range"]::-ms-track {
+    .inspector-paper input[type="range"]::-ms-track {
 	color: transparent;
     }
 
-    .inspector input[type="range"]::-ms-thumb {
+    .inspector-paper input[type="range"]::-ms-thumb {
 	background-color:  #242424;
 	border-style: hidden;
     }
 
-    .inspector input[type="range"]::-ms-tooltip {
+    .inspector-paper input[type="range"]::-ms-tooltip {
 	display: none;
     }
 }
 
-.inspector .group {
+.inspector-paper .group {
    overflow: hidden;
    padding: 10px;
 }
-.inspector .group.closed {
+.inspector-paper .group.closed {
 /*    height: 16px; */
 }
 
 /* prevent tabbing into a close group */
-.inspector .group.closed .field {
+.inspector-paper .group.closed .field {
    display: none;
 }
 
-.inspector .group > .group-label {
+.inspector-paper .group > .group-label {
    padding: 5px 4px;
    position: relative;
    left: -10px;
@@ -125,21 +125,16 @@
    -ms-user-select: none;
    user-select: none;
 }
-.inspector .group > .group-label:before {
+.inspector-paper .group > .group-label:before {
    content: '';
    width: 0;
    height: 0;
    display: inline-block;
-   margin-left: 2px;
-   margin-right: 5px;
    position: relative;
    top: 5px;
-   border-top: 5px solid black;
-   border-right: 5px solid transparent;
-   border-left: 5px solid transparent;
-   border-bottom: 5px solid transparent;
+   margin-left: 6px;
 }
-.inspector .group.closed > .group-label:before {
+.inspector-paper .group.closed > .group-label:before {
    top: 2px;
    left: 2px;
    border-top: 5px solid transparent;
@@ -154,12 +149,12 @@
 
 /* Toggle */
 
-.inspector .toggle {
+.inspector-paper .toggle {
    position: relative;
    width: 97px;
    height: 14px;
 }
-.inspector .toggle input {
+.inspector-paper .toggle input {
    top: 0;
    right: 0;
    bottom: 0;
@@ -178,10 +173,10 @@
    box-shadow: none;
    -webkit-appearance: none;
 }
-.inspector .toggle input:checked + span {
+.inspector-paper .toggle input:checked + span {
    background: #9abb82;
 }
-.inspector .toggle span {
+.inspector-paper .toggle span {
    display: block;
    width: 100%;
    height: 100%;
@@ -190,7 +185,7 @@
    box-shadow: inset 0 3px 8px 1px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.5);
    position: relative;
 }
-.inspector .toggle span:before {
+.inspector-paper .toggle span:before {
    box-sizing: border-box;
    padding: 0;
    margin: 0;
@@ -211,16 +206,16 @@
    background: linear-gradient(#e5e7e6, #eee);
    box-shadow: 0 1px 0 rgba(255,255,255,0.5);
 }
-.inspector .toggle input:checked + span i {
+.inspector-paper .toggle input:checked + span i {
    right: -1%;
 }
-.inspector .toggle input:checked + span i:before {
+.inspector-paper .toggle input:checked + span i:before {
    content: "on";
    right: 115%;
    color: #82a06a;
    text-shadow: 0 1px 0 #afcb9b, 0 -1px 0 #6b8659;   
 }
-.inspector .toggle span i {
+.inspector-paper .toggle span i {
    display: block;
    height: 100%;
    width: 60%;
@@ -239,7 +234,7 @@
    background: linear-gradient(#f7f2f6, #b2ac9e);
    box-shadow: inset 0 1px 0 white, 0 0 8px rgba(0,0,0,0.3), 0 5px 5px rgba(0,0,0,0.2);   
 }
-.inspector .toggle span i:before {
+.inspector-paper .toggle span i:before {
    content: "off";
    text-transform: uppercase;
    font-style: normal;
@@ -254,8 +249,8 @@
    right: -50%;   
 }
 
-.inspector .btn-list-add,
-.inspector .btn-list-del {
+.inspector-paper .btn-list-add,
+.inspector-paper .btn-list-del {
    background: transparent;
    color: black;
    border: 1px solid gray;
@@ -266,36 +261,36 @@
    margin: 2px;
    margin-right: 8px;
 }
-.inspector .btn-list-add:hover,
-.inspector .btn-list-del:hover {
+.inspector-paper .btn-list-add:hover,
+.inspector-paper .btn-list-del:hover {
    box-shadow: inset 1px 1px 1px black;   
 }
 
-.inspector .list-items {
+.inspector-paper .list-items {
    margin-top: 4px;
 }
-.inspector .list-item {
+.inspector-paper .list-item {
   margin-top: 2px;
   border: 1px solid rgb(231, 231, 231);
   padding: 10px;
   background-color: rgb(255, 255, 255);
   /* box-shadow: inset 0 0 2px rgb(248, 248, 248); */
 }
-.inspector .list-item input {
+.inspector-paper .list-item input {
    width: 150px;
 }
-.inspector .list-item .list-item input {
+.inspector-paper .list-item .list-item input {
    width: 125px;
 }
 
-.inspector .list-item > .field > label {
+.inspector-paper .list-item > .field > label {
    display: none;
 }
 
-.inspector .field {
+.inspector-paper .field {
    display: inline;
 }
 
-.inspector .hidden {
+.inspector-paper .hidden {
    display: none;
 }
