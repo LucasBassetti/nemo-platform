@@ -18,7 +18,18 @@ function magicConnector(validator, graph){
 		var target = targetElement.get('subType').replace(" ", "");
 
 		var connections = getConnections(source, target);
-		generateMagicConnectionDialog(sourceElement.get('name'), targetElement.get('name'), connections, link);
+		
+		var sourceName = sourceElement.get('name');
+		var targetName = ""
+			
+		if(target == "Junction"){
+			targetName = "Junction";
+		}
+		else{
+			targetName = targetElement.get('name');
+		}
+		
+		generateMagicConnectionDialog(sourceName, targetName, connections, link);
 		
 	}
 

@@ -1,3 +1,19 @@
+/*
+ * Template:
+ * 
+ * "ViewpointName1" = [
+ * 		"ArchiMateElement1",
+ * 		"ArchiMateElement2",
+ * 		...
+ * ],
+ * "ViewpointName2" = [
+ * 		"ArchiMateElement1",
+ * 		"ArchiMateElement2",
+ * 		...
+ * ],
+ * ...
+ */
+
 var viewpoint = 
 {
 		"Total" : [

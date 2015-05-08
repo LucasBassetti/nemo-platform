@@ -2,14 +2,17 @@ function attributes(paper, graph){
 	
 	
 	paper.on('cell:pointerdblclick', function(cellView, evt, opt) {
+		
+		if(cellView.model.get('type') === 'archimate.Relationships') return;
+		if(cellView.model.get('type') === 'archimate.Junction') return;
+		
 		showAttributeDialog(cellView.model);
 	});
 	
 	graph.on('add', function(cell) {
 		
-		console.log(cell.get('type') )
-		
 		if(cell.get('type') === 'archimate.Relationships') return;
+		if(cell.get('type') === 'archimate.Junction') return;
 		
 		showAttributeDialog(cell);
 	});
