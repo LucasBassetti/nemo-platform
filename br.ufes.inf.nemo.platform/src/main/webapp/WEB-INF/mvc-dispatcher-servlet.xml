@@ -11,7 +11,8 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<context:component-scan base-package="
-		br.ufes.inf.nemo.platform.controller"				
+		br.ufes.inf.nemo.platform.controller,
+		br.ufes.inf.nemo.platform.archimate.controller"				
 	/>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	<bean
