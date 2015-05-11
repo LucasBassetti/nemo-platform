@@ -1598,6 +1598,21 @@ joint.shapes.archimate.Junction = joint.shapes.basic.Generic.extend({
 //Relations
 joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 	
+//	markup: [
+//	        
+//	         '<path class="connection" stroke="black"/>',
+//	         '<path class="marker-source" fill="black" stroke="black" />',
+//	         '<path class="marker-target" fill="black" stroke="black" />',
+//	         '<path class="connection-wrap"/>',
+//	         '<g class="label">',
+//	         	'<rect class="label-rect"/>',
+//	         	'<text class="label-text"/>',
+//	         '</g>',
+//	         '<g class="marker-vertices"/>',
+//	         '<g class="marker-arrowheads"/>',
+//	         '<g class="link-tools"/>'
+//	     ].join(''),
+	
     defaults: {
 
         type: "archimate.Relationships",
@@ -1619,9 +1634,24 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
                 onMouseOver: '',
                 onMouseOut: ''
             },
+//            '.label-rect': {
+//            	'fill': 'none',
+//            	'ref-y': .5, 
+//            	'ref-x': .5, 
+//            	'y-alignment': 'middle',
+//            	'text-anchor': 'middle',
+//            },
+//            '.label-text': {
+//            	'ref': '.label-rect',
+//            	'ref-y': .5, 
+//            	'ref-x': .5, 
+//            	'text-anchor': 'middle',
+//            }
+            
+            
         },
 
-        labels: [],
+        label: [],
         flowType: "association"
     },
 
@@ -1631,7 +1661,35 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 
         this.listenTo(this, 'change:flowType', this.onFlowTypeChange);
         
+        this.label(0, {
+            position: .5,
+            attrs: {
+                rect: { fill: 'white' },
+                text: { fill: 'black', text: '' }
+            }
+        });
+        
+        this.on('change:label', function() {
+            this.updateLabel();
+        }, this);
+        
         this.onFlowTypeChange(this, this.get('flowType'));
+    },
+    
+    getLabel: function() {
+        return this.get('label');
+    },
+    
+    updateLabel: function(){
+    	
+    	this.label(0, {
+            position: .5,
+            attrs: {
+                rect: { fill: 'white' },
+                text: { fill: 'black', text: this.getLabel() }
+            }
+        });
+    	    	
     },
     
     onFlowTypeChange: function(cell, type) {

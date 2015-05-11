@@ -105,8 +105,17 @@ var InspectorDefs = {
 	'archimate.Relationships': {
 		
 		inputs: _.extend({
-			label: { type: 'textarea', group: 'label', index: 1, label: 'Label' }, 
-		})
+//			attrs: {
+//	            '.label-text': inp({
+//	               // 'font-size': { group: 'general', index: 3 },
+//	               // 'font-family': { group: 'general', index: 4 }
+//	            }),
+//	            '.label-rect': inp({
+//	                //fill: { group: 'label', index: 5 },
+//	            }),
+//	        },
+	        label: { type: 'text', group: 'label', index: 1, label: 'Label' } 
+		}),
     },
 		
     //ArchiMate

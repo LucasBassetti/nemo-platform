@@ -1,24 +1,77 @@
 function attributes(paper, graph){
 	
-	paper.on('cell:pointerdblclick', function(cellView, evt, opt) {
+	var ed;
+	
+	paper.on('cell:pointerdblclick', function(cellView, evt) {
+	    
+		var text = joint.ui.TextEditor.getTextElement(evt.target);
 		
-		if(cellView.model.get('type') === 'archimate.Relationships') return;
-		if(cellView.model.get('type') === 'archimate.Junction') return;
-		
-		showAttributeDialog(cellView.model);
+	    if (text) {
+	        if (ed){
+	        	ed.remove();   // Remove old editor if there was one.
+	        }
+	        ed = new joint.ui.TextEditor({ text: text });
+	        ed.render(paper.el);
+
+	        ed.on('text:change', function(newText) {
+	            // Set the new text to the property that you use to change text in your views.
+	            cellView.model.set('name', newText);
+	        });	        
+	    }
 	});
 	
-	graph.on('add', function(cell) {
-		
-		$('.inspector-paper-container').hide();
-		$('.inspector-container').show();
-		
-		if(cell.get('type') === 'archimate.Relationships') return;
-		if(cell.get('type') === 'archimate.Junction') return;
-		
-		showAttributeDialog(cell);
+	paper.on('blank:pointerclick', function(cellView, evt) {
+		if (ed){
+        	ed.remove();   // Remove old editor if there was one.
+        }
 	});
 	
+	paper.on('cell:pointerclick', function(cellView, evt) {
+		if (ed){
+        	ed.remove();   // Remove old editor if there was one.
+        }
+	});
+
+	function autosize(element) {
+
+	    var view = paper.findViewByModel(element);
+	    if(view == undefined) return;
+	    
+//	    console.log(view);
+//	    var text = view.$('text')[0];
+//	    
+//	    // Use bounding box without transformations so that our autosizing works
+//	    // even on e.g. rotated element.
+//	    var bbox = V(text).bbox(true);
+//	    // Give the element some padding on the right/bottom.
+//	    element.resize(bbox.width + 50, bbox.height + 50);
+	}
+
+	graph.on('change:attrs', function(cell) { 
+		autosize(cell) 
+	});
+	
+	
+	
+//	paper.on('cell:pointerdblclick', function(cellView, evt, opt) {
+//		
+//		if(cellView.model.get('type') === 'archimate.Relationships') return;
+//		if(cellView.model.get('type') === 'archimate.Junction') return;
+//		
+//		showAttributeDialog(cellView.model);
+//	});
+//	
+//	graph.on('add', function(cell) {
+//		
+//		$('.inspector-paper-container').hide();
+//		$('.inspector-container').show();
+//		
+//		if(cell.get('type') === 'archimate.Relationships') return;
+//		if(cell.get('type') === 'archimate.Junction') return;
+//		
+//		showAttributeDialog(cell);
+//	});
+//	
 	
 	function showAttributeDialog(cell){
 		

@@ -35,13 +35,10 @@ function magicConnector(validator, graph){
 
 	function generateMagicConnectionDialog(source, target, connections, link){
 
-		console.log(JSON.stringify(connections));
 		var content = '<form class="magic-connector">';
-
 		var content = content + '<label>' + source + '</label> -> <label>' + target + '</label><br>';
 		
 		$.each(connections, function(index, value){
-			console.log(value)
 			if(index == 0){
 				content = content + '<input type="radio" name="connection" value="' + value + '" checked>' 
 				+ '<label>' + value + '</label><br>';

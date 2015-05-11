@@ -8,13 +8,13 @@ function toolbar(paper, graph){
 		inpectorType = "paper";
 		
 		if(!inspectorCollapsed){
-			console.log(x + " " + y);
 			$('.inspector-paper-container').show();
 			$('.inspector-container').hide();
 		}
 	});
 	
 	paper.on('cell:pointerclick', function(cellView, evt, opt) {
+				
 		inpectorType = "cell"
 		if(!inspectorCollapsed){
 			$('.inspector-paper-container').hide();
