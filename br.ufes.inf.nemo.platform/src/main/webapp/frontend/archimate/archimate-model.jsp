@@ -5,6 +5,7 @@
 	<title>NP - ArchiMate</title>
 	
     <%@include file="/frontend/template/template-header.jsp"%>
+	<link href="frontend/archimate/css/style.css" rel="stylesheet">
 
 </head>
 <body>
@@ -34,19 +35,12 @@
 		Backbone.history.start();
 		
 		toolbar(app.paper, app.graph);
+		addViewpointSelectionButton(app.graph);
 		
 		resizing(app.graph);
 		embed(app.paper, app.graph);
 		attributes(app.paper, app.graph);
 		magicConnector(app.validator, app.graph);
-		
-		$('#btn-t').click(function(){
-			viewpointHanlde(app.graph, "Total");
-		});
-		
-		$('#btn-o').click(function(){
-			viewpointHanlde(app.graph, "Organisation");
-		});
 		
 	</script>
 

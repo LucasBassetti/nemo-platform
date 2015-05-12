@@ -1,0 +1,15 @@
+.btn-viewpoint {
+	position: absolute;
+	left: 60px;
+	top: 2px;
+}
+
+.btn-viewpoint .select-viewpoint {
+	font-size: 10px;
+	margin-left: 5px;
+}	
+
+.btn-viewpoint label {
+	font-size: 12px;
+	color: black;
+}

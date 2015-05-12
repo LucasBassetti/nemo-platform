@@ -71,7 +71,7 @@ function attributes(paper, graph){
 //		
 //		showAttributeDialog(cell);
 //	});
-//	
+	
 	
 	function showAttributeDialog(cell){
 		

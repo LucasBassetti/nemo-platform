@@ -50,7 +50,7 @@ function magicConnector(validator, graph){
 		});
 
 		content = content +  '</form>';
-
+		
 		var dialog = new joint.ui.Dialog({
 			width: 300,
 			type: 'neutral',
@@ -66,12 +66,19 @@ function magicConnector(validator, graph){
 		dialog.on('action:close', cancel);
 		dialog.open();
 
-		$(".magic-connector").keypress(function(e) {
+		$('input[name=connection]:checked', '.magic-connector').focus();
+		
+		$('.magic-connector').keypress(function(e) {
 		    if(e.which == 13) {
 		    	createConnection();
 		    }
 		});
 		
+		$('.magic-connector').keyup(function(e) {
+		    if(e.which == 27){
+		    	cancel();
+		    }
+		});
 		
 		function createConnection(){
 			var connectionType = $('input[name=connection]:checked', '.magic-connector').val();

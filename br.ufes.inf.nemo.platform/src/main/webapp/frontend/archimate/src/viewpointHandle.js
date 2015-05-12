@@ -43,5 +43,23 @@ function viewpointHanlde(graph, option){
 		
 	});
 	
+}
+
+function addViewpointSelectionButton(graph){
+	
+	var content = '<div class="btn-viewpoint">' +
+		//'<label>Vp:</label>' +
+		'<select class="select-viewpoint">';
+	
+	$.each(viewpoint, function(index, value){
+		content = content + '<option value="' + index + '">' + index + '</option>'
+	});
+	
+	content = content + '</select></div>'
+	
+	$('.stencil-container').prepend(content);
+	$( '.select-viewpoint').change(function(){
+		viewpointHanlde(graph, $( '.select-viewpoint option:selected').text());
+	});
 	
 }
