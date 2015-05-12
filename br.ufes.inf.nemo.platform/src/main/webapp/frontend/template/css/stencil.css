@@ -196,8 +196,7 @@
     text-align: center;
     font-size: 12px;
     font-weight: 700;
-    background: #242424;
-    color: #bcbcbc;
+    color: #000;
     opacity: 0;
     transition: top 100ms linear;
 }

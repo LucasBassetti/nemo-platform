@@ -26,19 +26,12 @@ function viewpointHanlde(graph, option){
 		});
 		
 		var elementOpacity = '.rotatable/opacity';
-		//var elementNameOpacity = '.name-text/opacity';
-		//var elementIconOpacity = '.object/opacity';
 		
 		if(notExist){
-			//console.log(cell.get('type'));
 			cell.attr(elementOpacity, .3);
-			//cell.attr(elementNameOpacity, .3);
-			//cell.attr(elementIconOpacity, .3);
 		}
 		else{
 			cell.attr(elementOpacity, 1);
-			//cell.attr(elementNameOpacity, 1);
-			//cell.attr(elementIconOpacity, 1);
 		}
 		
 	});
