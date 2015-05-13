@@ -4,7 +4,11 @@ function attributes(paper, graph){
 	
 	paper.on('cell:pointerdblclick', function(cellView, evt) {
 	    
+		
+		//var test = $.noConflict();
+		
 		var text = joint.ui.TextEditor.getTextElement(evt.target);
+		//console.log(text);
 		
 	    if (text) {
 	        if (ed){
@@ -18,9 +22,14 @@ function attributes(paper, graph){
 	            cellView.model.set('name', newText);
 	        });	        
 	    }
+	    
+	    
 	});
 	
 	paper.on('blank:pointerclick', function(cellView, evt) {
+		
+		//console.log($.noConflict(false));
+		
 		if (ed){
         	ed.remove();   // Remove old editor if there was one.
         }

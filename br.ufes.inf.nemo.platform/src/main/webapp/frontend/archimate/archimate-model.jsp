@@ -27,6 +27,7 @@
 	<script src="frontend/archimate/src/magicConnector.js"></script>
 	<script src="frontend/archimate/src/viewpointHandle.js"></script>
 
+
 	<script>
 		// Uncomment the following line and comment the line after if you
 		// want to use channels.
@@ -34,6 +35,10 @@
 		var app = new Rappid;
 		Backbone.history.start();
 		
+		
+		
+		modelTree(app.paper, app.graph);
+		paperTabs(app.paper, app.graph);
 		toolbar(app.paper, app.graph);
 		addViewpointSelectionButton(app.graph);
 		
@@ -41,6 +46,45 @@
 		embed(app.paper, app.graph);
 		attributes(app.paper, app.graph);
 		magicConnector(app.validator, app.graph);
+		
+		
+		//$('.inspector-paper').create({ 
+		
+		
+// 		$('.inspector-paper').bind("dblclick.jstree", function  (event) {
+			
+// 			var node = $(event.target).closest("li");
+// 			console.log(node[0].id);
+			
+			
+// 			var tree = $('.inspector-paper').jstree(true);
+// 			var root = tree.get_node('root');
+// 			var num_tabs = $("div#tabs ul li").length + 1;
+
+			
+			
+// 	        $("div#tabs ul").append(
+// 	            "<li><a href='#tab" + num_tabs + "'>#" + num_tabs + "</a></li>"
+// 	        );
+// 			$("div#tabs").append(
+// 	            "<div id='tab" + num_tabs + "'>#" + num_tabs + "</div>"
+// 	        );
+// 	        $("div#tabs").tabs("refresh");
+			
+// 			tree.create_node(root, {}, "last", function (new_data) {
+//             	//new_data = folder;
+//                 new_data.data = {file: false};
+//                 new_data.icon = "glyphicon glyphicon-folder-close";
+//                 new_data.text = "New Folder";
+//             });
+			
+			
+// 			if(node[0].id === 'diagram'){
+// 				alert('hello');	
+// 			}
+			
+// 		});
+		
 		
 	</script>
 

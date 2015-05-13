@@ -16,6 +16,13 @@
 
 <link href="core/rappid-api/css/joint.format.print.css" rel="stylesheet">
 
+<!-- JSTREE -->
+<link href="core/jstree/dist/themes/default/style.css" rel="stylesheet">
+
+<!-- JQUERY UI -->
+<link href="core/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
+<link href="core/jquery-ui-1.11.4/jquery-ui.theme.min.css" rel="stylesheet">
+
 <!-- Template -->
 <link rel="stylesheet" type="text/css" href="frontend/template/css/toolbar.css" />
 <link rel="stylesheet" type="text/css" href="frontend/template/css/stencil.css" />

@@ -41,6 +41,10 @@ function toolbar(paper, graph){
 					$(this).css({
 						marginRight : "30px"
 					});
+					$("#tabs").css({
+						right : "0"
+					});
+					
 					inspectorCollapsed = true;
 				} else{
 					if(inpectorType == "paper"){
@@ -50,7 +54,10 @@ function toolbar(paper, graph){
 						$(".inspector-container").show();
 					}
 					$(this).css({
-						marginRight : "250px"
+						marginRight : "260px"
+					});
+					$("#tabs").css({
+						right : "240px"
 					});
 					inspectorCollapsed = false;
 				}
@@ -85,12 +92,18 @@ function toolbar(paper, graph){
 							$(this).css({
 								margin : "260px"
 							});
+							$("#tabs").css({
+								left : "250px"
+							});
 						} else if ($("nav.sidebar").hasClass(
 						"sidebar-menu-expanded")) {
 							collapseMyMenu();
 							hideMenuTexts();
 							$(this).css({
 								margin : "20px"
+							});
+							$("#tabs").css({
+								left : "0"
 							});
 						}
 						return false;
