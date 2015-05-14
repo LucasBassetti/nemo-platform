@@ -37,7 +37,7 @@
 		
 		
 		
-		modelTree(app.paper, app.graph);
+		modelTree(app.paper, app.graph, app.validator);
 		paperTabs(app.paper, app.graph);
 		toolbar(app.paper, app.graph);
 		addViewpointSelectionButton(app.graph);

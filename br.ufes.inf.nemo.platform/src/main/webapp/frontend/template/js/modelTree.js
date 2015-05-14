@@ -3,7 +3,7 @@
  * @param graph
  */
 
-function modelTree(paper, graph){
+function modelTree(paper, graph, validator){
 
 	$ui('#modelTree')
 	    .draggable()
@@ -22,13 +22,17 @@ function modelTree(paper, graph){
 		"types" : {
 			"#": {
 				"max_children": 1,
-				"valid_children" : ["diagram", "folder", "file"]
+				"valid_children" : ["diagram", "folder", "node"]
 			},
 			"diagram": {
 				"max_children": 0,
 				"valid_children": ["none"],
 			},
-			"file":{
+			"node":{
+				"max_children": 0,
+				"valid_children": ["none"],
+			},
+			"link":{
 				"max_children": 0,
 				"valid_children": ["none"],
 			}
@@ -108,7 +112,7 @@ function modelTree(paper, graph){
 		};
 		
 		//FILE
-		if (node.type === 'file') {
+		if (node.type === 'node' || node.type === 'link') {
 			delete items.createItem;
 			delete items.createDiagramItem;
 			delete items.renameItem;
@@ -131,38 +135,142 @@ function modelTree(paper, graph){
 		return items;
 	}
 	
-	graph.on('change', function(cell) { 
+	validator.validate('change:flowType', function(err, command, next) {
+
+		var link = graph.getCell(command.data.id);
+		console.log(link.get('flowType'));
 		
-		if(cell.get('type') === "link") return;
-		if(cell.get('type') === "archimate.Relationships") return;
+		if(link.isLink()) changeLink();
+		
+		function changeLink(){
+			
+			console.log("hello");
+			
+			var source = graph.getCell(link.get('source').id);
+			var target = graph.getCell(link.get('target').id);
+			
+			if(!(source && target)){return;}
+			
+			var node = GLOBAL.tree.get_node(link.id);
+			node.data = link;
+			changeAllGraphs();
+			
+		};
+		
+		function changeAllGraphs(){
+
+			console.log('hello!');
+			
+			GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+			
+			$.each(GLOBAL.graphs, function(index, g){
+				console.log(index);
+				graph.fromJSON(GLOBAL.graphs[index]);
+				if(graph.getCell(link.id)){
+					link.remove();
+					graph.addCell(link);
+					renameLink(link);
+					GLOBAL.graphs[index] = graph.toJSON();
+				}
+				
+			});
+			
+			graph.fromJSON(GLOBAL.graphs[GLOBAL.currentTab]);
+			
+		};
+		
+	});
+	
+	//When rename Node name
+	graph.on('change', function(cell) { 
 		
 		var node = GLOBAL.tree.get_node(cell.id);
 		if(!node) return;
 		
-		GLOBAL.tree.rename_node(node, cell.get('name') + " (" + cell.get('subType') + ")")
+		if(cell.isLink()) renameLink(cell);
+		else renameNode();
+		
+		function renameNode(){
+			var newNodeName = cell.get('name') + " (" + cell.get('subType') + ")"
+			GLOBAL.tree.rename_node(node, newNodeName);
+			
+			$.each(graph.getLinks(), function(index, link){
+				renameLink(link);
+			});
+		}
 		
 	});
+	
+	//Rename link on tree
+	function renameLink(link){
+		var linkNode = GLOBAL.tree.get_node(link.id);
+		
+		var source = graph.getCell(link.get('source').id);
+		var target = graph.getCell(link.get('target').id);
+		
+		if(!(source && target)) return;
+		
+		var newLinkName = link.get('flowType') + " (" + source.get('name') + " -> " +  target.get('name') + ")"
+		GLOBAL.tree.rename_node(linkNode, newLinkName);
+	}
+	
+	graph.on('remove', function(cell) { 
+		
+		if(cell.isLink()){
+			
+			var sourceId = cell.get('source').id;
+			var targetId = cell.get('target').id;
+			
+			if(!(sourceId && targetId)){
+				var node = GLOBAL.tree.get_node(cell.id);
+				GLOBAL.tree.delete_node(node);
+			}
+			
+		}
+		
+	})
 	
 	//Add cell on model Tree
 	graph.on('add', function(cell, collection, opt) {
 
-		if(cell.get('type') === "link") return;
-		if(cell.get('type') === "archimate.Relationships") return;
-		
 		var node = GLOBAL.tree.get_node(cell.id);
 		if(node) return;
-		
 		var cTab = GLOBAL.tree.get_node(GLOBAL.currentTab);
+
+		//Check if is a Node or LInk
+		if(cell.isLink()) addLink();
+		else addNode();
 		
-		var new_data = { 
-				"id": cell.id, 
-				"text": cell.get('name') + " (" + cell.get('subType') + ")",
-				"icon":"glyphicon glyphicon-stop", 
-				"type":"file", 
-				"data" : graph.getCell(cell.id) 
-		};
-		GLOBAL.tree.create_node(cTab.parent, new_data, "last", function (new_data) {});
+		//Add Link
+		function addLink(){
+			
+			var source = graph.getCell(cell.get('source').id);
+			
+			var new_data = { 
+					"id": cell.id, 
+					"text": cell.get('flowType') + " (" + source.get('name') + " -> )",
+					"icon":"glyphicon glyphicon-arrow-right", 
+					"type":"link", 
+					"data" : graph.getCell(cell.id) 
+			};
+			
+			GLOBAL.tree.create_node(cTab.parent, new_data, "last", function (new_data) {});
+			
+		}
 		
+		//Add Node
+		function addNode(){ 
+			
+			var new_data = { 
+					"id": cell.id, 
+					"text": cell.get('name') + " (" + cell.get('subType') + ")",
+					"icon":"glyphicon glyphicon-stop", 
+					"type":"node", 
+					"data" : graph.getCell(cell.id) 
+			};
+			
+			GLOBAL.tree.create_node(cTab.parent, new_data, "last", function (new_data) {});
+		}
 	});
 	
 	// When the node is deleted in tree, the GLOBAL.graphs will be updated.
@@ -228,13 +336,39 @@ function modelTree(paper, graph){
 					}
 				});
 				
+				removeConnectedLink(cellId);
 				graph.fromJSON(GLOBAL.graphs[GLOBAL.currentTab]);
 			} 
 			
 		}
 		
-		
 	});
+	
+	function removeConnectedLink(cellId){
+		
+		var root = GLOBAL.tree.get_node('root');
+		
+		var deletedNode = {};
+		$.each(root.children_d, function(index, child){
+			var node = GLOBAL.tree.get_node(child)
+			
+			if(node.type === 'link'){
+				var cell = $.parseJSON(JSON.stringify(node.data));
+				
+				var sourceId = cell.source.id;
+				var targetId = cell.target.id;
+				
+				if(cellId === sourceId || cellId === targetId){
+					deletedNode[index] = node;
+				}
+			}
+		});
+		
+		$.each(deletedNode, function(index, dn){
+			GLOBAL.tree.delete_node(deletedNode[index]);
+		});
+	}
+	
 	
 	var X1 = 0, Y1 = 0;
 	var X2 = 0, Y2 = 0;
@@ -262,11 +396,11 @@ function modelTree(paper, graph){
 	    var elementId = $(data.element).closest("li").attr("id");
 		var node = GLOBAL.tree.get_node(elementId);
 		
-		if(node.type !== 'file') return;
+		if(node.type !== 'node') return;
 		
 		var cell = node.data;
 		if(cell.id != undefined){
-			
+
 			//Return if cell already is in graph
 			if(graph.getCell(cell.id)) return;
 			
