@@ -2,44 +2,26 @@
  * @param paper
  * @param graph
  */
+
 function modelTree(paper, graph){
 
-	graph.on('add', function(cell, collection, opt) {
-		
-		var tree = $ui('.inspector-paper').jstree(true);
-		var root = tree.get_node('root');
-		
-		tree.create_node(root, {}, "last", function (new_data) {
-         	//new_data = folder;
-             new_data.data = {id: cell.id};
-             new_data.icon = "glyphicon glyphicon-stop";
-             new_data.text = cell.get('name');
-             new_data.type = "file";
-             //new_data.id = cell.id;
-             //new_data.a_attr.id = cell.id + "_anchor";
-             
-            // console.log(new_data.type);
-             
-         });
-		
-	});
+	$ui('#modelTree')
+	    .draggable()
+	    .resizable();
 	
+	//Model Tree
 	$ui('.inspector-paper').jstree({ 
 		'core' : {
 			"dblclick_toggle" : false,
 			"check_callback" : true,
 			'data': [
-			         { "id": "root", "icon":"glyphicon glyphicon-folder-close", "parent": "#", "text": "Model", "state": {"opened": true}, "data" : { "id":"root" } },
-			         { "id": "diagram1", "type":"diagram", "icon":"glyphicon glyphicon-list-alt", "parent": "root", "text": "Diagram", "data" : { "id":"diagram1" } },
-	
-			         ]
+			         { "id": "root", "icon":"glyphicon glyphicon-folder-close", "parent": "#", "text": "Model", "state": {"opened": true},  "data" : { "id":"root" } },
+			         { "id": "diagram1", "icon":"glyphicon glyphicon-list-alt", "parent": "root", "text": "Diagram", "type":"diagram", "data" : { /*"id":"diagram1"*/ } },
+			 ]
 		},
 		"types" : {
 			"#": {
 				"max_children": 1,
-				"valid_children" : ["diagram", "folder", "file"]
-			},
-			"folder": {
 				"valid_children" : ["diagram", "folder", "file"]
 			},
 			"diagram": {
@@ -52,34 +34,34 @@ function modelTree(paper, graph){
 			}
 		},
 	
-		"plugins" : [ "sort", "json_data", "dnd", "contextmenu",
-		              "wholerow", "types" ],
+		"plugins" : [ "sort", "json_data", "dnd", "contextmenu", "wholerow", "types" ],
 	
-		              "contextmenu" : {
-		            	  "items" : customMenu
-		              }
+		"contextmenu" : { "items" : customMenu }
 	
 	});
 	
+	//GLOBAL VAR
+	GLOBAL.tree = $ui('.inspector-paper').jstree(true);
 	
+	//Custom menu to Create/Rename/Delete folders and diagrams
 	function customMenu(node) {
 	
-		var folder = '{ "icon":"glyphicon glyphicon-folder-close", "parent": "root", "text": "New Folder", "data" : { "diagram": false, "file" : false } }';
 		// The default set of all items
 		var items = {
 				createItem: { // The "create" menu item
 					label: "New Folder",
 					icon: "glyphicon glyphicon-plus",
 					action: function (data) {
-						console.log(data.reference)
-						var inst = $ui.jstree.reference(data.reference),
+						
+						var inst = $ui.jstree.reference(data.reference);
 						obj = inst.get_node(data.reference);
 						inst.create_node(obj, {}, "last", function (new_data) {
-							//new_data = folder;
-							new_data.data = {diagram: false, file: false};
+							//new_data.data = {};
 							new_data.icon = "glyphicon glyphicon-folder-close";
 							new_data.text = "New Folder";
-							new_data.type = "folder";
+							
+							console.log(new_data.text);
+							
 							setTimeout(function () { inst.edit(new_data); },0);
 						});
 					}
@@ -92,9 +74,7 @@ function modelTree(paper, graph){
 						var inst = $ui.jstree.reference(data.reference),
 						obj = inst.get_node(data.reference);
 						inst.create_node(obj, {}, "last", function (new_data) {
-							//new_data = folder;
-							new_data.data = {diagram: true, file: false};
-							//new_data.id = "diagram2";
+							//new_data.data = {};
 							new_data.icon = "glyphicon glyphicon-list-alt";
 							new_data.text = "New Diagram";
 							new_data.type = "diagram";
@@ -127,65 +107,180 @@ function modelTree(paper, graph){
 				}
 		};
 		
-		console.log(node.data.diagram);
-	
 		//FILE
 		if (node.type === 'file') {
 			delete items.createItem;
 			delete items.createDiagramItem;
+			delete items.renameItem;
 		}
-		//FOLDER
-		else if(node.type === 'folder'){
+		//ROOT
+		else if(node.id === 'root'){
+			delete items.deleteItem;
 			delete items.renameItem;
 		}
 		//DIAGRAM
 		else if(node.type === 'diagram'){
-			delete items.deleteItem;
 			delete items.createItem;
 			delete items.createDiagramItem;
 		}
-		//ROOT
+		//FOLDER
 		else{
-			delete items.deleteItem;
-			delete items.renameItem;
+			
 		}
 	
 		return items;
 	}
 	
-	
-	$(document).on('dnd_stop.vakata', function (e, data) {
+	graph.on('change', function(cell) { 
 		
-	    //alert($(data.element).text());
+		if(cell.get('type') === "link") return;
+		if(cell.get('type') === "archimate.Relationships") return;
+		
+		var node = GLOBAL.tree.get_node(cell.id);
+		if(!node) return;
+		
+		GLOBAL.tree.rename_node(node, cell.get('name') + " (" + cell.get('subType') + ")")
+		
 	});
 	
-	$(document).bind('dnd_move.vakata', function(e, data) {
-	
+	//Add cell on model Tree
+	graph.on('add', function(cell, collection, opt) {
+
+		if(cell.get('type') === "link") return;
+		if(cell.get('type') === "archimate.Relationships") return;
 		
-		/*
-				requires crrm plugin
+		var node = GLOBAL.tree.get_node(cell.id);
+		if(node) return;
+		
+		var cTab = GLOBAL.tree.get_node(GLOBAL.currentTab);
+		
+		var new_data = { 
+				"id": cell.id, 
+				"text": cell.get('name') + " (" + cell.get('subType') + ")",
+				"icon":"glyphicon glyphicon-stop", 
+				"type":"file", 
+				"data" : graph.getCell(cell.id) 
+		};
+		GLOBAL.tree.create_node(cTab.parent, new_data, "last", function (new_data) {});
+		
+	});
 	
-				.o - the node being moved
-				.r - the reference node in the move
-				.ot - the origin tree instance
-				.rt - the reference tree instance
-				.p - the position to move to (may be a string - "last", "first", etc)
-				.cp - the calculated position to move to (always a number)
-				.np - the new parent
-				.oc - the original node (if there was a copy)
-				.cy - boolen indicating if the move was a copy
-				.cr - same as np, but if a root node is created this is -1
-				.op - the former parent
-				.or - the node that was previously in the position of the moved node */
-	
-		var nodeType = data.element.type;
-		console.log(nodeType);
-	
-		if (nodeType) {
-	
-			// TODO!
+	// When the node is deleted in tree, the GLOBAL.graphs will be updated.
+	$ui('.inspector-paper').on('rename_node.jstree', function (e, data) {
+		
+		var node = data.node;
+		if(node.type === 'diagram'){
+			console.log(node.text);
+			
+			$( "#tabs #" + node.id ).text(node.text);
 		}
+		
+	});
 	
+	// When the node is deleted in tree, the GLOBAL.graphs will be updated.
+	$ui('.inspector-paper').on('delete_node.jstree', function (e, data) {
+		
+		$.each(data.node.children_d, function(index, nodeId){
+			var node = GLOBAL.tree.get_node(nodeId) //GLOBAL.tree.get_node(nodeId)
+			deleteNode(node);
+		});
+		
+		deleteNode(data.node);
+		
+		function deleteNode(node){
+			
+			//Folder
+			if(node.type === 'default'){
+//				console.log(data.node);
+			} 
+			
+			//Diagram
+			else if(node.type === 'diagram'){
+				$( "#" + node.id ).closest( "li" ).remove().attr( "aria-labelledby" );
+				
+				//Refresh Tabs
+				var num_tabs = $("div#tabs ul li").length;
+				GLOBAL.currentTab = "";
+				$ui("#tabs").tabs("refresh");
+		        var curTabId = $(".ui-tabs-active").find("a").attr("id");
+		        $ui('#' + curTabId).click();
+		        
+		        if (num_tabs < 1) {
+		            $("#tabs").hide();
+		            graph.clear();
+		            GLOBAL.currentTab = "";
+		        }
+			}
+			
+			//File
+			else {
+				//console.log(data.node.id);
+				cellId = node.id
+				
+				GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+				
+				$.each(GLOBAL.graphs, function(index, g){
+					graph.fromJSON(GLOBAL.graphs[index]);
+					cell = graph.getCell(cellId);
+					if(cell){
+						cell.remove();
+						GLOBAL.graphs[index] = graph.toJSON();
+					}
+				});
+				
+				graph.fromJSON(GLOBAL.graphs[GLOBAL.currentTab]);
+			} 
+			
+		}
+		
+		
+	});
+	
+	var X1 = 0, Y1 = 0;
+	var X2 = 0, Y2 = 0;
+	var paperPosition = {};
+	
+	//Get mouse position on document
+	$(document).mousemove(function(e){
+		X1 = e.pageX;
+		Y1 = e.pageY
+	})
+
+	//Get mouse position on paper
+	$(".paper").mousemove(function(e){
+		X2 = e.pageX;
+		Y2 = e.pageY
+		
+		var pos   = $(this).offset();
+	    var elPos = { X: pos.left , Y: pos.top };
+	    paperPosition  = { X: e.clientX-elPos.X, Y: e.clientY-elPos.Y };
+	});
+	
+	//When  drag a node (cell) element on paper;
+	$ui(document).on('dnd_stop.vakata', function (e, data) {
+		
+	    var elementId = $(data.element).closest("li").attr("id");
+		var node = GLOBAL.tree.get_node(elementId);
+		
+		if(node.type !== 'file') return;
+		
+		var cell = node.data;
+		if(cell.id != undefined){
+			
+			//Return if cell already is in graph
+			if(graph.getCell(cell.id)) return;
+			
+			//If mouse position is in paper 
+			if(X1 == X2 || Y1 == Y2){
+				console.log(X1);
+				console.log(Y1);
+				cell.get('position').x = paperPosition.X;
+				cell.get('position').y = paperPosition.Y;
+				graph.addCell(cell);
+			}
+			
+		}
+		
 	});
 	
 };

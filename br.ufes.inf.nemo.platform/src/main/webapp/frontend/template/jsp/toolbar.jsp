@@ -114,7 +114,6 @@
 </nav>
 
 
-
 <div id="tabs" class="ui-layout-center">
 
   <ul>
@@ -130,8 +129,6 @@
 	</div>
   </div>
 </div>
-
-
 
 
 <!-- STENCIL -->
@@ -167,14 +164,17 @@
 	</div>
 </div>
 
-
 <div class="inpector-icon">
 	<a href='#' id='inspector-icon'> <span
 		class='glyphicon glyphicon-align-justify'></span>
 	</a>
 </div>
 
+
+
+
 <!-- STATUSBAR -->
 <div class="statusbar-container"><span class="rt-colab"></span></div>
 
 
+<!-- <div id="modelTree"></div> -->

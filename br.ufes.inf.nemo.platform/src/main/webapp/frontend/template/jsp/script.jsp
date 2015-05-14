@@ -20,7 +20,9 @@
 </script>
 
 <!-- JS -->
+<script src="frontend/template/js/globals.js"></script>
 <script src="frontend/template/js/toolbar.js"></script>
 <script src="frontend/template/js/paperTabs.js"></script>
-<script src="frontend/template/js/graphs.js"></script>
 <script src="frontend/template/js/modelTree.js"></script>
+
+

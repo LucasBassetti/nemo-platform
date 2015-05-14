@@ -2,8 +2,10 @@
 	position: absolute;
   	top: 60px;
   	bottom: 0;
+  	float: left;
   	left: 250px;
   	right: 240px;
+  	font-size: 13px;
 }
 
 .glyphicon-align-justify {
