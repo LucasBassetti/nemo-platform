@@ -5,6 +5,10 @@ var GLOBAL = {
 	tree : undefined,
 	graphs : {},
 	currentTab : "diagram1",
+	tabs: $ui("#tabs").tabs({
+        heightStyle: "fill"
+    }),
+	
 }
 
 

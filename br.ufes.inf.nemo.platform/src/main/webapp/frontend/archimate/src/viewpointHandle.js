@@ -2,21 +2,61 @@
  * @param graph
  * @param option
  */
-function viewpointHanlde(graph, option){
+function viewpointHanlde(graph){
 	
-	$.each(viewpoint["Total"], function(index, value){
-		var elementClass = '.stencil-container .viewport .element.archimate.' + value;
-		//console.log(element);
-		$(elementClass).hide();
+	addViewpointSelectionButton();
+	
+	graph.on('add', function(cell){
+		var option = $( '.select-viewpoint option:selected').text();
+		updateCellOpacity(cell, option);
 	});
 	
-	$.each(viewpoint[option], function (index, value) {
-		var elementClass = '.stencil-container .viewport .element.archimate.' + value;
-		$(elementClass).show();
+	GLOBAL.tabs.delegate( ".ui-tabs-anchor", "click", function() {
+		var option = $( '.select-viewpoint option:selected').text();
+		changeViewpoint(option);
 	});
 	
-	$.each(graph.getElements(), function (index, cell) {
-
+	function addViewpointSelectionButton(){
+		
+		var content = '<div class="btn-viewpoint">' +
+			//'<label>Vp:</label>' +
+			'<select class="select-viewpoint">';
+		
+		$.each(viewpoint, function(index, value){
+			content = content + '<option value="' + index + '">' + index + '</option>'
+		});
+		
+		content = content + '</select></div>'
+		
+		$('.stencil-container').prepend(content);
+		$( '.select-viewpoint').change(function(){
+			changeViewpoint($( '.select-viewpoint option:selected').text());
+		});
+		
+	}
+	
+	
+	function changeViewpoint(option){
+		
+		$.each(viewpoint["Total"], function(index, value){
+			var elementClass = '.stencil-container .viewport .element.archimate.' + value;
+			//console.log(element);
+			$(elementClass).hide();
+		});
+		
+		$.each(viewpoint[option], function (index, value) {
+			var elementClass = '.stencil-container .viewport .element.archimate.' + value;
+			$(elementClass).show();
+		});
+		
+		$.each(graph.getElements(), function (index, cell) {
+			updateCellOpacity(cell, option);
+		});
+		
+	}
+	
+	function updateCellOpacity(cell, option){
+		
 		var notExist = true;
 		
 		$.each(viewpoint[option], function (index, value) {
@@ -34,25 +74,7 @@ function viewpointHanlde(graph, option){
 			cell.attr(elementOpacity, 1);
 		}
 		
-	});
+	}
 	
 }
 
-function addViewpointSelectionButton(graph){
-	
-	var content = '<div class="btn-viewpoint">' +
-		//'<label>Vp:</label>' +
-		'<select class="select-viewpoint">';
-	
-	$.each(viewpoint, function(index, value){
-		content = content + '<option value="' + index + '">' + index + '</option>'
-	});
-	
-	content = content + '</select></div>'
-	
-	$('.stencil-container').prepend(content);
-	$( '.select-viewpoint').change(function(){
-		viewpointHanlde(graph, $( '.select-viewpoint option:selected').text());
-	});
-	
-}

@@ -13,28 +13,28 @@ function embed(paper, graph){
 			var cell = cellView.model;
 			//console.log('cell: ' + cell.get('name'));
 			
-			var elements = [];
+			var elements = {};
 			
 			// GET ALL ELEMENTS
 			$.each(graph.getElements(), function(index, element){	
-				elements[index] = element;		
+				elements[index] = element;
 			});
 			
-			for(var i = elements.length-1; i >= 0; i--){
+			$.each(elements, function(index, value){
 				
-				// IF CELL IS EMBEDDED IN SOMO ELEMENT -> UNEMBED THEM
-				if(cell.isEmbeddedIn(elements[i])){
-					//console.log('UN: ' + elements[i].get('name'));
-					elements[i].unembed(cell);
+				// IF CELL IS EMBEDDED IN SOME ELEMENT -> UNEMBED THEM
+				if(cell.isEmbeddedIn(elements[index])){
+					//console.log('UN: ' + elements[index].get('name'));
+					elements[index].unembed(cell);
 					
 					//AJUST POSITION IF ELEMENT DOES'T HAVE MORE EMBEDDED CELLS
-					if(elements[i].getEmbeddedCells().length == 0){
-						adjustmentPosition(elements[i], false);
+					if(elements[index].getEmbeddedCells().length == 0){
+						adjustmentPosition(elements[index], false);
 					}
 
 				}
 				
-			}
+			});
 			
 			var position = cell.get('position');
 			var size = cell.get('size');
@@ -89,25 +89,25 @@ function embed(paper, graph){
 
 		if(cell instanceof joint.shapes.basic.Generic){
 		
-			var elements = [];
+			var elements = {};
 			
 			$.each(graph.getElements(), function(index, element){		
 				elements[index] = element;		
 			});
 			
-			for(var i = elements.length-1; i >= 0; i--){
+			$.each(elements, function(index, e){
 				
-				if(cell.isEmbeddedIn(elements[i])){
-					console.log('UN: ' + elements[i].get('name'));
-					elements[i].unembed(cell);
+				if(cell.isEmbeddedIn(elements[index])){
+					//console.log('UN: ' + elements[index].get('name'));
+					elements[index].unembed(cell);
 					
-					if(elements[i].getEmbeddedCells().length == 0){
-						adjustmentPosition(elements[i], false);
+					if(elements[index].getEmbeddedCells().length == 0){
+						adjustmentPosition(elements[index], false);
 					}
 
 				}
 				
-			}
+			});
 			
 		}
 	});
@@ -115,6 +115,10 @@ function embed(paper, graph){
 	// EMEBED ELEMENTS ON ADD IF A CELL IS PUTTED INSIDE A ANOTHER CELL
 	graph.on('add', function(cell) {
 
+		cell.set('embeds', "");
+		cell.set('parent', "");
+		adjustmentPosition(cell, false);
+		
 		if(cell instanceof joint.shapes.basic.Generic){
 		
 			var position = cell.get('position');
@@ -131,8 +135,11 @@ function embed(paper, graph){
 				}
 			});
 	
-	
 			if(parent) {
+				console.log(parent);
+				
+				if(cell.isEmbeddedIn(parent)) return;
+				
 				parent.embed(cell);
 				adjustmentPosition(parent, true);
 			}

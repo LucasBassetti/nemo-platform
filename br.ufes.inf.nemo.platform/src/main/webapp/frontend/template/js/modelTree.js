@@ -63,9 +63,6 @@ function modelTree(paper, graph, validator){
 							//new_data.data = {};
 							new_data.icon = "glyphicon glyphicon-folder-close";
 							new_data.text = "New Folder";
-							
-							console.log(new_data.text);
-							
 							setTimeout(function () { inst.edit(new_data); },0);
 						});
 					}
@@ -74,7 +71,6 @@ function modelTree(paper, graph, validator){
 					label: "New Diagram",
 					icon: "glyphicon glyphicon-plus",
 					action: function (data) {
-						console.log(data.reference)
 						var inst = $ui.jstree.reference(data.reference),
 						obj = inst.get_node(data.reference);
 						inst.create_node(obj, {}, "last", function (new_data) {
@@ -138,13 +134,9 @@ function modelTree(paper, graph, validator){
 	validator.validate('change:flowType', function(err, command, next) {
 
 		var link = graph.getCell(command.data.id);
-		console.log(link.get('flowType'));
-		
 		if(link.isLink()) changeLink();
 		
 		function changeLink(){
-			
-			console.log("hello");
 			
 			var source = graph.getCell(link.get('source').id);
 			var target = graph.getCell(link.get('target').id);
@@ -159,12 +151,12 @@ function modelTree(paper, graph, validator){
 		
 		function changeAllGraphs(){
 
-			console.log('hello!');
-			
-			GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+			var curTabId = $(".ui-tabs-active").find("a").attr("id");
+			if(curTabId == GLOBAL.currentTab) {
+				GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+			}
 			
 			$.each(GLOBAL.graphs, function(index, g){
-				console.log(index);
 				graph.fromJSON(GLOBAL.graphs[index]);
 				if(graph.getCell(link.id)){
 					link.remove();
@@ -181,8 +173,11 @@ function modelTree(paper, graph, validator){
 		
 	});
 	
+	isRenamedNode = false;
+	cellRenamed = {};
+	
 	//When rename Node name
-	graph.on('change', function(cell) { 
+	graph.on('change:name', function(cell) { 
 		
 		var node = GLOBAL.tree.get_node(cell.id);
 		if(!node) return;
@@ -191,15 +186,58 @@ function modelTree(paper, graph, validator){
 		else renameNode();
 		
 		function renameNode(){
-			var newNodeName = cell.get('name') + " (" + cell.get('subType') + ")"
-			GLOBAL.tree.rename_node(node, newNodeName);
-			
-			$.each(graph.getLinks(), function(index, link){
-				renameLink(link);
-			});
+			var cRenamed = graph.getCell(cell.id);
+			isRenamedNode = true;
+			cellRenamed = cRenamed;
 		}
 		
 	});
+	
+	$(document).click(function() {
+		if(isRenamedNode){
+			updateNodeName(cellRenamed);
+			updateAllGraphsCellName(cellRenamed);
+			isRenamedNode = false;
+			cellRenamed = {};
+		}
+	});
+	
+	function updateNodeName(cell){
+		
+		var node = GLOBAL.tree.get_node(cell.id);
+		var newNodeName = cell.get('name') + " (" + cell.get('subType') + ")"
+		GLOBAL.tree.rename_node(node, newNodeName);
+		node.data = cell;
+		
+		$.each(graph.getLinks(), function(index, link){
+			renameLink(link);
+		});
+		
+	}
+	
+	//Rename Cell in all Graphs
+	function updateAllGraphsCellName(cellRenamed){
+		
+		var curTabId = $(".ui-tabs-active").find("a").attr("id");
+		
+		if(curTabId == GLOBAL.currentTab){
+			GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+		}
+		
+		$.each(GLOBAL.graphs, function(index, g){
+			
+			var graphChanged = new joint.dia.Graph; 
+			graphChanged.fromJSON(GLOBAL.graphs[index]);
+			cell = graphChanged.getCell(cellRenamed.id);
+			if (cell){
+				cell.set('name', cellRenamed.get('name'));
+			}
+			GLOBAL.graphs[index] = graphChanged.toJSON();
+			
+		});
+		
+		graph.fromJSON(GLOBAL.graphs[GLOBAL.currentTab]);
+	}
 	
 	//Rename link on tree
 	function renameLink(link){
@@ -214,6 +252,7 @@ function modelTree(paper, graph, validator){
 		GLOBAL.tree.rename_node(linkNode, newLinkName);
 	}
 	
+	//Procedure to delete link without source or target of tree
 	graph.on('remove', function(cell) { 
 		
 		if(cell.isLink()){
@@ -273,13 +312,11 @@ function modelTree(paper, graph, validator){
 		}
 	});
 	
-	// When the node is deleted in tree, the GLOBAL.graphs will be updated.
+	// Procedure to rename diagrams tab when the node is renamed
 	$ui('.inspector-paper').on('rename_node.jstree', function (e, data) {
 		
 		var node = data.node;
 		if(node.type === 'diagram'){
-			console.log(node.text);
-			
 			$( "#tabs #" + node.id ).text(node.text);
 		}
 		
@@ -289,7 +326,7 @@ function modelTree(paper, graph, validator){
 	$ui('.inspector-paper').on('delete_node.jstree', function (e, data) {
 		
 		$.each(data.node.children_d, function(index, nodeId){
-			var node = GLOBAL.tree.get_node(nodeId) //GLOBAL.tree.get_node(nodeId)
+			var node = GLOBAL.tree.get_node(nodeId);
 			deleteNode(node);
 		});
 		
@@ -298,9 +335,7 @@ function modelTree(paper, graph, validator){
 		function deleteNode(node){
 			
 			//Folder
-			if(node.type === 'default'){
-//				console.log(data.node);
-			} 
+			if(node.type === 'default'){} 
 			
 			//Diagram
 			else if(node.type === 'diagram'){
@@ -320,12 +355,14 @@ function modelTree(paper, graph, validator){
 		        }
 			}
 			
-			//File
+			//Node or Link
 			else {
-				//console.log(data.node.id);
 				cellId = node.id
 				
-				GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+				var curTabId = $(".ui-tabs-active").find("a").attr("id");
+				if(curTabId == GLOBAL.currentTab) {
+					GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
+				}
 				
 				$.each(GLOBAL.graphs, function(index, g){
 					graph.fromJSON(GLOBAL.graphs[index]);
@@ -338,6 +375,7 @@ function modelTree(paper, graph, validator){
 				
 				removeConnectedLink(cellId);
 				graph.fromJSON(GLOBAL.graphs[GLOBAL.currentTab]);
+				
 			} 
 			
 		}
@@ -369,6 +407,12 @@ function modelTree(paper, graph, validator){
 		});
 	}
 	
+	
+	/*
+	 * ====================================
+	 *  DRAG TREE/PAPER PROCEDURE
+	 * ====================================
+	 */
 	
 	var X1 = 0, Y1 = 0;
 	var X2 = 0, Y2 = 0;
@@ -406,12 +450,39 @@ function modelTree(paper, graph, validator){
 			
 			//If mouse position is in paper 
 			if(X1 == X2 || Y1 == Y2){
-				console.log(X1);
-				console.log(Y1);
 				cell.get('position').x = paperPosition.X;
 				cell.get('position').y = paperPosition.Y;
 				graph.addCell(cell);
+				addConnectedLinks(cell);
 			}
+			
+		}
+		
+		//Add connected link when drag a cell
+		function addConnectedLinks(cell){
+			
+			var root = GLOBAL.tree.get_node('root');
+			$.each(root.children_d, function(index, child){
+				
+				var c = GLOBAL.tree.get_node(child)
+				
+				if(c.type === 'link'){
+					
+					var link = $.parseJSON(JSON.stringify(c.data));
+					var source = graph.getCell(link.source.id);
+					var target = graph.getCell(link.target.id);
+					
+					if(source && target){
+						
+						if(source.id == cell.id || target.id == cell.id){
+							graph.addCell(link);
+						}
+						
+					}
+					
+				}
+				
+			});
 			
 		}
 		
