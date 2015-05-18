@@ -35,12 +35,16 @@
 		var app = new Rappid;
 		Backbone.history.start();
 		
+		var nemoApp = new nemo.platform.App(app);
 		
 		
-		modelTree(app.paper, app.graph, app.validator);
-		paperTabs(app.paper, app.graph);
+		
+		
+		
+// 		modelTree(app.paper, app.graph, app.validator);
+// 		paperTabs(app.paper, app.graph);
+
 		toolbar(app.paper, app.graph);
-		
 		viewpointHanlde(app.graph);
 		
 		resizing(app.graph);

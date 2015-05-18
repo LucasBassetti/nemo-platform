@@ -136,8 +136,6 @@ function embed(paper, graph){
 			});
 	
 			if(parent) {
-				console.log(parent);
-				
 				if(cell.isEmbeddedIn(parent)) return;
 				
 				parent.embed(cell);

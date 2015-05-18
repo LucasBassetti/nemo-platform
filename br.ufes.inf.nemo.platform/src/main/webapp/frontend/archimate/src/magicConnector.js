@@ -2,9 +2,10 @@ function magicConnector(validator, graph){
 	
 	validator.validate('change:target change:source', function(err, command, next) {
 
-		if(!(command.data.type === "archimate.Relationships")) return;
-
 		var link = graph.getCell(command.data.id);
+		
+		if(!(link.isLink())) return;
+
 		createMagicConnection(link);
 		
 	});
@@ -18,6 +19,11 @@ function magicConnector(validator, graph){
 		var target = targetElement.get('subType').replace(" ", "");
 
 		var connections = getConnections(source, target);
+		
+		if(!connections){
+			link.remove();
+			return;
+		}
 		
 		var sourceName = sourceElement.get('name');
 		var targetName = ""
@@ -96,7 +102,9 @@ function magicConnector(validator, graph){
 	
 	function getConnections(source, target){
 
-		var connections = [];
+		var connections = {};
+		
+		if(!relationships[source][target]) return;
 		
 		$.each(relationships[source][target], function (index, relationKey) {
 			connections[index] = relationshipsKeys[relationKey];

@@ -1853,6 +1853,56 @@ var relationships =
 		 "Gap": ["o"],
 	 },
 	 
+	 "Goal" : {
+		 
+		 "BusinessActor": ["o"],
+		 "BusinessRole": ["o"],
+		 "BusinessCollaboration": ["o"],
+		 "Location": ["o"],
+		 "BusinessInterface": ["o"],
+		 "BusinessProcess": ["o"],
+		 "BusinessFunction": ["o"],
+		 "BusinessInteraction": ["o"],
+		 "BusinessEvent": ["o"],
+		 "BusinessService": ["o"],
+		 "BusinessObject": ["o"],
+		 "Representation": ["o"],
+		 "Product": ["o"],
+		 "Contract": ["o"],
+		 "Value": ["o"],
+		        
+		 "ApplicationComponent": ["o"],
+		 "ApplicationCollaboration": ["o"],
+		 "ApplicationInterface": ["o"],
+		 "ApplicationFunction": ["o"],
+		 "ApplicationInteraction": ["o"],
+		 "ApplicationService": ["o"],
+		 "DataObject": ["o"],
+		 
+		 "Node": ["o"],
+		 "Device": ["o"],
+		 "SystemSoftware": ["o"],
+		 "InfrastructureInterface": ["o"],
+		 "Network": ["o"],
+		 "CommunicationPath": ["o"],
+		 "InfrastructureFunction": ["o"],
+		 "InfrastructureService": ["o"],
+		 "Artifact": ["o"],
+		 
+		 "Stakeholder": ["o"],
+		 "Driver": ["n","o"],
+		 "Assessment": ["n","o"],
+		 "Goal": ["c","g","n","o","s"],
+		 "Requirement": ["n","o"],
+		 "Principle": ["n","o"],
+		 "Constraint": ["n","o"],
+
+		 "WorkPackage": ["o"],
+		 "Deliverable": ["o"],
+		 "Plateau": ["o"],
+		 "Gap": ["o"],
+	 },
+	 
 	 "Assessment" : {
 		 
 		 "BusinessActor": ["o"],

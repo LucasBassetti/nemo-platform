@@ -4,10 +4,6 @@
  */
 
 function modelTree(paper, graph, validator){
-
-	$ui('#modelTree')
-	    .draggable()
-	    .resizable();
 	
 	//Model Tree
 	$ui('.inspector-paper').jstree({ 
@@ -358,9 +354,10 @@ function modelTree(paper, graph, validator){
 			//Node or Link
 			else {
 				cellId = node.id
+				console.log("DELETE: " + node.text);
 				
 				var curTabId = $(".ui-tabs-active").find("a").attr("id");
-				if(curTabId == GLOBAL.currentTab) {
+				if(curTabId === GLOBAL.currentTab) {
 					GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
 				}
 				
@@ -373,9 +370,11 @@ function modelTree(paper, graph, validator){
 					}
 				});
 				
-				removeConnectedLink(cellId);
 				graph.fromJSON(GLOBAL.graphs[GLOBAL.currentTab]);
 				
+				if (node.type === "node"){
+					removeConnectedLink(cellId);
+				}
 			} 
 			
 		}

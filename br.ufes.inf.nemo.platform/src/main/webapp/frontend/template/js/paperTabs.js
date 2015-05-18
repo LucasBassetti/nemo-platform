@@ -27,11 +27,10 @@ function paperTabs(paper, graph){
         var tabId = $( this ).closest( "li" ).remove().attr( "aria-labelledby" );
         
         //CLEAR GRAPH
-		if(GLOBAL.currentTab === tabId){
+		if(GLOBAL.currentTab !== tabId){
 			GLOBAL.graphs[GLOBAL.currentTab] = graph.toJSON();
-			graph.clear();
+			//graph.clear();
 		}
-		GLOBAL.currentTab = "";
         
 		$ui("#tabs").tabs("refresh");
         var num_tabs = $("div#tabs ul li").length;
@@ -66,10 +65,11 @@ function paperTabs(paper, graph){
 	            	'<span class="ui-icon ui-icon-close"></span>' +
 	            '</li>'
 	        );
+	        
+	        $ui("#tabs").tabs("refresh");
 		}
-		
-        $ui("#tabs").tabs("refresh");
-        $ui('#' + diagram.id).click();
+        
+        $ui('#tabs #' + diagram.id).click();
 		
 	});
 	

@@ -1573,7 +1573,7 @@ joint.shapes.archimate.Junction = joint.shapes.basic.Generic.extend({
 	                width: 100,
 	                height: 100
 	            },
-	            '.name-rect': { 'stroke': 'black', 'stroke-width': 0, 'fill': '#000' },
+	            '.name-rect': { 'stroke': 'black', 'stroke-width': 0, 'fill': '#000000' },
 	            '.name-text': {
 	                'ref': '.name-rect', 'ref-y': .5, 'ref-x': .5, 'text-anchor': 'middle', 'y-alignment': 'middle', 'font-weight': 'normal',
 	                'fill': 'black', 'font-size': 12, 'font-family': 'Arial'
@@ -1756,6 +1756,20 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
             break;  
             
         case 'flow':
+
+            attrs = {
+        		'.marker-target': {
+                    d: 'M 10 0 L 0 5 L 10 10 z',
+                    fill: '#000'
+                },
+                '.connection': {
+                	'stroke-dasharray': '4,4'
+                }
+            };
+
+            break;  
+            
+        case 'influence':
 
             attrs = {
         		'.marker-target': {
