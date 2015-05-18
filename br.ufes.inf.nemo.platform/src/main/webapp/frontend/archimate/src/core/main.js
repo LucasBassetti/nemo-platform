@@ -181,6 +181,8 @@ var Rappid = Backbone.Router.extend({
         this.selection = new Backbone.Collection;
         this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
 
+        this.selectionView.removeHandle('rotate');
+        
         // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
         // Otherwise, initiate paper pan.
         this.paper.on('blank:pointerdown', function(evt, x, y) {
@@ -310,7 +312,10 @@ var Rappid = Backbone.Router.extend({
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.
             halo.removeHandle('resize');
-            halo.changeHandle('clone', { position: 'se' });
+            halo.removeHandle('fork');
+            halo.removeHandle('clone');
+            halo.removeHandle('rotate');
+            //halo.changeHandle('clone', { position: 'se' });
             
             freetransform.render();
             halo.render();

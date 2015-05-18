@@ -23,11 +23,6 @@
 </script>
 
 <!-- JS -->
-<script src="frontend/template/js/globals.js"></script>
-<script src="frontend/template/js/toolbar.js"></script>
-<script src="frontend/template/js/paperTabs.js"></script>
-<script src="frontend/template/js/modelTree.js"></script>
-
 <script src="frontend/template/src/core.js"></script>
 <script src="frontend/template/src/nemo.platform.model.js"></script>
 <script src="frontend/template/src/nemo.platform.app.js"></script>

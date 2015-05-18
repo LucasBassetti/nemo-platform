@@ -18,7 +18,8 @@
 .stencil-container > .btn-expand,
 .stencil-container > .btn-collapse {
    position: absolute;
-   top: 2px;
+/*    top: 2px; */
+	top: 27px;
    left: 10px;
    background: none;
    border: none;

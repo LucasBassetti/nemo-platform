@@ -34,15 +34,12 @@
 		//var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
 		var app = new Rappid;
 		Backbone.history.start();
+		
 		var nemoApp = new nemo.platform.App;
 		nemoApp.start(app);
 		
-// 		modelTree(app.paper, app.graph, app.validator);
-// 		paperTabs(app.paper, app.graph);
-// 		toolbar(app.paper, app.graph);
-
-
-		viewpointHanlde(app.graph);
+		//ArchiMate procedures
+		viewpointHanlde(app.graph, nemoApp.model);
 		resizing(app.graph);
 		embed(app.paper, app.graph);
 		attributes(app.paper, app.graph);

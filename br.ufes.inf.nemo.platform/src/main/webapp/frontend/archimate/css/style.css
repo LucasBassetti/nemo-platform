@@ -1,7 +1,11 @@
+body{
+	background-color: #f8f8f8;
+}
+
 .btn-viewpoint {
 	position: absolute;
 	left: 60px;
-	top: 2px;
+	top: 27px;
 }
 
 .btn-viewpoint .select-viewpoint {

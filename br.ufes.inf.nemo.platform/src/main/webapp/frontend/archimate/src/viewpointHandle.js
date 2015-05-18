@@ -2,7 +2,7 @@
  * @param graph
  * @param option
  */
-function viewpointHanlde(graph){
+function viewpointHanlde(graph, model){
 	
 	addViewpointSelectionButton();
 	
@@ -11,7 +11,7 @@ function viewpointHanlde(graph){
 		updateCellOpacity(cell, option);
 	});
 	
-	GLOBAL.tabs.delegate( ".ui-tabs-anchor", "click", function() {
+	model.tabs.delegate( ".ui-tabs-anchor", "click", function() {
 		var option = $( '.select-viewpoint option:selected').text();
 		changeViewpoint(option);
 	});

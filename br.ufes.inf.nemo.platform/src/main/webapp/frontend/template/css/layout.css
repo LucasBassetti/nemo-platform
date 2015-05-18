@@ -1,6 +1,7 @@
 #tabs{
 	position: absolute;
-  	top: 55px;
+/*   	top: 55px; */
+	top: 80px;
   	bottom: 0;
   	float: left;
   	left: 250px;
@@ -9,12 +10,20 @@
 }
 
 .navbar {
-	min-height: 55px;
+	position: absolute;
+	margin-bottom: 0px;
+	min-height: 0px;
+}
+
+.navbar-static-top {
+/* 	min-height: 55px; */
+	top: 25px;
 }
 
 .paper-container {
    	position: absolute;
-  	top: 45px;
+/*   	top: 45px; */
+	top: 40px;
   	left: 0;
   	right: 0;
   	bottom: 10px;
@@ -26,43 +35,58 @@
    bottom: 0;
    left: 0;
    right: 0;
-   top: 24px;
+/*    top: 24px; */
+   top: 49px;
    background: #333;
 }
 
 .inspector-container {
 	position: absolute;
-   	top: 44px;   /* toolbar height */
+/*    	top: 44px;   toolbar height */
+   	top: 80px;
    	right: 0;
    	bottom: 10px; /* statusbar height */
    	width: 240px;
 }
 
-.inspector-paper-container {
-	position: absolute;
-   	top: 44px;   /* toolbar height */
-   	right: 0;
-   	bottom: 10px; /* statusbar height */
-   	width: 240px;
-}
-
-.inspector-paper {
+.inspector {
    position: absolute;
-/*    top: 0; */
-   top: 20px;
+   top: -13px;
    bottom: 0;
    right: 0;
    left: 0;
    overflow: auto;
 }
 
+.inspector-paper-container {
+	position: absolute;
+/*    	top: 44px;   toolbar height */
+	top: 78px;
+   	right: 0;
+   	bottom: 10px; /* statusbar height */
+   	width: 240px;
+}
+
+.inspector-paper {
+   	position: absolute;
+/*    top: 0; */
+/*    top: 20px; */
+	top: 10px;
+   	bottom: 0;
+   	right: 0;
+   	left: 0;
+   	overflow: auto;
+}
+
 
 @media (max-width: 768px) {
 	nav.sidebar {
-		top: 65px;
+/* 		top: 65px; */
+		top: 90px;
 	}
 	
 	.inspector-paper-container, .inspector-container{
-		top: 105px;
+/* 		top: 105px; */
+		top: 130px;
 	} 
 }

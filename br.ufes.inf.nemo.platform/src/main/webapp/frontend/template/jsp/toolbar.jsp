@@ -113,6 +113,50 @@
 
 </nav>
 
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-expanded="false">File
+						<span class="caret"></span>
+				</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">Open</a></li>
+						<li><a href="#">Save</a></li>
+						<li><a href="#">Save aS</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Print</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Exit</a></li>
+					</ul></li>
+			</ul>
+			
+			<ul class="nav navbar-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-expanded="false">Export
+						<span class="caret"></span>
+				</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">Export to PNG</a></li>
+					</ul></li>
+			</ul>
+			
+			<ul class="nav navbar-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-expanded="false">Help
+						<span class="caret"></span>
+				</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">About</a></li>
+					</ul></li>
+			</ul>
+		</div>
+		
+	</div>
+</nav>
 
 <div id="tabs" class="ui-layout-center">
 

@@ -19,8 +19,8 @@ nemo.platform.App = Backbone.View.extend({
 		this.initializeTreeProcedures(app);
 		this.initializeTabsProcedures(app);
 		this.initializeGraphProcedures(app);
-		this.initializePaperProcedures(app);
 		this.initializeValidatorProcedures(app);
+		this.initializePaperProcedures(app);
 		
 	},
 	
@@ -354,6 +354,18 @@ nemo.platform.App = Backbone.View.extend({
 			}
 		});
 		
+		//When change link label, refresh node;
+		graph.on('change:label', function(cell) { 
+			
+			if(cell.isLink()) {
+				var label = cell.get('label');
+				if(label){
+					var node = model.getNode(cell.id);
+					node.data = cell;
+				}
+			}
+		});
+		
 	},
 	
 	initializeValidatorProcedures : function(app) {
@@ -375,7 +387,6 @@ nemo.platform.App = Backbone.View.extend({
 				
 				var node = model.getNode(link.id);
 				node.data = link;
-				model.refreshNode(node);
 				
 				//if tab is the current, update it
 				var currentTabIndex = $(".ui-tabs-active").find("a").attr("id");
@@ -400,9 +411,6 @@ nemo.platform.App = Backbone.View.extend({
 		
 		paper = app.paper;
 		model = this.model;
-		
-		
-		
 		
 		
 		/*

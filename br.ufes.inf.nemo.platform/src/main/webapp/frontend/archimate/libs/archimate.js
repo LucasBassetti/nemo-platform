@@ -1661,13 +1661,13 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 
         this.listenTo(this, 'change:flowType', this.onFlowTypeChange);
         
-        this.label(0, {
-            position: .5,
-            attrs: {
-                rect: { fill: 'white' },
-                text: { fill: 'black', text: '' }
-            }
-        });
+//        this.label(0, {
+//            position: .5,
+//            attrs: {
+//                rect: { fill: 'white' },
+//                text: { fill: 'black', text: '' }
+//            }
+//        });
         
         this.on('change:label', function() {
             this.updateLabel();
@@ -1680,16 +1680,16 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
         return this.get('label');
     },
     
-    updateLabel: function(){
+    updateLabel: function() {
     	
     	this.label(0, {
             position: .5,
             attrs: {
                 rect: { fill: 'white' },
-                text: { fill: 'black', text: this.getLabel() }
+                text: { fill: 'black', 'font-size': 11, text: this.getLabel() }
             }
         });
-    	    	
+    	
     },
     
     onFlowTypeChange: function(cell, type) {

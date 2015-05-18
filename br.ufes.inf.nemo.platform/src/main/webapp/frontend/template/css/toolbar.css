@@ -6,16 +6,6 @@
 	margin-left: 260px;
 }
 
-#inspector-icon {
-	outline: 0;
-	float: right;
-	color: black;
-	font-size: 24px;
-	font-style: normal;
-	margin-top: -74px;
-	margin-right: 260px;
-}
-
 .panel-toolbar {
 	position: relative;
 	display: inline-block;

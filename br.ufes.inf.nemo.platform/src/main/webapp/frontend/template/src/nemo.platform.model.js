@@ -446,7 +446,6 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 		//update node data
 		node.data = cell;
-		this.refreshNode(node);
 		
 		//rename all link connected to the cell
 		$.each(graph.getLinks(), function(index, l){
@@ -530,6 +529,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		this.newNode(this.getCurrentDiagram(), new_data);
 	},
 	
+	//Method do add new node
 	newNode : function(currentDiagram, node) {
 		this.tree.create_node(currentDiagram.parent, node, "last")
 	},
@@ -537,10 +537,6 @@ nemo.platform.Model = Backbone.Model.extend({
 	//Method to delete a node
 	deleteNode : function(nodeId) {
 		this.tree.delete_node(nodeId);
-	},
-	
-	refreshNode : function(node) {
-		this.tree.refresh_node(node);
 	},
 	
 	//Method to get node by id
