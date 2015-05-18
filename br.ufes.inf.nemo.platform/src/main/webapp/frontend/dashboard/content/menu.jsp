@@ -56,10 +56,10 @@
                      	<div class="panel-body">
 						<ul class="nav" id="side-menu">
 							<li><a href="archimate.htm">
-								<span class="fa fa-cogs fa-fw"></span> ArchiMate
+								<span class="fa fa-sitemap fa-fw"></span> ArchiMate
 							</a></li>
-							<li><a href="mlt.htm">
-								<span class="fa fa-sitemap fa-fw"></span> MLT
+							<li><a href="ontouml.htm">
+								<span class="fa fa-sitemap fa-fw"></span> OntoUML
 							</a></li>
 							<li><a href="models.htm">
 								<span class="fa fa-cogs fa-fw"></span> Models 

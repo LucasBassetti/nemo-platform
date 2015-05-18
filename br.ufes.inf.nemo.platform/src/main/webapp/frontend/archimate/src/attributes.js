@@ -1,51 +1,51 @@
 function attributes(paper, graph){
 	
-	var ed;
-	
-	paper.on('cell:pointerdblclick', function(cellView, evt) {
-	    
-		
-		//var test = $.noConflict();
-		
-		var text = joint.ui.TextEditor.getTextElement(evt.target);
-		//console.log(text);
-		
-	    if (text) {
-	        if (ed){
-	        	ed.remove();   // Remove old editor if there was one.
-	        }
-	        ed = new joint.ui.TextEditor({ text: text });
-	        ed.render(paper.el);
-
-	        ed.on('text:change', function(newText) {
-	            // Set the new text to the property that you use to change text in your views.
-	            cellView.model.set('name', newText);
-	        });	        
-	    }
-	    
-	    
-	});
-	
-	paper.on('blank:pointerclick', function(cellView, evt) {
-		
-		//console.log($.noConflict(false));
-		
-		if (ed){
-        	ed.remove();   // Remove old editor if there was one.
-        }
-	});
-	
-	paper.on('cell:pointerclick', function(cellView, evt) {
-		if (ed){
-        	ed.remove();   // Remove old editor if there was one.
-        }
-	});
-
-	function autosize(element) {
-
-	    var view = paper.findViewByModel(element);
-	    if(view == undefined) return;
-	    
+//	var ed;
+//	
+//	paper.on('cell:pointerdblclick', function(cellView, evt) {
+//	    
+//		
+//		//var test = $.noConflict();
+//		
+//		var text = joint.ui.TextEditor.getTextElement(evt.target);
+//		//console.log(text);
+//		
+//	    if (text) {
+//	        if (ed){
+//	        	ed.remove();   // Remove old editor if there was one.
+//	        }
+//	        ed = new joint.ui.TextEditor({ text: text });
+//	        ed.render(paper.el);
+//
+//	        ed.on('text:change', function(newText) {
+//	            // Set the new text to the property that you use to change text in your views.
+//	            cellView.model.set('name', newText);
+//	        });	        
+//	    }
+//	    
+//	    
+//	});
+//	
+//	paper.on('blank:pointerclick', function(cellView, evt) {
+//		
+//		//console.log($.noConflict(false));
+//		
+//		if (ed){
+//        	ed.remove();   // Remove old editor if there was one.
+//        }
+//	});
+//	
+//	paper.on('cell:pointerclick', function(cellView, evt) {
+//		if (ed){
+//        	ed.remove();   // Remove old editor if there was one.
+//        }
+//	});
+//
+//	function autosize(element) {
+//
+//	    var view = paper.findViewByModel(element);
+//	    if(view == undefined) return;
+//	    
 //	    console.log(view);
 //	    var text = view.$('text')[0];
 //	    
@@ -54,12 +54,12 @@ function attributes(paper, graph){
 //	    var bbox = V(text).bbox(true);
 //	    // Give the element some padding on the right/bottom.
 //	    element.resize(bbox.width + 50, bbox.height + 50);
-	}
-
-	graph.on('change:attrs', function(cell) { 
-		autosize(cell) 
-	});
-	
+//	}
+//
+//	graph.on('change:attrs', function(cell) { 
+//		autosize(cell) 
+//	});
+//	
 	
 	
 //	paper.on('cell:pointerdblclick', function(cellView, evt, opt) {

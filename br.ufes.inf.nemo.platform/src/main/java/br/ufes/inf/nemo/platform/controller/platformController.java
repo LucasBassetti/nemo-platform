@@ -28,14 +28,24 @@ public class platformController {
 		return "dashboard/pages/archimate";
 	}
 	
-	@RequestMapping("/mlt")
-	public String mlt(HttpServletRequest request) {		
-		return "dashboard/pages/mlt";
-	}
-	
 	@RequestMapping("/archimate-model")
 	public String archmateModel(HttpServletRequest request) {		
 		return "archimate/archimate-model";
+	}
+	
+	@RequestMapping("/ontouml")
+	public String ontouml(HttpServletRequest request) {		
+		return "dashboard/pages/ontouml";
+	}
+	
+	@RequestMapping("/ontouml-model")
+	public String ontoumlModel(HttpServletRequest request) {		
+		return "ontouml/ontouml-model";
+	}
+	
+	@RequestMapping("/mlt")
+	public String mlt(HttpServletRequest request) {		
+		return "dashboard/pages/mlt";
 	}
 	
 	@RequestMapping("/mlt-model")

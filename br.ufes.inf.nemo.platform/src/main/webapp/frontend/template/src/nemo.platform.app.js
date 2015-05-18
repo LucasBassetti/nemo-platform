@@ -412,6 +412,40 @@ nemo.platform.App = Backbone.View.extend({
 		paper = app.paper;
 		model = this.model;
 		
+		var ed;
+		
+		paper.on('cell:pointerdblclick', function(cellView, evt) {
+		    
+			var text = joint.ui.TextEditor.getTextElement(evt.target);
+			
+		    if (text) {
+		        if (ed){
+		        	ed.remove();   // Remove old editor if there was one.
+		        }
+		        ed = new joint.ui.TextEditor({ text: text });
+		        ed.render(paper.el);
+
+		        ed.on('text:change', function(newText) {
+		            // Set the new text to the property that you use to change text in your views.
+		            cellView.model.set('name', newText);
+		        });	        
+		    }
+		    
+		    
+		});
+		
+		paper.on('blank:pointerclick', function(cellView, evt) {
+			if (ed){
+	        	ed.remove();   // Remove old editor if there was one.
+	        }
+		});
+		
+		paper.on('cell:pointerclick', function(cellView, evt) {
+			if (ed){
+	        	ed.remove();   // Remove old editor if there was one.
+	        }
+		});
+		
 		
 		/*
 		 * ====================
