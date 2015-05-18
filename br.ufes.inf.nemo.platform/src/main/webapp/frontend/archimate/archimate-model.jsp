@@ -34,62 +34,19 @@
 		//var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
 		var app = new Rappid;
 		Backbone.history.start();
-		
-		var nemoApp = new nemo.platform.App(app);
-		
-		
-		
-		
+		var nemoApp = new nemo.platform.App;
+		nemoApp.start(app);
 		
 // 		modelTree(app.paper, app.graph, app.validator);
 // 		paperTabs(app.paper, app.graph);
+// 		toolbar(app.paper, app.graph);
 
-		toolbar(app.paper, app.graph);
+
 		viewpointHanlde(app.graph);
-		
 		resizing(app.graph);
 		embed(app.paper, app.graph);
 		attributes(app.paper, app.graph);
 		magicConnector(app.validator, app.graph);
-		
-		
-		//$('.inspector-paper').create({ 
-		
-		
-// 		$('.inspector-paper').bind("dblclick.jstree", function  (event) {
-			
-// 			var node = $(event.target).closest("li");
-// 			console.log(node[0].id);
-			
-			
-// 			var tree = $('.inspector-paper').jstree(true);
-// 			var root = tree.get_node('root');
-// 			var num_tabs = $("div#tabs ul li").length + 1;
-
-			
-			
-// 	        $("div#tabs ul").append(
-// 	            "<li><a href='#tab" + num_tabs + "'>#" + num_tabs + "</a></li>"
-// 	        );
-// 			$("div#tabs").append(
-// 	            "<div id='tab" + num_tabs + "'>#" + num_tabs + "</div>"
-// 	        );
-// 	        $("div#tabs").tabs("refresh");
-			
-// 			tree.create_node(root, {}, "last", function (new_data) {
-//             	//new_data = folder;
-//                 new_data.data = {file: false};
-//                 new_data.icon = "glyphicon glyphicon-folder-close";
-//                 new_data.text = "New Folder";
-//             });
-			
-			
-// 			if(node[0].id === 'diagram'){
-// 				alert('hello');	
-// 			}
-			
-// 		});
-		
 		
 	</script>
 

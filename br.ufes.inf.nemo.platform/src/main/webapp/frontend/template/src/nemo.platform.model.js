@@ -57,6 +57,8 @@ nemo.platform.Model = Backbone.Model.extend({
 				}
 			},
 		
+			"sort" : this.sort,
+			
 			"plugins" : [ "sort", "json_data", "dnd", "contextmenu", "wholerow", "types" ],
 		
 			"contextmenu" : { "items" : this.customMenu }
@@ -64,6 +66,88 @@ nemo.platform.Model = Backbone.Model.extend({
 		});
 		
 		this.tree = $ui('.inspector-paper').jstree(true);
+		
+	},
+	
+	//Procedure to sort by order (Diagram > Folder > Cell > Link)
+	sort : function(a, b) {
+		
+		var nodeA = model.getNode(a);
+		var nodeB = model.getNode(b);
+		
+		var textA = nodeA.text;
+		var textB = nodeB.text;
+		
+		if(model.isDiagram(nodeA)) {
+			
+			if(model.isCell(nodeB)) {
+				return -1;
+			}
+			
+			if(model.isFolder(nodeB)) {
+				return -1;
+			}
+			
+			if(model.isLink(nodeB)) {
+				return -1;
+			}
+			
+		}
+		
+		if(model.isFolder(nodeA)) {
+			
+			if(model.isDiagram(nodeB)) {
+				return 1;
+			}
+			
+			if(model.isCell(nodeB)) {
+				return -1;
+			}
+			
+			if(model.isLink(nodeB)) {
+				return -1;
+			}
+			
+		}
+		
+		if(model.isCell(nodeA)) {
+			
+			if(model.isDiagram(nodeB)) {
+				return 1;
+			}
+			
+			if(model.isFolder(nodeB)) {
+				return 1;
+			}
+			
+			if(model.isLink(nodeB)){
+				return -1;
+			}
+			
+		}
+		
+		if(model.isLink(nodeA)) {
+			
+			if(model.isDiagram(nodeB)) {
+				return 1;
+			}
+			
+			if(model.isFolder(nodeB)) {
+				return 1;
+			}
+			
+			if(model.isCell(nodeB)){
+				return 1;
+			}
+			
+		}
+		
+		if(textA > textB) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
 		
 	},
 	
@@ -159,7 +243,10 @@ nemo.platform.Model = Backbone.Model.extend({
 	//Method to create a new tab
 	newTab : function(index, graph) {
 		if(!this.graph[index]){
-			graph.clear();
+			//graph.clear();
+			var tab = $.parseJSON('{"cells":[]}');
+			
+			graph.fromJSON(tab);
 			this.graph[index] = graph.toJSON();
 			this.currentTabIndex = index;
 			
@@ -292,8 +379,7 @@ nemo.platform.Model = Backbone.Model.extend({
 	//Method to update the graph with the tab content;
 	updateGraph : function(index, graph) {
 		if(this.graph[index]) {
-			console.log('CURRENT GRAPH: ' + JSON.stringify(this.graph[index]));
-			
+			graph.fromJSON(this.graph[index]);
 			
 			//LOG
 			this.log(1, index, "UPDATE GRAPH");
@@ -306,9 +392,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		var $this = this;
 		$.each(this.getTabs(), function(index, value){
 			$this.updateGraph(index, graph);
-			console.log("TO AKI!");
 			cell = graph.getCell(cellId);
-			console.log("TO AKI! [2]");
 			if(cell) {
 				cell.remove();
 				graph.addCell(cell);
@@ -333,10 +417,17 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
-	renameGraphsCell : function(cellId, graph){
+	renameGraphsCell : function(cellRenamedName, cellId, graph){
 		var cell = {};
 		var $this = this;
-		
+		$.each(this.getTabs(), function(index, value){
+			$this.updateGraph(index, graph);
+			cell = graph.getCell(cellId);
+			if (cell){
+				cell.set('name', cellRenamedName);
+				$this.updateTab(index, graph);
+			}
+		});
 	},
 	
 	/**
@@ -348,17 +439,19 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 		var node = this.getNode(cell.id);
 		var newNodeName = cell.get('name') + " (" + cell.get('subType') + ")"
+		var $this = this;
 		
 		//rename node
 		this.renameTreeNode(node, newNodeName);
 		
 		//update node data
 		node.data = cell;
+		this.refreshNode(node);
 		
 		//rename all link connected to the cell
 		$.each(graph.getLinks(), function(index, l){
 			var link = graph.getCell(l.id);
-			this.renameTreeLink(link, graph);
+			$this.renameTreeLink(link, graph);
 		});
 		
 		
@@ -446,6 +539,10 @@ nemo.platform.Model = Backbone.Model.extend({
 		this.tree.delete_node(nodeId);
 	},
 	
+	refreshNode : function(node) {
+		this.tree.refresh_node(node);
+	},
+	
 	//Method to get node by id
 	getNode : function(nodeId) {
 		return this.tree.get_node(nodeId);
@@ -458,6 +555,13 @@ nemo.platform.Model = Backbone.Model.extend({
 	
 	isDiagram : function(node) {
 		if(node.type === "diagram") {
+			return true;
+		}
+		return false;
+	},
+	
+	isFolder : function(node) {
+		if(node.type === "default") {
 			return true;
 		}
 		return false;

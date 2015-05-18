@@ -1,0 +1,68 @@
+#tabs{
+	position: absolute;
+  	top: 55px;
+  	bottom: 0;
+  	float: left;
+  	left: 250px;
+  	right: 240px;
+  	font-size: 13px;
+}
+
+.navbar {
+	min-height: 55px;
+}
+
+.paper-container {
+   	position: absolute;
+  	top: 45px;
+  	left: 0;
+  	right: 0;
+  	bottom: 10px;
+  	overflow: hidden;
+}
+
+.stencil {
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   top: 24px;
+   background: #333;
+}
+
+.inspector-container {
+	position: absolute;
+   	top: 44px;   /* toolbar height */
+   	right: 0;
+   	bottom: 10px; /* statusbar height */
+   	width: 240px;
+}
+
+.inspector-paper-container {
+	position: absolute;
+   	top: 44px;   /* toolbar height */
+   	right: 0;
+   	bottom: 10px; /* statusbar height */
+   	width: 240px;
+}
+
+.inspector-paper {
+   position: absolute;
+/*    top: 0; */
+   top: 20px;
+   bottom: 0;
+   right: 0;
+   left: 0;
+   overflow: auto;
+}
+
+
+@media (max-width: 768px) {
+	nav.sidebar {
+		top: 65px;
+	}
+	
+	.inspector-paper-container, .inspector-container{
+		top: 105px;
+	} 
+}

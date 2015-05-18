@@ -4,7 +4,9 @@ function magicConnector(validator, graph){
 
 		var link = graph.getCell(command.data.id);
 		
-		if(!(link.isLink())) return;
+		if(!(link.isLink())){
+			return;
+		}
 
 		createMagicConnection(link);
 		
@@ -15,15 +17,20 @@ function magicConnector(validator, graph){
 		var sourceElement = graph.getCell(link.get('source').id);
 		var targetElement = graph.getCell(link.get('target').id);
 
-		var source = sourceElement.get('subType').replace(" ", "");
-		var target = targetElement.get('subType').replace(" ", "");
-
-		var connections = getConnections(source, target);
-		
-		if(!connections){
+		if(!(sourceElement && targetElement)){
 			link.remove();
 			return;
 		}
+		
+		var source = sourceElement.get('subType').replace(" ", "");
+		var target = targetElement.get('subType').replace(" ", "");
+
+		if(!relationships[source][target]) {
+			link.remove();
+			return;
+		}
+		
+		connections = getConnections(source, target);
 		
 		var sourceName = sourceElement.get('name');
 		var targetName = ""
@@ -103,8 +110,6 @@ function magicConnector(validator, graph){
 	function getConnections(source, target){
 
 		var connections = {};
-		
-		if(!relationships[source][target]) return;
 		
 		$.each(relationships[source][target], function (index, relationKey) {
 			connections[index] = relationshipsKeys[relationKey];

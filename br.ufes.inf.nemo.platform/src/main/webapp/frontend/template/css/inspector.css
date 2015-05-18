@@ -3,12 +3,6 @@
    border-top: 1px solid #e7e7e7;
    color: #000;
    background-color: #f8f8f8;
-   
-   position: absolute;
-   top: 44px;   /* toolbar height */
-   right: 0;
-   bottom: 10px; /* statusbar height */
-   width: 240px;
 }
 
 .inspector-container output{

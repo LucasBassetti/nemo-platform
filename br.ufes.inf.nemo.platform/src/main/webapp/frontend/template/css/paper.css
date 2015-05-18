@@ -2,15 +2,6 @@
 	display: none;
 }
 
-.paper-container {
-   position: absolute;
-  top: 45px;
-  left: 0;
-  right: 0;
-  bottom: 10px;
-  overflow: hidden;
-}
-
 .paper-scroller {
    overflow: scroll;
    cursor: move;

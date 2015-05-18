@@ -170,11 +170,7 @@
 	</a>
 </div>
 
-
-
-
 <!-- STATUSBAR -->
 <div class="statusbar-container"><span class="rt-colab"></span></div>
-
 
 <!-- <div id="modelTree"></div> -->

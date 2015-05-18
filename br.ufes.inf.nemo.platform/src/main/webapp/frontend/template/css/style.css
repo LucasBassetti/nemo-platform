@@ -1,12 +1,3 @@
-#tabs{
-	position: absolute;
-  	top: 60px;
-  	bottom: 0;
-  	float: left;
-  	left: 250px;
-  	right: 240px;
-  	font-size: 13px;
-}
 
 .glyphicon-align-justify {
 	margin-top: 40px;
@@ -24,20 +15,6 @@
 	  float: none;
 	}
 } 
-
-@media (max-width: 768px) {
-	nav.sidebar {
-		top: 65px;
-	}
-	
-	.inspector-paper-container, .inspector-container{
-		top: 105px;
-	} 
-}
-
-.navbar {
-	min-height: 55px;
-}
 
 .attributes textarea {
    -webkit-box-sizing: initial;

@@ -1,20 +1,27 @@
 nemo.platform.App = Backbone.View.extend({
 	
-	model : nemo.platform.Model,
+	model : undefined,
 	
-	initialize : function(app){
-		
+	initialize : function(){
 		console.log("INITIALIZE APP!");
+	},
+	
+	start : function(app) {
+		
+		console.log("START APP!");
 		
 		//create model
 		this.model = new nemo.platform.Model;
 		
 		//initialize model
 		this.model.newTab("diagram1", app.graph);
+		
 		this.initializeTreeProcedures(app);
 		this.initializeTabsProcedures(app);
 		this.initializeGraphProcedures(app);
+		this.initializePaperProcedures(app);
 		this.initializeValidatorProcedures(app);
+		
 	},
 	
 	initializeTreeProcedures : function(app) {
@@ -130,6 +137,8 @@ nemo.platform.App = Backbone.View.extend({
 					cell.get('position').y = paperPosition.Y;
 					graph.addCell(cell);
 					addConnectedLinks(cell);
+					model.updateCurrentTab(graph);
+					model.updateCurrentGraph(graph);
 				}
 			}
 			
@@ -251,6 +260,16 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
+		// Procedure to rename diagrams tab when the node is renamed
+		$ui('.inspector-paper').on('rename_node.jstree', function (e, data) {
+			
+			var node = data.node;
+			if(model.isDiagram(node)){
+				$( "#tabs #" + node.id ).text(node.text);
+			}
+			
+		});
+		
 	},
 	
 	initializeGraphProcedures : function(app) { 
@@ -276,6 +295,24 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
+		//Procedure to delete link without source or target of tree
+		graph.on('remove', function(cell) { 
+			
+			if(cell.isLink()){
+				
+				var sourceId = cell.get('source').id;
+				var targetId = cell.get('target').id;
+				
+				if(!(sourceId && targetId)){
+					var node = model.getNode(cell.id);
+					model.deleteNode(node.id);
+				}
+				
+			}
+			
+		})
+		
+		
 		isRenamedNode = false;
 		cellRenamed = {};
 		
@@ -300,6 +337,18 @@ nemo.platform.App = Backbone.View.extend({
 			if(isRenamedNode){
 				model.renameTreeCell(cellRenamed, graph);
 				//updateAllGraphsCellName(cellRenamed);
+				
+				var currentTabIndex = $(".ui-tabs-active").find("a").attr("id");
+				if(model.isCurrentTabIndex(currentTabIndex)) {
+					model.updateCurrentTab(graph);
+				}
+				
+				//rename the name in all graphs
+				model.renameGraphsCell(cellRenamed.get('name'), cellRenamed.id, graph)
+				
+				//load the updated current tab
+				model.updateCurrentGraph(graph);
+				
 				isRenamedNode = false;
 				cellRenamed = {};
 			}
@@ -326,6 +375,7 @@ nemo.platform.App = Backbone.View.extend({
 				
 				var node = model.getNode(link.id);
 				node.data = link;
+				model.refreshNode(node);
 				
 				//if tab is the current, update it
 				var currentTabIndex = $(".ui-tabs-active").find("a").attr("id");
@@ -343,6 +393,134 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
+		
+	},
+	
+	initializePaperProcedures : function(app) {
+		
+		paper = app.paper;
+		model = this.model;
+		
+		
+		
+		
+		
+		/*
+		 * ====================
+		 * TOOLBAR PROCEDURES
+		 * ====================
+		 */
+		
+		var inspectorCollapsed = false;
+		var inpectorType = undefined;
+		
+		paper.on('blank:pointerclick', function(evt, x, y) {
+			inpectorType = "paper";
+			
+			if(!inspectorCollapsed){
+				$('.inspector-paper-container').show();
+				$('.inspector-container').hide();
+			}
+		});
+		
+		paper.on('cell:pointerclick', function(cellView, evt, opt) {
+					
+			inpectorType = "cell"
+			if(!inspectorCollapsed){
+				$('.inspector-paper-container').hide();
+				$('.inspector-container').show();
+			}
+		});	
+		
+		$("#inspector-icon").click(
+				function() {
+					if ($(".inspector-container").is(":visible") || $(".inspector-paper-container").is(":visible")){
+						
+						if ($(".inspector-paper-container").is(":visible")){
+							inpectorType = "paper";
+							$(".inspector-container").hide();
+							$(".inspector-paper-container").hide();
+						}
+						
+						else if($(".inspector-container").is(":visible")){
+							inpectorType = "cell";
+							$(".inspector-container").hide();
+							$(".inspector-paper-container").hide();
+						}
+
+						$(this).css({
+							marginRight : "30px"
+						});
+						$("#tabs").css({
+							right : "0"
+						});
+						
+						inspectorCollapsed = true;
+					} else{
+						if(inpectorType == "paper"){
+							$(".inspector-paper-container").show();
+						}
+						else if(inpectorType == "cell"){
+							$(".inspector-container").show();
+						}
+						$(this).css({
+							marginRight : "260px"
+						});
+						$("#tabs").css({
+							right : "240px"
+						});
+						inspectorCollapsed = false;
+					}
+				});
+
+
+		(function() {
+			$(function() {
+				var collapseMyMenu, expandMyMenu, hideMenuTexts, showMenuTexts;
+				expandMyMenu = function() {
+					return $("nav.sidebar").removeClass(
+					"sidebar-menu-collapsed").addClass(
+					"sidebar-menu-expanded");
+				};
+				collapseMyMenu = function() {
+					return $("nav.sidebar")
+					.removeClass("sidebar-menu-expanded").addClass(
+					"sidebar-menu-collapsed");
+				};
+				showMenuTexts = function() {
+					return $("nav.sidebar ul a span.expanded-element").show();
+				};
+				hideMenuTexts = function() {
+					return $("nav.sidebar ul a span.expanded-element").hide();
+				};
+				return $("#stencil-icon").click(
+						function(e) {
+							if ($("nav.sidebar").hasClass(
+							"sidebar-menu-collapsed")) {
+								expandMyMenu();
+								showMenuTexts();
+								$(this).css({
+									margin : "260px"
+								});
+								$("#tabs").css({
+									left : "250px"
+								});
+							} else if ($("nav.sidebar").hasClass(
+							"sidebar-menu-expanded")) {
+								collapseMyMenu();
+								hideMenuTexts();
+								$(this).css({
+									margin : "20px"
+								});
+								$("#tabs").css({
+									left : "0"
+								});
+							}
+							return false;
+						});
+			});
+
+		}).call(this);
 		
 	},
 	

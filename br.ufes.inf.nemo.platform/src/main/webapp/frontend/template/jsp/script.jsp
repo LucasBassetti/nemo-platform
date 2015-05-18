@@ -4,8 +4,8 @@
 	var $ = jQuery.noConflict();
 </script>
 
-<script src="core/underscore/underscore.js"></script>
-<script src="core/backbone/backbone.js"></script>
+<!-- <script src="core/underscore/underscore.js"></script> -->
+<!-- <script src="core/backbone/backbone.js"></script> -->
 
 <!-- Bootstrap Core JavaScript -->
 <script src="core/sb-admin/bower-components/bootstrap/dist/js/bootstrap.min.js"></script>
