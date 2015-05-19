@@ -374,7 +374,7 @@ nemo.platform.App = Backbone.View.extend({
 		var validator = app.validator;
 		var model = this.model;
 		
-		validator.validate('change:flowType', function(err, command, next) {
+		validator.validate('change:source change:target change:flowType', function(err, command, next) {
 
 			var link = graph.getCell(command.data.id);
 			
@@ -383,7 +383,7 @@ nemo.platform.App = Backbone.View.extend({
 				var source = graph.getCell(link.get('source').id);
 				var target = graph.getCell(link.get('target').id);
 				
-				if(!(source && target)) {return;}
+				if(!(source && target)) { return; }
 				
 				var node = model.getNode(link.id);
 				node.data = link;
@@ -409,8 +409,81 @@ nemo.platform.App = Backbone.View.extend({
 	
 	initializePaperProcedures : function(app) {
 		
+		graph = app.graph;
 		paper = app.paper;
 		model = this.model;
+		
+		$ui('.paper').contextmenu({
+			delegate: '.rotatable',
+		    menu: [
+		        {title: "Delete from view", cmd: "deleteFromView", uiIcon: "ui-icon-circle-close"},
+		        {title: "Delete from model", cmd: "deleteFromModel", uiIcon: "ui-icon-close"},
+		        {title: "Show connected links", cmd: "showConnectedLinks", uiIcon: "ui-icon-shuffle"},
+//		        {title: "More", children: [
+//		            {title: "Sub 1", cmd: "sub1"},
+//		            {title: "Sub 2", cmd: "sub1"}
+//		            ]}
+		        ],
+		    select: function(event, ui) {
+		        if(ui.cmd === 'deleteFromModel') {
+		        	deleteFromModel();
+		        }
+		        else if(ui.cmd === 'deleteFromView') {
+		        	deleteFromView();
+		        }
+		        else if(ui.cmd === 'showConnectedLinks') {
+		        	showConnectedLinks();
+		        }
+		    }
+		
+		});
+		
+		var cellId;
+		
+		paper.$el.on('contextmenu', function(e) { 
+		    e.stopPropagation(); // Stop bubbling so that the paper does not handle mousedown.
+		    e.preventDefault();  // Prevent displaying default browser context menu.
+		    var cellView = paper.findView(e.target);
+		    if (cellView) {
+		       cellId = cellView.model.id;
+		    }
+		});
+		
+		function deleteFromModel() {
+			var node = model.getNode(cellId);
+			model.deleteNode(node);
+		}
+		
+		function deleteFromView() {
+			var cell = graph.getCell(cellId);
+			cell.remove();
+		}
+		
+		function showConnectedLinks() {
+			
+			var cell = graph.getCell(cellId);
+			var root = model.getNode('root');
+			
+			$.each(root.children_d, function(index, nodeId){
+				
+				var node = model.getNode(nodeId)
+				
+				if(model.isLink(node)){
+					
+					var link = $.parseJSON(JSON.stringify(node.data));
+					var source = graph.getCell(link.source.id);
+					var target = graph.getCell(link.target.id);
+					
+					if(source && target){
+						if(source.id == cell.id || target.id == cell.id){
+							graph.addCell(link);
+						}
+					}
+					
+				}
+				
+			});
+		}
 		
 		var ed;
 		

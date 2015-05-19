@@ -31,16 +31,16 @@
 							<img style="height: 20px" src="frontend/template/img/clear.png"
 								alt="Clear">
 						</button>
-						<button id="btn-png" class="btn btn-default navbar-btn"
-							data-tooltip="Open as PNG">
-							<img style="height: 20px" src="frontend/template/img/pngfile.png"
-								alt="Open as PNG">
-						</button>
-						<button id="btn-print" class="btn btn-default navbar-btn"
-							data-tooltip="Open a Print Dialog">
-							<img style="height: 20px" src="frontend/template/img/print.png"
-								alt="Open a Print Dialog">
-						</button>
+<!-- 						<button id="btn-png" class="btn btn-default navbar-btn" -->
+<!-- 							data-tooltip="Open as PNG"> -->
+<!-- 							<img style="height: 20px" src="frontend/template/img/pngfile.png" -->
+<!-- 								alt="Open as PNG"> -->
+<!-- 						</button> -->
+<!-- 						<button id="btn-print" class="btn btn-default navbar-btn" -->
+<!-- 							data-tooltip="Open a Print Dialog"> -->
+<!-- 							<img style="height: 20px" src="frontend/template/img/print.png" -->
+<!-- 								alt="Open a Print Dialog"> -->
+<!-- 						</button> -->
 						<button id="btn-zoom-in" class="btn btn-default navbar-btn"
 							data-tooltip="Zoom in">
 							<img style="height: 20px" src="frontend/template/img/zoomin.png"
@@ -128,7 +128,7 @@
 						<li><a href="#">Save</a></li>
 						<li><a href="#">Save aS</a></li>
 						<li class="divider"></li>
-						<li><a href="#">Print</a></li>
+						<li><a href="#" id="btn-print">Print</a></li>
 						<li class="divider"></li>
 						<li><a href="#">Exit</a></li>
 					</ul></li>
@@ -140,7 +140,7 @@
 						<span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Export to PNG</a></li>
+						<li><a href="#" id="btn-png">Export to PNG</a></li>
 					</ul></li>
 			</ul>
 			

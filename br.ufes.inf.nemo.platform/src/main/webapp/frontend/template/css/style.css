@@ -2,6 +2,10 @@ body{
 	background-color: #f8f8f8;
 }
 
+.navbar, .navbar-header {
+  display: inline;
+}
+
 .navbar-nav > li > a {
 	padding-top: 0px;
 	padding-bottom: 0px;
