@@ -17359,6 +17359,9 @@ if ( typeof window === "object" && typeof window.document === "object" ) {
             this.attr('transform', '');
             this.scale(s.sx, s.sy);
 
+            //NEMO PLATFORM EDIT
+            if(!this.svg()) return;
+            
             var svg = this.svg().node;
             var bbox = this.bbox(false, target);
 

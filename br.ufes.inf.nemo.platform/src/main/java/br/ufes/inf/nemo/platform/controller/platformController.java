@@ -30,7 +30,7 @@ public class platformController {
 	
 	@RequestMapping("/archimate-model")
 	public String archmateModel(HttpServletRequest request) {		
-		return "archimate/archimate-model";
+		return "models/archimate/archimate-model";
 	}
 	
 	@RequestMapping("/ontouml")
@@ -40,7 +40,7 @@ public class platformController {
 	
 	@RequestMapping("/ontouml-model")
 	public String ontoumlModel(HttpServletRequest request) {		
-		return "ontouml/ontouml-model";
+		return "models/ontouml/ontouml-model";
 	}
 	
 	@RequestMapping("/mlt")
@@ -50,7 +50,7 @@ public class platformController {
 	
 	@RequestMapping("/mlt-model")
 	public String mltModel(HttpServletRequest request) {		
-		return "mlt/mlt-model";
+		return "models/mlt/mlt-model";
 	}
 	
 	

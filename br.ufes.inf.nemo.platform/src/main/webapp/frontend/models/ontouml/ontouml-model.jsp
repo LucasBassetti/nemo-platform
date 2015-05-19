@@ -5,7 +5,7 @@
 	<title>NP - ArchiMate</title>
 	
     <%@include file="/frontend/template/template-header.jsp"%>
-<!-- 	<link href="frontend/ontouml/css/style.css" rel="stylesheet"> -->
+<!-- 	<link href="frontend/models/ontouml/css/style.css" rel="stylesheet"> -->
 
 </head>
 <body>
@@ -13,16 +13,16 @@
 	<%@include file="/frontend/template/template-body.jsp"%>
 	
 	<!-- LIBS -->
-	<script src="frontend/ontouml/libs/ontouml.js"></script>
+	<script src="frontend/models/ontouml/libs/ontouml.js"></script>
 	
 	<!-- CORE -->
-	<script src="frontend/ontouml/src/core/main.js"></script>
-	<script src="frontend/ontouml/src/core/inspector.js"></script>
-	<script src="frontend/ontouml/src/core/keyboard.js"></script>
-	<script src="frontend/ontouml/src/core/stencil.js"></script>
+	<script src="frontend/models/ontouml/src/core/main.js"></script>
+	<script src="frontend/models/ontouml/src/core/inspector.js"></script>
+	<script src="frontend/models/ontouml/src/core/keyboard.js"></script>
+	<script src="frontend/models/ontouml/src/core/stencil.js"></script>
 	
 	<!-- SOURCE -->
-	<script src="frontend/ontouml/src/nemo.platform.ontouml.js"></script>
+	<script src="frontend/models/ontouml/src/nemo.platform.ontouml.js"></script>
 	
 
 	<script>
