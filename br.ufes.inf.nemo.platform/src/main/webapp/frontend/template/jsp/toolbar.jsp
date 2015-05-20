@@ -7,8 +7,8 @@
 			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="index.htm">NEMO Platform</a>
-
+<!-- 		<a class="navbar-brand" href="index.htm">NEMO Platform</a> -->
+		<a class="navbar-brand">NEMO Platform</a>
 
 		<ul class="nav navbar-nav">
 			<li style="margin-left: 30px">
@@ -130,17 +130,18 @@
 						<li class="divider"></li>
 						<li><a href="#" id="btn-print">Print</a></li>
 						<li class="divider"></li>
-						<li><a href="#">Exit</a></li>
+						<li><a href="index.htm">Exit</a></li>
 					</ul></li>
 			</ul>
 			
 			<ul class="nav navbar-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-expanded="false">Export
+					data-toggle="dropdown" role="button" aria-expanded="false">Tool
 						<span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#" id="btn-png">Export to PNG</a></li>
+						<li><a href="#" id="btn-svg">Export to SVG</a></li>
 					</ul></li>
 			</ul>
 			

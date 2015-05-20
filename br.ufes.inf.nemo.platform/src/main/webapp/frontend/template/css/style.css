@@ -16,14 +16,6 @@ html, body{
 	width: 10px;
 }
 
-navbar-static-top {
-	display: inline-block;
-}
-
-.navbar, .navbar-header {
-/*   display: inline; */
-}
-
 .navbar-nav > li > a {
 	padding-top: 0px;
 	padding-bottom: 0px;
