@@ -1,9 +1,27 @@
-body{
+html, body{
+	height: 100%;
+	width: 100%;
+	max-width: 100%;
 	background-color: #f8f8f8;
 }
 
+.moveable {
+    margin: 0px 10px 0px 0;
+    background:#FFFFFF;
+        overflow:hidden;
+/*     border: 1px solid black; */
+}
+
+.ui-resizable-e {
+	width: 10px;
+}
+
+navbar-static-top {
+	display: inline-block;
+}
+
 .navbar, .navbar-header {
-  display: inline;
+/*   display: inline; */
 }
 
 .navbar-nav > li > a {

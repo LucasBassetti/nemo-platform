@@ -1,7 +1,13 @@
 .btn-viewpoint {
-	position: absolute;
-	left: 60px;
-	top: 27px;
+/* 	position: absolute; */
+/* 	left: 60px; */
+	top: -20px;
+	width: 90%;
+	display: inline;
+}
+
+.stencil.searchable > .content {
+  top: 60px;
 }
 
 .btn-viewpoint .select-viewpoint {
@@ -10,6 +16,7 @@
 }	
 
 .btn-viewpoint label {
-	font-size: 12px;
+	font-size: 10px;
 	color: black;
+	margin-left: 5px;	
 }

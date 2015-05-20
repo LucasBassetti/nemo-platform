@@ -158,35 +158,63 @@
 	</div>
 </nav>
 
-<div id="wrapper">
-	
-	<!-- INSPECTOR -->
-	<div class="inspector-paper-container moveable">
-		<div class="inspector-container"></div>
-		<div class="inspector-paper"></div>
+<div id="tabs" class="ui-layout-center moveable">
+
+  <ul>
+    <li>
+    	<a href="#diagram" id="diagram1">Diagram</a>
+    	<span class="ui-icon ui-icon-close"></span>
+    </li>
+  </ul>
+  <div id="diagram">
+	<!-- PAPER  -->
+	<div id="content">
+		<div class="paper-container"></div>
 	</div>
-	
-	<!-- TABS -->
-	<div id="tabs" class="ui-layout-center">
-	  <ul>
-	    <li>
-	    	<a href="#diagram" id="diagram1">Diagram</a>
-	    	<span class="ui-icon ui-icon-close"></span>
-	    </li>
-	  </ul>
-	  <div id="diagram">
-		<!-- PAPER  -->
-		<div id="content">
-			<div class="paper-container"></div>
-		</div>
-	  </div>
-	</div>
+  </div>
 </div>
+
 
 <!-- STENCIL -->
-<div class="stencil-container">
-	<button class="btn-expand" title="Expand all">+</button>
-	<button class="btn-collapse" title="Collapse all">-</button>
+<nav class='sidebar sidebar-menu-expanded'>
+	<div class="stencil-container">
+		<button class="btn-expand" title="Expand all">+</button>
+		<button class="btn-collapse" title="Collapse all">-</button>
+	</div>
+</nav>
+
+<div class="stencil-icon">
+	<a href='#' id='stencil-icon'> <span
+		class='glyphicon glyphicon-align-justify'></span>
+	</a>
 </div>
 
+<!-- INSPECTOR -->
+<div class="inspector-container" ></div>
 
+<div class="inspector-paper-container">
+	<div class="inspector-paper">
+<!-- 		<div class="group" data-name="general"> -->
+<!-- 		    <h3 class="group-label">Model Information</h3> -->
+<!-- 			<div class="field" data-field="name"> -->
+<!-- 				<label>Name:</label> -->
+<!-- 				<textarea class="textarea" data-type="textarea" data-attribute="name"></textarea> -->
+<!-- 			</div> -->
+<!-- 			<div class="field" data-field="documentation"> -->
+<!-- 				<label>Documentation:</label> -->
+<!-- 				<textarea class="textarea" data-type="textarea" data-attribute="documentation"></textarea> -->
+<!-- 			</div> -->
+<!-- 		</div>	 -->
+	</div>
+</div>
+
+<div class="inpector-icon">
+	<a href='#' id='inspector-icon'> <span
+		class='glyphicon glyphicon-align-justify'></span>
+	</a>
+</div>
+
+<!-- STATUSBAR -->
+<!-- <div class="statusbar-container"><span class="rt-colab"></span></div> -->
+
+<!-- <div id="modelTree"></div> -->

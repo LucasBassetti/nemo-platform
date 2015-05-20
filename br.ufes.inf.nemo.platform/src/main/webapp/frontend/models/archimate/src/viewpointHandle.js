@@ -19,7 +19,7 @@ function viewpointHanlde(graph, model){
 	function addViewpointSelectionButton(){
 		
 		var content = '<div class="btn-viewpoint">' +
-			//'<label>Vp:</label>' +
+			'<label>Viewpoint:</label>' +
 			'<select class="select-viewpoint">';
 		
 		$.each(viewpoint, function(index, value){
