@@ -93,8 +93,13 @@
 										layout
 									</a>
 								</li>
-								
 							</ul>
+							
+							<button id="btn-show-hide" class="btn btn-default navbar-btn"
+								data-tooltip="Show/Hide Stencil" style="margin-left:-1px;">
+								<img style="height:20px;" src="frontend/template/img/show_hide.png"
+									alt="Show/Hide Stencil">
+							</button>
 							
 						</div>
 

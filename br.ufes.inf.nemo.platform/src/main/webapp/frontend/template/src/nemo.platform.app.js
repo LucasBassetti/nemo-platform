@@ -8,10 +8,6 @@ nemo.platform.App = Backbone.View.extend({
 	
 	start : function(app) {
 		
-		$ui(".moveable").resizable({
-			handles: 'e'
-		});
-		
 		console.log("START APP!");
 		
 		//create model
@@ -182,6 +178,9 @@ nemo.platform.App = Backbone.View.extend({
 		var tabs = this.model.tabs;
 		var graph = app.graph;
 		
+		//Procedure to provide the resize functionality to tree/inspector
+		$ui(".moveable").resizable({ handles: 'e' });
+		
 		//Procedure to handle with tab changes on click
 		tabs.delegate( ".ui-tabs-anchor", "click", function() {
 			
@@ -281,6 +280,7 @@ nemo.platform.App = Backbone.View.extend({
 		var graph = app.graph;
 		var model = this.model;
 		
+		//Procedure do add node on tree 
 		graph.on('add', function(cell){
 		
 			var node = model.getNode(cell.id);
@@ -551,95 +551,20 @@ nemo.platform.App = Backbone.View.extend({
 			}
 		});	
 		
-//		$("#inspector-icon").click(
-//				function() {
-//					if ($(".inspector-container").is(":visible") || $(".inspector-paper-container").is(":visible")){
-//						
-//						if ($(".inspector-paper-container").is(":visible")){
-//							inpectorType = "paper";
-//							$(".inspector-container").hide();
-//							$(".inspector-paper-container").hide();
-//						}
-//						
-//						else if($(".inspector-container").is(":visible")){
-//							inpectorType = "cell";
-//							$(".inspector-container").hide();
-//							$(".inspector-paper-container").hide();
-//						}
-//
-//						$(this).css({
-//							marginRight : "30px"
-//						});
-//						$("#tabs").css({
-//							right : "0"
-//						});
-//						
-//						inspectorCollapsed = true;
-//					} else{
-//						if(inpectorType == "paper"){
-//							$(".inspector-paper-container").show();
-//						}
-//						else if(inpectorType == "cell"){
-//							$(".inspector-container").show();
-//						}
-//						$(this).css({
-//							marginRight : "260px"
-//						});
-//						$("#tabs").css({
-//							right : "240px"
-//						});
-//						inspectorCollapsed = false;
-//					}
-//				});
-//
-//
-//		(function() {
-//			$(function() {
-//				var collapseMyMenu, expandMyMenu, hideMenuTexts, showMenuTexts;
-//				expandMyMenu = function() {
-//					return $("nav.sidebar").removeClass(
-//					"sidebar-menu-collapsed").addClass(
-//					"sidebar-menu-expanded");
-//				};
-//				collapseMyMenu = function() {
-//					return $("nav.sidebar")
-//					.removeClass("sidebar-menu-expanded").addClass(
-//					"sidebar-menu-collapsed");
-//				};
-//				showMenuTexts = function() {
-//					return $("nav.sidebar ul a span.expanded-element").show();
-//				};
-//				hideMenuTexts = function() {
-//					return $("nav.sidebar ul a span.expanded-element").hide();
-//				};
-//				return $("#stencil-icon").click(
-//						function(e) {
-//							if ($("nav.sidebar").hasClass(
-//							"sidebar-menu-collapsed")) {
-//								expandMyMenu();
-//								showMenuTexts();
-//								$(this).css({
-//									margin : "260px"
-//								});
-//								$("#tabs").css({
-//									left : "250px"
-//								});
-//							} else if ($("nav.sidebar").hasClass(
-//							"sidebar-menu-expanded")) {
-//								collapseMyMenu();
-//								hideMenuTexts();
-//								$(this).css({
-//									margin : "20px"
-//								});
-//								$("#tabs").css({
-//									left : "0"
-//								});
-//							}
-//							return false;
-//						});
-//			});
-//
-//		}).call(this);
+		$('#btn-show-hide').click(function(){
+			if($('.stencil-container').is(':visible')){
+				$('.stencil-container').hide();
+				$('#wrapper').css({
+					width: '100%',
+				})
+			}
+			else{
+				$('.stencil-container').show();
+				$('#wrapper').css({
+					width: 'calc(100% - 260px)',
+				})
+			}
+		});
 		
 	},
 	

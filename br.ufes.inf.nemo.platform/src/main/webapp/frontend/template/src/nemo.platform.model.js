@@ -85,7 +85,7 @@ nemo.platform.Model = Backbone.Model.extend({
 			}
 			
 			if(model.isFolder(nodeB)) {
-				return -1;
+				return 1;
 			}
 			
 			if(model.isLink(nodeB)) {
@@ -97,7 +97,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		if(model.isFolder(nodeA)) {
 			
 			if(model.isDiagram(nodeB)) {
-				return 1;
+				return -1;
 			}
 			
 			if(model.isCell(nodeB)) {
