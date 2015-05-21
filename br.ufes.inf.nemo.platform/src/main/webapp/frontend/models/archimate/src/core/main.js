@@ -169,8 +169,8 @@ var Rappid = Backbone.Router.extend({
                 new joint.ui.Tooltip({
                     target: '.stencil [model-id="' + cell.id + '"]',
                     content: cell.get('subType').split('.').join(' '),
-                    left: '.stencil',
-                    direction: 'left'
+                    right: '.stencil-container',
+                    direction: 'right'
                 });
             });
         });
