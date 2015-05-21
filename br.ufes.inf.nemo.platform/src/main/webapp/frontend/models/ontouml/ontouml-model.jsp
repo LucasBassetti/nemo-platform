@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf8" />
-	<title>NP - ArchiMate</title>
+	<title>NP - OntoUML</title>
 	
     <%@include file="/frontend/template/template-header.jsp"%>
 <!-- 	<link href="frontend/models/ontouml/css/style.css" rel="stylesheet"> -->

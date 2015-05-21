@@ -69,7 +69,7 @@ var ontoumlInputs = {
 	                'font-size': { group: 'general', index: 3 },
 	                'font-family': { group: 'general', index: 4 }
 	            }),
-	            '.name-rect': inp({
+	            '.scalable': inp({
 	                fill: { group: 'general', index: 5 },
 	                'stroke-width': { group: 'general', index: 6, min: 0, max: 30, defaultValue: 1 },
 	                'stroke-dasharray': { group: 'general', index: 7 },
@@ -77,9 +77,13 @@ var ontoumlInputs = {
 	        },
 	        name: { type: 'textarea', group: 'general', index: 1, label: 'Name' },
 	        documentation: { type: 'textarea', group: 'general', index: 2, label: 'Documentation' },
+	        attributes: { type: 'list', item: { type: 'text' }, group: 'attributes', index: 1, label: 'Attributes' },
+            methods: { type: 'list', item: { type: 'text' }, group: 'methods', index: 1, label: 'Methods' }
 	    }),
 	    groups: {
 	    	general: { label: 'General', index: 1 },
+	    	attributes: { label: 'Attributes', index: 2 },
+            methods: { label: 'Methods', index: 3 },
 	    }
 }
 
@@ -102,6 +106,26 @@ var ontoumlRelationshipsInputs = {
 
 var InspectorDefs = {
 		
-	'ontouml.Kind': ontoumlInputs,	
+	'ontouml.Relationships': {
+		
+		inputs: _.extend({
+	        label: { type: 'text', group: 'label', index: 1, label: 'Label' },
+			sourceMultiplicity: { type: 'text', group: 'Multiplicity', index: 1, label: 'Source' },
+	        targetMultiplicity: { type: 'text', group: 'Multiplicity', index: 2, label: 'Target' }
+		}),	
+    },
+		
+	'ontouml.Kind': ontoumlInputs,
+	'ontouml.Subkind': ontoumlInputs,
+	'ontouml.Role': ontoumlInputs,
+	'ontouml.Phase': ontoumlInputs,
+	'ontouml.Collective': ontoumlInputs,
+	'ontouml.Quantity': ontoumlInputs,
+	'ontouml.Category': ontoumlInputs,
+	'ontouml.RoleMixin': ontoumlInputs,
+	'ontouml.Mixin': ontoumlInputs,
+	'ontouml.Relator': ontoumlInputs,
+	'ontouml.Mode': ontoumlInputs,
+	'ontouml.Quality': ontoumlInputs,
 
 };

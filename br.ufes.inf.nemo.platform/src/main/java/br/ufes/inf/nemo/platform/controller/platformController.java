@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.ufes.inf.nemo.platform.service.DBPediaService;
+
 @Controller
 public class platformController {
 
@@ -29,7 +31,7 @@ public class platformController {
 	}
 	
 	@RequestMapping("/archimate-model")
-	public String archmateModel(HttpServletRequest request) {		
+	public String archmateModel(HttpServletRequest request) {
 		return "models/archimate/archimate-model";
 	}
 	

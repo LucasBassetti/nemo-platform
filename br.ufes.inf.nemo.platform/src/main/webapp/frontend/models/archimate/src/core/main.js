@@ -43,19 +43,19 @@ var Rappid = Backbone.Router.extend({
         
         this.graph = new joint.dia.Graph;
 
-        this.graph.on('add', function(cell, collection, opt) {
-            if (opt.stencil) {
-                this.createInspector(cell);
-                this.commandManager.stopListening();
-                this.inspector.updateCell();
-                this.commandManager.listen();
-                this.inspector.$('[data-attribute]:first').focus();
-            }
-        }, this);
+//        this.graph.on('add', function(cell, collection, opt) {
+//            if (opt.stencil) {
+//                this.createInspector(cell);
+//                this.commandManager.stopListening();
+//                this.inspector.updateCell();
+//                this.commandManager.listen();
+//                this.inspector.$('[data-attribute]:first').focus();
+//            }
+//        }, this);
 
         this.paper = new joint.dia.Paper({
-            width: 1000,
-            height: 1000,
+            width: 700,
+            height:	700,
             gridSize: 10,
             perpendicularLinks: true,
             model: this.graph,
@@ -74,7 +74,7 @@ var Rappid = Backbone.Router.extend({
 
         this.paperScroller = new joint.ui.PaperScroller({
             autoResizePaper: true,
-            padding: 50,
+            padding: 0,
             paper: this.paper
         });
 

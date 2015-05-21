@@ -232,6 +232,10 @@ nemo.platform.App = Backbone.View.extend({
 	            model.clearCurrentTabIndex();
 	        }
 			
+	        //Show inpector container (tree)
+	        $('.inspector-container').hide();
+	        $('.inspector-paper').show();
+	        
 		});
 		
 		//Handle with double click on diagrams
@@ -299,7 +303,7 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
-		//Procedure to delete link without source or target of tree
+		//Procedure to delete link without source or target on tree
 		graph.on('remove', function(cell) { 
 			
 			if(cell.isLink()){
@@ -534,21 +538,13 @@ nemo.platform.App = Backbone.View.extend({
 		var inpectorType = undefined;
 		
 		paper.on('blank:pointerclick', function(evt, x, y) {
-			inpectorType = "paper";
-			
-			if(!inspectorCollapsed){
-				$('.inspector-paper').show();
-				$('.inspector-container').hide();
-			}
+			$('.inspector-paper').show();
+			$('.inspector-container').hide();
 		});
 		
 		paper.on('cell:pointerclick', function(cellView, evt, opt) {
-					
-			inpectorType = "cell"
-			if(!inspectorCollapsed){
-				$('.inspector-paper').hide();
-				$('.inspector-container').show();
-			}
+			$('.inspector-paper').hide();
+			$('.inspector-container').show();
 		});	
 		
 		$('#btn-show-hide').click(function(){

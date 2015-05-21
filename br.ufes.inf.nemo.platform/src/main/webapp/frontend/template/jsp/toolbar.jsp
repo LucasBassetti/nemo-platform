@@ -131,7 +131,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#">Open</a></li>
 						<li><a href="#">Save</a></li>
-						<li><a href="#">Save aS</a></li>
+						<li><a href="#">Save as</a></li>
 						<li class="divider"></li>
 						<li><a href="#" id="btn-print">Print</a></li>
 						<li class="divider"></li>

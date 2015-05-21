@@ -43,15 +43,15 @@ var Rappid = Backbone.Router.extend({
         
         this.graph = new joint.dia.Graph;
 
-        this.graph.on('add', function(cell, collection, opt) {
-            if (opt.stencil) {
-                this.createInspector(cell);
-                this.commandManager.stopListening();
-                this.inspector.updateCell();
-                this.commandManager.listen();
-                this.inspector.$('[data-attribute]:first').focus();
-            }
-        }, this);
+//        this.graph.on('add', function(cell, collection, opt) {
+//            if (opt.stencil) {
+//                this.createInspector(cell);
+//                this.commandManager.stopListening();
+//                this.inspector.updateCell();
+//                this.commandManager.listen();
+//                this.inspector.$('[data-attribute]:first').focus();
+//            }
+//        }, this);
 
         this.paper = new joint.dia.Paper({
             width: 1000,
@@ -59,7 +59,7 @@ var Rappid = Backbone.Router.extend({
             gridSize: 10,
             perpendicularLinks: true,
             model: this.graph,
-            defaultLink: new joint.dia.Link({
+            defaultLink: new joint.shapes.ontouml.Relationships({
                 attrs: {
                     // @TODO: scale(0) fails in Firefox
 //                    '.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z' },
@@ -68,8 +68,11 @@ var Rappid = Backbone.Router.extend({
                         stroke: 'black'
                         // filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 2 } }
                     }
-                }
-            })
+                },
+                //"label": '',
+                "sourceMultiplicity": "*",
+                "targetMultiplicity": "*",
+            }),
         });
 
         this.paperScroller = new joint.ui.PaperScroller({
