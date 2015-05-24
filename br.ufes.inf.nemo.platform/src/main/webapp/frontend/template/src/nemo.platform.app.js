@@ -181,6 +181,24 @@ nemo.platform.App = Backbone.View.extend({
 		//Procedure to provide the resize functionality to tree/inspector
 		$ui(".moveable").resizable({ handles: 'e' });
 		
+		//Procedure to handle with double click on tabs;
+		tabs.delegate( ".ui-tabs-anchor", "dblclick", function() {
+			if($('.inspector-paper-container').is(':visible') || $('.stencil-container').is(':visible')) {
+				$('.inspector-paper-container').hide();
+				$('.stencil-container').hide();
+				$('#wrapper').css({
+					width: '100%',
+				})
+			}
+			else {
+				$('.inspector-paper-container').show();
+				$('.stencil-container').show();
+				$('#wrapper').css({
+					width: 'calc(100% - 260px)',
+				})
+			}
+		});
+		
 		//Procedure to handle with tab changes on click
 		tabs.delegate( ".ui-tabs-anchor", "click", function() {
 			
@@ -230,6 +248,8 @@ nemo.platform.App = Backbone.View.extend({
 	        	model.updateCurrentTab(graph);
 	            $("#tabs").hide();
 	            model.clearCurrentTabIndex();
+	            
+	            $('.inspector-paper-container').show();
 	        }
 			
 	        //Show inpector container (tree)

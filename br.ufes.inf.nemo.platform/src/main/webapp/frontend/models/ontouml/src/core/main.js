@@ -70,8 +70,8 @@ var Rappid = Backbone.Router.extend({
                     }
                 },
                 //"label": '',
-                "sourceMultiplicity": "*",
-                "targetMultiplicity": "*",
+                "sourceMultiplicity": "1..*",
+                "targetMultiplicity": "1..*",
             }),
         });
 

@@ -89,31 +89,16 @@ var ontoumlInputs = {
 
 var ontoumlRelationshipsInputs = {
 		
-	    inputs: _.extend({
-	        attrs: {
-	            '.name-rect': inp({
-	                fill: { group: 'name', index: 4 },
-	                'stroke-width': { group: 'name', index: 5, min: 0, max: 30, defaultValue: 1 },
-	                'stroke-dasharray': { group: 'name', index: 6 },
-	            }),
-	        },
-	    }),
-	    
-	    groups: {
-	        name: { label: 'General', index: 1 },
-	    }
-}
-
-var InspectorDefs = {
-		
-	'ontouml.Relationships': {
-		
 		inputs: _.extend({
 	        label: { type: 'text', group: 'label', index: 1, label: 'Label' },
 			sourceMultiplicity: { type: 'text', group: 'Multiplicity', index: 1, label: 'Source' },
 	        targetMultiplicity: { type: 'text', group: 'Multiplicity', index: 2, label: 'Target' }
 		}),	
-    },
+}
+
+var InspectorDefs = {
+		
+	'ontouml.Relationships': ontoumlRelationshipsInputs,
 		
 	'ontouml.Kind': ontoumlInputs,
 	'ontouml.Subkind': ontoumlInputs,

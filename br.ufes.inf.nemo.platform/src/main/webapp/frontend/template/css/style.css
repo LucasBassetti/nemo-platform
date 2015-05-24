@@ -12,6 +12,10 @@ html, body{
 /*     border: 1px solid black; */
 }
 
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+	cursor: pointer;
+}
+
 .ui-resizable-e {
 	width: 10px;
 }

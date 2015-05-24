@@ -41,7 +41,7 @@ joint.shapes.ontouml.Class = joint.shapes.basic.Generic.extend({
             '.methods-rect': { 'display': 'none' },
 
             '.name-text': {
-                'ref': '.name-rect', 'ref-y': .5, 'ref-x': .5, 'text-anchor': 'middle', 'y-alignment': 'middle', 'font-weight': 'normal',
+                'ref': '.name-rect', 'ref-y': .5, 'ref-x': .5, 'text-anchor': 'middle', 'y-alignment': 'middle', 'font-weight': 'bold',
                 'fill': 'black', 'font-size': 12, 'font-family': 'Arial'
             },
             '.attrs-text': {
@@ -53,7 +53,7 @@ joint.shapes.ontouml.Class = joint.shapes.basic.Generic.extend({
                 'fill': 'black', 'font-size': 12, 'font-family': 'Arial', 'display': 'none' 
             },
             '.stereotype': {
-            	'ref': '.name-rect', 'ref-y': .05, 'ref-x': .5, 'text-anchor': 'middle', 'y-alignment': 'top', 'font-weight': 'bold',
+            	'ref': '.name-rect', 'ref-y': .05, 'ref-x': .5, 'text-anchor': 'middle', 'y-alignment': 'top', 'font-weight': 'normal',
             	'fill': 'black', 'font-size': 8, 'font-family': 'Tahoma'
             }
         },
@@ -369,28 +369,34 @@ joint.shapes.ontouml.Relationships = joint.dia.Link.extend({
     	this.label(0, {
             position: .5,
             attrs: {
-                rect: { fill: 'white' },
-                text: { fill: 'black', 'font-size': 11, text: this.getLabel() }
+                rect: { fill: 'none' },
+                text: { fill: 'black', 'font-size': 11, dy:-10, text: this.getLabel() }
             }
         });
     	
     	this.label(1, {
-            position: .01,
+            position: .08,
             attrs: {
-                rect: { fill: 'white' },
-                text: { fill: 'black', 'font-size': 10, text: this.getSourceMultiplicity() }
+                rect: { fill: 'none' },
+                text: { fill: 'black', 'font-size': 10, dx:12, dy:12, text: this.getSourceMultiplicity() }
             }
         });
     	
     	this.label(2, {
-            position: .99,
+            position: .92,
             attrs: {
-                rect: { fill: 'white' },
-                text: { fill: 'black', 'font-size': 10, text: this.getTargetMultiplicity() }
+                rect: { fill: 'none' },
+                text: { fill: 'black', 'font-size': 10, dx:-12, dy:-8, text: this.getTargetMultiplicity() }
             }
         });
     	
-    	
+    	this.label(3, {
+            position: .5,
+            attrs: {
+                rect: { fill: 'none' },
+                text: { 'font-weight': 'normal', 'font-size': 9, dy:10 }
+            }
+        });
     },
     
     onFlowTypeChange: function(cell, type) {
@@ -405,18 +411,20 @@ joint.shapes.ontouml.Relationships = joint.dia.Link.extend({
 
             break;
         
-        case 'aggregation':
+        case 'characterization':
 
-            attrs = {
-        		'.marker-source': {
-                    d: 'M 20 8 L 10 0 L 0 8 L 10 16 z',
-                    fill: '#FFF'
+        	attrs = {};
+        	
+        	this.label(3, {
+                position: .5,
+                attrs: {
+                    text: { text: "\xABcharacterization\xBB" }
                 }
-            };
+            });
 
-            break; 
+            break;
             
-        case 'composition':
+        case 'componentOf':
 
             attrs = {
         		'.marker-source': {
@@ -425,8 +433,77 @@ joint.shapes.ontouml.Relationships = joint.dia.Link.extend({
                 }
             };
 
-            break;  
+            this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABcomponentOf\xBB" }
+                }
+            });
             
+            break;
+          
+        case 'formal':
+
+        	attrs = {};
+        	
+        	this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABformal\xBB" }
+                }
+            });
+
+            break;
+        
+        case 'material':
+
+        	attrs = {};
+        	
+        	this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABmaterial\xBB" }
+                }
+            });
+
+            break;
+            
+        case 'mediation':
+
+        	attrs = {};
+        	
+        	this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABmediation\xBB" }
+                }
+            });
+
+            break;
+         
+        case 'memberOf':
+
+        	attrs = {
+        		'.marker-source': {
+                    d: 'M 20 8 L 10 0 L 0 8 L 10 16 z',
+                    fill: '#FFF'
+                }
+            };
+
+            this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABmemberOf\xBB" }
+                }
+            });
+            
+            break;
+        
         case 'specialization':
 
             attrs = {
@@ -437,6 +514,44 @@ joint.shapes.ontouml.Relationships = joint.dia.Link.extend({
             };
 
             break; 
+            
+        case 'subCollectionOf':
+
+        	attrs = {
+        		'.marker-source': {
+                    d: 'M 20 8 L 10 0 L 0 8 L 10 16 z',
+                    fill: '#FFF'
+                }
+            };
+
+            this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABsubCollectionOf\xBB" }
+                }
+            });
+            
+            break;
+            
+        case 'subQuantityOf':
+
+            attrs = {
+        		'.marker-source': {
+                    d: 'M 20 8 L 10 0 L 0 8 L 10 16 z',
+                    fill: '#000'
+                }
+            };
+
+            this.label(3, {
+                position: .5,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dy:10, text: "\xABsubQuantityOf\xBB" }
+                }
+            });
+            
+            break;
             
         default:
 
