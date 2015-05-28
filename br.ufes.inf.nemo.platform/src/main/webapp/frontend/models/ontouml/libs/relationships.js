@@ -7,7 +7,7 @@
  * }
  */
 
-var relationshipsKeys =
+relationshipsKeys =
 {
 	"a" : "association",
 	"b" : "memberOf",
@@ -38,7 +38,7 @@ var relationshipsKeys =
  * }
  */
 
-var relationships = 
+relationships = 
 {
 		"Kind": {
 			"Kind" : ["a","c","f","m"],

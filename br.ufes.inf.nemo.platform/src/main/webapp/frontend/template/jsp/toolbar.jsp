@@ -95,10 +95,10 @@
 								</li>
 							</ul>
 							
-							<button id="btn-show-hide" class="btn btn-default navbar-btn"
-								data-tooltip="Show/Hide Stencil" style="margin-left:-1px;">
+							<button id="btn-toggle-all-panes" class="btn btn-default navbar-btn"
+								data-tooltip="Toggle All Panes" style="margin-left:-1px;">
 								<img style="height:20px;" src="frontend/template/img/show_hide.png"
-									alt="Show/Hide Stencil">
+									alt="Toggle All Panes">
 							</button>
 							
 						</div>
@@ -164,35 +164,41 @@
 	</div>
 </nav>
 
-<div id="wrapper">
+<!-- LAYOUT -->
+<div class="layout">
+
+	<!-- TABS/PAPER -->
+	<div class="ui-layout-center" >
+		<div id="tabs" class="ui-layout-center noselect">
+			<ul>
+				<li><a href="#diagram" id="diagram1">Diagram</a> <span
+					class="ui-icon ui-icon-close"></span></li>
+			</ul>
+			<div id="diagram">
+				<!-- PAPER  -->
+				<div id="content">
+					<div class="paper-container"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- VIEWS:(ex.:CONSOLE) -->
+	<div class="ui-layout-south">
+	</div>
+	
+	<!-- STENCIL -->
+	<div class="ui-layout-east">
+		<div class="stencil-container">
+			<button class="btn-expand" title="Expand all">+</button>
+			<button class="btn-collapse" title="Collapse all">-</button>
+		</div>
+	</div>
 	
 	<!-- INSPECTOR -->
-	<div class="inspector-paper-container moveable">
+	<div class="ui-layout-west">
 		<div class="inspector-container"></div>
 		<div class="inspector-paper"></div>
 	</div>
-	
-	<!-- TABS -->
-	<div id="tabs" class="ui-layout-center">
-	  <ul>
-	    <li>
-	    	<a href="#diagram" id="diagram1">Diagram</a>
-	    	<span class="ui-icon ui-icon-close"></span>
-	    </li>
-	  </ul>
-	  <div id="diagram">
-		<!-- PAPER  -->
-		<div id="content">
-			<div class="paper-container"></div>
-		</div>
-	  </div>
-	</div>
 </div>
-
-<!-- STENCIL -->
-<div class="stencil-container">
-	<button class="btn-expand" title="Expand all">+</button>
-	<button class="btn-collapse" title="Collapse all">-</button>
-</div>
-
 

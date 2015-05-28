@@ -3,23 +3,55 @@ nemo.platform.Model = Backbone.Model.extend({
 	
 	currentTabIndex : "",
 	graph : {},
+	
+	layout: undefined,
 	tree : undefined,
 	tabs : undefined,
 	
+	
 	initialize : function() {
-		
+
+		this.initializeLayout();
 		this.initializeTree();
 		this.initializeTabs();
 		
 		console.log("INITIALIZE NEMO PLATFORM MODEL!");
 	},
 	
+	//Procedure to initialize the layout
+	initializeLayout : function(){
+		
+	    this.layout = $ui('.layout').layout({ 
+	    	applyDefaultStyles: true,
+	    	east: {
+	    		resizable: false,
+	    	},
+	    	south: {
+	    		initClosed: true,
+	    	}
+	    });
+	    
+	    this.layout.sizePane('west', 240);
+	    this.layout.sizePane('east', 260);
+	    
+	    this.layout
+			.bindButton('#btn-toggle-all-panes', 'toggle', 'south')
+			.bindButton('#btn-toggle-all-panes', 'toggle', 'west')
+			.bindButton('#btn-toggle-all-panes', 'toggle', 'east')
+
+	    
+		$('.paper-scroller').css({ paddingLeft: 10 });
+		
+	},
+	
 	//Procedure to initialize model tabs
 	initializeTabs : function(){
 		
+		$ui('#viewTabs').tabs();
+		
 		this.tabs = $ui("#tabs");
 		this.tabs.tabs({
-	        heightStyle: "fill"
+	        //heightStyle: "fill",
 	    });
 		
 		console.log("INITIALIZE TABS!");
@@ -575,6 +607,27 @@ nemo.platform.Model = Backbone.Model.extend({
 			return true;
 		}
 		return false;
+	},
+	
+	/**
+	 * CONNECTION METHODS
+	 */
+	
+	 getConnections: function(source, target){
+
+		var connections = {};
+		
+		$.each(relationships[source][target], function (index, relationKey) {
+			
+			if(relationshipsKeys[relationKey]) {
+				connections[index] = relationshipsKeys[relationKey];
+			}
+			else {
+				connections[index] = relationKey;
+			}
+		});
+		
+		return connections;
 	},
 	
 	/**

@@ -7,7 +7,7 @@
  * }
  */
 
-var relationshipsKeys =
+relationshipsKeys =
 {
 	"a" : "access",
 	"c" : "composition",
@@ -39,7 +39,7 @@ var relationshipsKeys =
  * }
  */
 
-var relationships = 
+relationships = 
 {
 	 "BusinessActor" : {
 		 

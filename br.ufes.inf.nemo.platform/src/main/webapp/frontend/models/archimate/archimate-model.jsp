@@ -27,6 +27,7 @@
 	<script src="frontend/models/archimate/src/magicConnector.js"></script>
 	<script src="frontend/models/archimate/src/viewpointHandle.js"></script>
 
+	<script src="frontend/models/archimate/src/nemo.platform.archimate.js"></script>
 
 	<script>
 		// Uncomment the following line and comment the line after if you
@@ -38,12 +39,8 @@
 		var nemoApp = new nemo.platform.App;
 		nemoApp.start(app);
 		
-		//ArchiMate procedures
-		viewpointHanlde(app.graph, nemoApp.model);
-		resizing(app.graph);
-		embed(app.paper, app.graph);
-		attributes(app.paper, app.graph);
-		magicConnector(app.validator, app.graph);
+		var archimate = new nemo.platform.ArchiMate;
+		archimate.start(app, nemoApp);
 		
 	</script>
 

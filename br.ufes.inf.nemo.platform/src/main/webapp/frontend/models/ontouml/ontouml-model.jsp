@@ -14,6 +14,7 @@
 	
 	<!-- LIBS -->
 	<script src="frontend/models/ontouml/libs/ontouml.js"></script>
+	<script src="frontend/models/ontouml/libs/relationships.js"></script>
 	
 	<!-- CORE -->
 	<script src="frontend/models/ontouml/src/core/main.js"></script>

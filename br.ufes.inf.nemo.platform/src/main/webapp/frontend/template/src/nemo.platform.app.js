@@ -21,6 +21,7 @@ nemo.platform.App = Backbone.View.extend({
 		this.initializeGraphProcedures(app);
 		this.initializeValidatorProcedures(app);
 		this.initializePaperProcedures(app);
+		this.initializeConnectionProcedures(app);
 		
 	},
 	
@@ -176,26 +177,21 @@ nemo.platform.App = Backbone.View.extend({
 		
 		var model = this.model;
 		var tabs = this.model.tabs;
+		var layout = this.model.layout;
 		var graph = app.graph;
-		
-		//Procedure to provide the resize functionality to tree/inspector
-		$ui(".moveable").resizable({ handles: 'e' });
 		
 		//Procedure to handle with double click on tabs;
 		tabs.delegate( ".ui-tabs-anchor", "dblclick", function() {
-			if($('.inspector-paper-container').is(':visible') || $('.stencil-container').is(':visible')) {
-				$('.inspector-paper-container').hide();
-				$('.stencil-container').hide();
-				$('#wrapper').css({
-					width: '100%',
-				})
-			}
+			
+			if(layout.state.west.isClosed && layout.state.east.isClosed && layout.state.south.isClosed) {
+				layout.open('east');
+				layout.open('west');
+				layout.open('south');
+			} 
 			else {
-				$('.inspector-paper-container').show();
-				$('.stencil-container').show();
-				$('#wrapper').css({
-					width: 'calc(100% - 260px)',
-				})
+				layout.close('east');
+				layout.close('west');
+				layout.close('south');
 			}
 		});
 		
@@ -296,7 +292,6 @@ nemo.platform.App = Backbone.View.extend({
 			}
 			
 		});
-		
 	},
 	
 	initializeGraphProcedures : function(app) { 
@@ -337,6 +332,9 @@ nemo.platform.App = Backbone.View.extend({
 				}
 				
 			}
+			
+			$('.inspector-container').hide();
+			$('.inspector-paper').show();
 			
 		})
 		
@@ -567,20 +565,85 @@ nemo.platform.App = Backbone.View.extend({
 			$('.inspector-container').show();
 		});	
 		
-		$('#btn-show-hide').click(function(){
-			if($('.stencil-container').is(':visible')){
-				$('.stencil-container').hide();
-				$('#wrapper').css({
-					width: '100%',
-				})
+	},
+	
+	initializeConnectionProcedures: function(app) {
+		
+		var graph = app.graph;
+		var validator = app.validator;
+		var model = this.model;
+		
+		validator.validate('change:target change:source', function(err, command, next) {
+
+			var link = graph.getCell(command.data.id);
+			
+			if(!(link.isLink())){
+				return;
 			}
-			else{
-				$('.stencil-container').show();
-				$('#wrapper').css({
-					width: 'calc(100% - 260px)',
-				})
+
+			var sourceElement = graph.getCell(link.get('source').id);
+			var targetElement = graph.getCell(link.get('target').id);
+
+			if(!(sourceElement && targetElement)){
+				link.remove();
+				return;
 			}
+			
+			var sourceSubType = sourceElement.get('subType').replace(" ", "");
+			var targetSubType = targetElement.get('subType').replace(" ", "");
+
+			if(!relationships[sourceSubType][targetSubType]) {
+				link.remove();
+				return;
+			}
+			
+			connections = model.getConnections(sourceSubType, targetSubType);
+			
+			var source = sourceElement.get('name');
+			var target = targetElement.get('name');
+				
+			if(target === "Junction"){
+				target = "Junction";
+			}
+			
+			var content = '<table class="connection-container">' +
+							'<tr><th>' + source + ' -> ' + target + '</tr></th>';
+			
+			$.each(connections, function(index, value){
+				content = content + '<tr><td id="'+ value + '">' + value + '</td></tr>';
+			});
+				
+			content = content +  '</table>';
+			
+			var dialog = new joint.ui.Dialog({
+				width: 300,
+				type: 'neutral',
+				title: 'Create Connection',
+				content: content,
+				buttons: [
+				          { action: 'cancel', content: 'Cancel', position: 'left' },
+				          ]
+			});
+			dialog.on('action:cancel', cancel);
+			dialog.on('action:close', cancel);
+			dialog.open();
+			
+			function cancel() {
+				link.remove();
+				model.deleteNode(link.id, graph);
+				dialog.close();
+			};
+			
+			$('.connection-container td').click(function(){
+				
+				var connectionType = $(this).attr('id');
+				
+				link.set('flowType', connectionType);
+				dialog.close();
+				
+			});
 		});
+		
 		
 	},
 	

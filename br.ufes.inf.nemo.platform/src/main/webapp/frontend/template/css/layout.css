@@ -10,6 +10,11 @@
 	border: 0;
 }
 
+.layout {
+	top: 80px;
+	height: 100%;
+}
+
 .stencil-container {
    position: relative;
    height: 95%;
@@ -18,7 +23,7 @@
    bottom: 0;
    left: 0;
    right: 0;
-   top: 80px;
+/*    top: 80px; */
    border: 1px solid #e7e7e7;
 }
 
@@ -31,23 +36,6 @@
 	margin-top: -20px;
 }
 
-#tabs{
-	position: relative;
-	height: 100%;
-	width:auto; 
-  	bottom: 0;
-  	font-size: 13px;
-  	overflow:hidden;
-}
-
-#wrapper {
-	position: relative;
-	top: 80px;
-	float:left; 
-	width: calc(100% - 260px);
-	height: 100%;
-}
-
 .paper-container {
    	position: absolute;
 	top: 40px;
@@ -57,11 +45,24 @@
   	overflow: hidden;
 }
 
-.inspector-paper-container {
-	position: relative;
-	height: 98%;
-	width: 22%;
-	max-width: 60%;
-	float: left;
+.paper-scroller {
+	padding-left: 10px;
+}
+
+.paper {
+	top: 10px;
+}
+
+#tabs {
+	height: 100%;
+  	font-size: 13px;
+}
+
+.inspector-container {
+	display: none;
+}
+
+.inspector-paper {
+	border-top: 1px solid #e7e7e7;
 }
 

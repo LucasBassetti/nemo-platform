@@ -25,6 +25,9 @@
 <!-- JQUERY UI CONTEXT MENU -->
 <script src="core/jquery-ui-1.11.4/contextmenu/jquery.ui-contextmenu.min.js"></script>
 
+<!-- LAYOUT -->
+<script src="core/jquery-ui-1.11.4/layout/jquery.layout-latest.js"></script>
+
 <!-- JS -->
 <script src="frontend/template/src/core.js"></script>
 <script src="frontend/template/src/nemo.platform.model.js"></script>

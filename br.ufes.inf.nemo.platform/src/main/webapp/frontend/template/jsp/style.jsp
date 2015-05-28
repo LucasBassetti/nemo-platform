@@ -1,3 +1,7 @@
+<!-- LAYOUT -->
+<link href="core/jquery-ui-1.11.4/layout/layout-default-latest.css" rel="stylesheet">
+
+
 <!-- Bootstrap Core CSS -->
 <link href="core/sb-admin/bower-components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> -->

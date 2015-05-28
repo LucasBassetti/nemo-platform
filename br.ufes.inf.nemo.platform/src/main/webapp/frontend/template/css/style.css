@@ -5,11 +5,31 @@ html, body{
 	background-color: #f8f8f8;
 }
 
+tabs-one-line .scroller { 
+    overflow: auto; 
+} 
+tabs-one-line ul { 
+    width: 1660px; 
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .moveable {
     margin: 0px 10px 0px 0;
     background:#FFFFFF;
         overflow:hidden;
 /*     border: 1px solid black; */
+}
+
+.s-moveable {
+	overflow:hidden;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
@@ -67,4 +87,41 @@ html, body{
 .dialog .attributes label {
 	padding: 0;
 	vertical-align: super;
+}
+
+#layer-container {
+    margin: 0px;
+    padding: 0px;
+    width: 32px;
+    left: 0px;
+    position: absolute;
+}
+
+#layer-container {
+	overflow: hidden;
+	padding: 6px;
+    width: 32px;
+    height: 400px;
+    cursor:pointer;
+    transition: width 0.1s ease-in-out;
+    background-color: white;
+    border: 1px solid #cccccc;
+}
+
+#layer-container:hover {
+	width:200px;
+}
+
+.connection-container, .connection-container tr, .connection-container th, .connection-container td {
+	width: 100%;
+	padding: 5px;
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.connection-container td {
+	cursor: pointer;
+}
+
+.connection-container td:hover {
+	background-color: #e7e7e7;
 }
