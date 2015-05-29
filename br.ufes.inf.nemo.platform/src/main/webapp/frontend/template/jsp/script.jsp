@@ -28,6 +28,10 @@
 <!-- LAYOUT -->
 <script src="core/jquery-ui-1.11.4/layout/jquery.layout-latest.js"></script>
 
+<!-- WEB SPEECH -->
+<script src="core/webspeech/platform.js"></script>
+<script src="core/webspeech/webspeech.min.js"></script>
+
 <!-- JS -->
 <script src="frontend/template/src/core.js"></script>
 <script src="frontend/template/src/nemo.platform.model.js"></script>

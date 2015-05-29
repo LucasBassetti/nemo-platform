@@ -1,5 +1,5 @@
 <!-- TOOLBAR -->
-<nav class="navbar navbar-default navbar-static-top" role="navigation">
+<nav class="navbar navbar-default navbar-static-top noselect" role="navigation">
 
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -26,20 +26,10 @@
 							<img style="height: 20px" src="frontend/template/img/redo.png"
 								alt="Undo">
 						</button>
-						<button id="btn-clear" class="btn btn-default navbar-btn"
-							data-tooltip="Clear">
-							<img style="height: 20px" src="frontend/template/img/clear.png"
-								alt="Clear">
-						</button>
-<!-- 						<button id="btn-png" class="btn btn-default navbar-btn" -->
-<!-- 							data-tooltip="Open as PNG"> -->
-<!-- 							<img style="height: 20px" src="frontend/template/img/pngfile.png" -->
-<!-- 								alt="Open as PNG"> -->
-<!-- 						</button> -->
-<!-- 						<button id="btn-print" class="btn btn-default navbar-btn" -->
-<!-- 							data-tooltip="Open a Print Dialog"> -->
-<!-- 							<img style="height: 20px" src="frontend/template/img/print.png" -->
-<!-- 								alt="Open a Print Dialog"> -->
+<!-- 						<button id="btn-clear" class="btn btn-default navbar-btn" -->
+<!-- 							data-tooltip="Clear"> -->
+<!-- 							<img style="height: 20px" src="frontend/template/img/clear.png" -->
+<!-- 								alt="Clear"> -->
 <!-- 						</button> -->
 						<button id="btn-zoom-in" class="btn btn-default navbar-btn"
 							data-tooltip="Zoom in">
@@ -118,7 +108,7 @@
 
 </nav>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default noselect">
 	<div class="container-fluid">
 
 		<div class="collapse navbar-collapse"
@@ -165,11 +155,11 @@
 </nav>
 
 <!-- LAYOUT -->
-<div class="layout">
+<div class="layout noselect">
 
 	<!-- TABS/PAPER -->
 	<div class="ui-layout-center" >
-		<div id="tabs" class="ui-layout-center noselect">
+		<div id="tabs">
 			<ul>
 				<li><a href="#diagram" id="diagram1">Diagram</a> <span
 					class="ui-icon ui-icon-close"></span></li>

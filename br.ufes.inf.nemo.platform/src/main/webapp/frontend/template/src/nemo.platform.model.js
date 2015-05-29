@@ -23,9 +23,15 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	    this.layout = $ui('.layout').layout({ 
 	    	applyDefaultStyles: true,
+	    	//Stencil
 	    	east: {
 	    		resizable: false,
 	    	},
+	    	//Inspector
+	    	west: {
+	    		
+	    	},
+	    	//View(ex.:Console)
 	    	south: {
 	    		initClosed: true,
 	    	}
@@ -39,15 +45,15 @@ nemo.platform.Model = Backbone.Model.extend({
 			.bindButton('#btn-toggle-all-panes', 'toggle', 'west')
 			.bindButton('#btn-toggle-all-panes', 'toggle', 'east')
 
+		$('.paper-scroller').scrollLeft(265);
+	    $('.paper-scroller').scrollTop(0);	
 	    
-		$('.paper-scroller').css({ paddingLeft: 10 });
-		
 	},
 	
 	//Procedure to initialize model tabs
 	initializeTabs : function(){
 		
-		$ui('#viewTabs').tabs();
+//		$ui('#viewTabs').tabs();
 		
 		this.tabs = $ui("#tabs");
 		this.tabs.tabs({
@@ -628,6 +634,15 @@ nemo.platform.Model = Backbone.Model.extend({
 		});
 		
 		return connections;
+	},
+	
+	/**
+	 * WEB SPEECH METHODS
+	 */
+	
+	speak: function(text) {
+		speaker	= new RobotSpeaker();
+		speaker.speak("en", text);
 	},
 	
 	/**

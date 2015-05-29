@@ -17,7 +17,7 @@
 
 .stencil-container {
    position: relative;
-   height: 95%;
+   height: 100%;
    float:left;
    width: 260px;
    bottom: 0;
@@ -43,10 +43,6 @@
   	right: 0;
   	bottom: 10px;
   	overflow: hidden;
-}
-
-.paper-scroller {
-	padding-left: 10px;
 }
 
 .paper {

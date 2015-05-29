@@ -21,23 +21,8 @@ tabs-one-line ul {
     user-select: none;
 }
 
-.moveable {
-    margin: 0px 10px 0px 0;
-    background:#FFFFFF;
-        overflow:hidden;
-/*     border: 1px solid black; */
-}
-
-.s-moveable {
-	overflow:hidden;
-}
-
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
 	cursor: pointer;
-}
-
-.ui-resizable-e {
-	width: 10px;
 }
 
 .navbar-nav > li > a {

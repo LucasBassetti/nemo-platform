@@ -77,7 +77,7 @@ var Rappid = Backbone.Router.extend({
 
         this.paperScroller = new joint.ui.PaperScroller({
             autoResizePaper: true,
-            padding: 50,
+            padding: 0,
             paper: this.paper
         });
 
