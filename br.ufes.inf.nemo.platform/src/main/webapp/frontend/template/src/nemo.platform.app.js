@@ -16,20 +16,52 @@ nemo.platform.App = Backbone.View.extend({
 		//initialize model
 		this.model.newTab("diagram1", app.graph);
 		
+		this.initializeToolbarButtonsProcedures(app);
 		this.initializeTreeProcedures(app);
 		this.initializeTabsProcedures(app);
 		this.initializeGraphProcedures(app);
 		this.initializeValidatorProcedures(app);
 		this.initializePaperProcedures(app);
-		this.initializeConnectionProcedures(app);
+		this.initializeRelationshipsProcedures(app);
 		
 	},
 	
+	/**
+	 * Toolbar Buttons procedures
+	 */
+	initializeToolbarButtonsProcedures : function(app) {
+		
+		var graph = app.graph;
+		var paper = app.paper;
+		var model = this.model;
+		
+		$('#btn-save').click(function(){
+			model.saveTree();
+		});
+		
+		//Show inpector paper when click on blank position  
+		paper.on('blank:pointerclick', function(evt, x, y) {
+			$('.inspector-paper').show();
+			$('.inspector-container').hide();
+		});
+		
+		//Show inpector container when click on cell position
+		paper.on('cell:pointerclick', function(cellView, evt, opt) {
+			$('.inspector-paper').hide();
+			$('.inspector-container').show();
+		});	
+		
+	},
+	
+	/**
+	 * Tree procedures
+	 */
 	initializeTreeProcedures : function(app) {
 		
 		var graph = app.graph;
 		var model = this.model;
 		
+		//Handle with delete nodes on tree
 		$ui('.inspector-paper').on('delete_node.jstree', function (e, data) {
 			
 			$.each(data.node.children_d, function(index, nodeId){
@@ -173,6 +205,9 @@ nemo.platform.App = Backbone.View.extend({
 		
 	},
 	
+	/**
+	 * Tabs Procedures
+	 */
 	initializeTabsProcedures : function(app){
 		
 		var model = this.model;
@@ -294,6 +329,9 @@ nemo.platform.App = Backbone.View.extend({
 		});
 	},
 	
+	/**
+	 * Graphs Procedures
+	 */
 	initializeGraphProcedures : function(app) { 
 
 		var graph = app.graph;
@@ -359,6 +397,7 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
+		//Rename all graphs when click on document
 		$(document).click(function() {
 			if(isRenamedNode){
 				model.renameTreeCell(cellRenamed, graph);
@@ -394,12 +433,16 @@ nemo.platform.App = Backbone.View.extend({
 		
 	},
 	
+	/**
+	 * Validator Procedures
+	 */
 	initializeValidatorProcedures : function(app) {
 		
 		var graph = app.graph;
 		var validator = app.validator;
 		var model = this.model;
 		
+		//Connection validator
 		validator.validate('change:source change:target change:flowType', function(err, command, next) {
 
 			var link = graph.getCell(command.data.id);
@@ -430,15 +473,18 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
-		
 	},
 	
+	/**
+	 * Paper Procedures
+	 */
 	initializePaperProcedures : function(app) {
 		
 		graph = app.graph;
 		paper = app.paper;
 		model = this.model;
 		
+		//Create paper contextmenu
 		$ui('.paper').contextmenu({
 			delegate: '.rotatable',
 		    menu: [
@@ -450,6 +496,7 @@ nemo.platform.App = Backbone.View.extend({
 //		            {title: "Sub 2", cmd: "sub1"}
 //		            ]}
 		        ],
+		    //Call methods when selected
 		    select: function(event, ui) {
 		        if(ui.cmd === 'deleteFromModel') {
 		        	deleteFromModel();
@@ -466,6 +513,7 @@ nemo.platform.App = Backbone.View.extend({
 		
 		var cellId;
 		
+		//Set cell id when click with moude right button
 		paper.$el.on('contextmenu', function(e) { 
 		    e.stopPropagation(); // Stop bubbling so that the paper does not handle mousedown.
 		    e.preventDefault();  // Prevent displaying default browser context menu.
@@ -475,21 +523,25 @@ nemo.platform.App = Backbone.View.extend({
 		    }
 		});
 		
+		//Delete cell from model
 		function deleteFromModel() {
 			var node = model.getNode(cellId);
 			model.deleteNode(node);
 		}
 		
+		//Delete cell from view
 		function deleteFromView() {
 			var cell = graph.getCell(cellId);
 			cell.remove();
 		}
 		
+		//Show cell connected links
 		function showConnectedLinks() {
 			
 			var cell = graph.getCell(cellId);
 			var root = model.getNode('root');
 			
+			//Show link connected to the cell
 			$.each(root.children_d, function(index, nodeId){
 				
 				var node = model.getNode(nodeId)
@@ -513,6 +565,7 @@ nemo.platform.App = Backbone.View.extend({
 		
 		var ed;
 		
+		//Create textbox to change the name when double click on cell
 		paper.on('cell:pointerdblclick', function(cellView, evt) {
 		    
 			var text = joint.ui.TextEditor.getTextElement(evt.target);
@@ -533,46 +586,32 @@ nemo.platform.App = Backbone.View.extend({
 		    
 		});
 		
+		//Remove textbox when click on blank position of paper
 		paper.on('blank:pointerclick', function(cellView, evt) {
 			if (ed){
 	        	ed.remove();   // Remove old editor if there was one.
 	        }
 		});
 		
+		//Remove textbox when click on cell
 		paper.on('cell:pointerclick', function(cellView, evt) {
 			if (ed){
 	        	ed.remove();   // Remove old editor if there was one.
 	        }
 		});
 		
-		
-		/*
-		 * ====================
-		 * TOOLBAR PROCEDURES
-		 * ====================
-		 */
-		
-		var inspectorCollapsed = false;
-		var inpectorType = undefined;
-		
-		paper.on('blank:pointerclick', function(evt, x, y) {
-			$('.inspector-paper').show();
-			$('.inspector-container').hide();
-		});
-		
-		paper.on('cell:pointerclick', function(cellView, evt, opt) {
-			$('.inspector-paper').hide();
-			$('.inspector-container').show();
-		});	
-		
 	},
 	
-	initializeConnectionProcedures: function(app) {
+	/**
+	 * Relationships procedures
+	 */
+	initializeRelationshipsProcedures: function(app) {
 		
 		var graph = app.graph;
 		var validator = app.validator;
 		var model = this.model;
 		
+		//Create relatiohips options
 		validator.validate('change:target change:source', function(err, command, next) {
 
 			var link = graph.getCell(command.data.id);
@@ -643,7 +682,6 @@ nemo.platform.App = Backbone.View.extend({
 				
 			});
 		});
-		
 		
 	},
 	

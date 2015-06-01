@@ -8,7 +8,7 @@
 // Run With REPL: node channelHub --repl
 // Type help in the REPL to bring up a help instructions.
 
-var joint = require('./plugins/index');
+var joint = require('./core/rappid-api/index');
 var Channel = require('./plugins/com/Channel/joint.com.Channel').Channel;
 var ChannelHub = require('./plugins/com/Channel/joint.com.Channel').ChannelHub;
 

@@ -32,7 +32,7 @@ var Rappid = Backbone.Router.extend({
         // this.initializeValidator();
         // Commented out by default. You need to run `node channelHub.js` in order to make
         // channels working. See the documentation to the joint.com.Channel plugin for details.
-        this.initializeChannel('ws://jointjs.com:4141');
+        //this.initializeChannel('ws://localhost:4141');
         if (this.options.channelUrl) {
             this.initializeChannel(this.options.channelUrl);
         }

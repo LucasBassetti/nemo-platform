@@ -119,13 +119,13 @@
 						<span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Open</a></li>
-						<li><a href="#">Save</a></li>
-						<li><a href="#">Save as</a></li>
+						<li><a href="#" id="btn-open">Open</a></li>
+						<li><a href="#" id="btn-save">Save</a></li>
+						<li><a href="#" id="btn-saveAs">Save as</a></li>
 						<li class="divider"></li>
 						<li><a href="#" id="btn-print">Print</a></li>
 						<li class="divider"></li>
-						<li><a href="index.htm">Exit</a></li>
+						<li><a href="index.htm" id="btn-exit">Exit</a></li>
 					</ul></li>
 			</ul>
 			

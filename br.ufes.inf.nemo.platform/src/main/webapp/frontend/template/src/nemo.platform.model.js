@@ -53,8 +53,6 @@ nemo.platform.Model = Backbone.Model.extend({
 	//Procedure to initialize model tabs
 	initializeTabs : function(){
 		
-//		$ui('#viewTabs').tabs();
-		
 		this.tabs = $ui("#tabs");
 		this.tabs.tabs({
 	        //heightStyle: "fill",
@@ -613,6 +611,18 @@ nemo.platform.Model = Backbone.Model.extend({
 			return true;
 		}
 		return false;
+	},
+	
+	saveTree : function() {
+		
+		var json = this.getJSONTree();
+		console.log('SAVE: ' + JSON.stringify(json));
+		
+	},
+	
+	//get tree in JSON format
+	getJSONTree : function() {
+		return this.tree.get_json();
 	},
 	
 	/**

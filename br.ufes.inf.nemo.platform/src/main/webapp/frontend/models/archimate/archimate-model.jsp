@@ -6,17 +6,17 @@
 	
     <%@include file="/frontend/template/template-header.jsp"%>
 	<link href="frontend/models/archimate/css/style.css" rel="stylesheet">
+	
 
 </head>
 <body>
 
 	<%@include file="/frontend/template/template-body.jsp"%>
-	
+
 	<script src="frontend/models/archimate/libs/archimate.js"></script>
 	<script src="frontend/models/archimate/libs/relationships.js"></script>
 	<script src="frontend/models/archimate/libs/viewpoint.js"></script>
-	
-	<script src="frontend/models/archimate/src/core/channelHub.js"></script>
+
 	<script src="frontend/models/archimate/src/core/main.js"></script>
 	<script src="frontend/models/archimate/src/core/inspector.js"></script>
 	<script src="frontend/models/archimate/src/core/keyboard.js"></script>
@@ -33,8 +33,8 @@
 	<script>
 		// Uncomment the following line and comment the line after if you
 		// want to use channels.
-		var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
-		//var app = new Rappid;
+		//var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
+		var app = new Rappid;
 		Backbone.history.start();
 		
 		var nemoApp = new nemo.platform.App;
