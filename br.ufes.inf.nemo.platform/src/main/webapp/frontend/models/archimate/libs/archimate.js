@@ -1650,6 +1650,107 @@ joint.shapes.archimate.Gap = joint.shapes.archimate.Node.extend({
 });
 joint.shapes.archimate.GapView = joint.shapes.basic.GenericView;
 
+//Group
+
+joint.shapes.archimate.Group = joint.shapes.basic.Generic.extend({
+	
+	markup: [
+		'<g class="rotatable">',
+			'<g class="scalable">',
+				'<path class="name-rect" d="M 0 0 50 0 50 15 100 15 100 100 0 100 z"/>',//0 15 50 15 50 0 "/>',
+				'<path style="stroke:#000000;stroke-width:1;stroke-dasharray:5.5" d="M 0 15 50 15" />',
+			'</g>',
+			'<text class="name-text"/>',
+		'</g>'
+	].join(''),
+	
+	 defaults: joint.util.deepSupplement({
+		 
+		 type: 'archimate.Group',
+		 subType: 'Group',
+
+	        attrs: {
+	        	rect: {
+	        		rx: 2,
+	        		ry: 2,
+	                width: 100,
+	                height: 100
+	            },
+	            '.name-rect': { 
+	            	'stroke': '#000000', 
+	            	'stroke-width': 1, 
+	            	'stroke-dasharray': '5,5',
+	            	'fill': '#FFFFFF' 
+	            },
+	            '.name-text': {
+	                'ref': '.name-rect', 
+	                'ref-y': .075, 
+	                'ref-x': .25, 
+	                'text-anchor': 'middle', 
+	                'y-alignment': 'middle', 
+	                'font-weight': 'normal',
+	                'fill': '#000000', 
+	                'font-size': 12, 
+	                'font-family': 'Arial'
+	            },
+	            '.object': {
+	            	'ref': '.name-rect', 
+	            	'ref-y': 1, 
+	            	'ref-x': 0.999, 
+	            	'text-anchor': 'end',
+	            	'fill':'none', 
+	            	'stroke':'#000000', 
+	            	'stroke-width': 1.2, 
+	            	'stroke-opacity': 1
+	            }
+	            
+	        },
+	        
+		 
+	 }, joint.shapes.basic.Generic.prototype.defaults),
+	
+	 initialize: function() {
+
+        this.on('change:name', function() {
+            this.updateRectangles();
+            this.trigger('update');
+        }, this);
+
+        this.updateRectangles();
+
+	 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
+    },
+
+    getClassName: function() {
+        return this.get('name');
+    },
+
+    updateRectangles: function() {
+
+        var attrs = this.get('attrs');
+
+        var rects = [
+            { type: 'name', text: this.getClassName() }
+        ];
+
+        var offsetY = 0;
+
+        _.each(rects, function(rect) {
+
+            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
+            var rectHeight = lines.length * 20 + 20;
+
+            attrs['.' + rect.type + '-text'].text = lines.join('\n');
+            //attrs['.' + rect.type + '-rect'].height = rectHeight;
+            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
+
+            offsetY += rectHeight;
+        });
+    }
+
+});
+joint.shapes.archimate.GroupView = joint.shapes.basic.GenericView;
+
 /** RELATIONSHIPS */
 
 //Junction
@@ -1712,7 +1813,6 @@ joint.shapes.archimate.Junction = joint.shapes.basic.Generic.extend({
 	 initialize: function() {
 		 joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
 	 },
-
 
 
 });

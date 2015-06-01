@@ -149,8 +149,12 @@ function embed(paper, graph){
 	 */
 	function adjustmentPosition(cell, embedded){
 		
+		if(cell.get('subType') === 'Group') {
+			return;
+		}
+		
 		if(embedded){
-			if(cell.get('subType') === 'Meaning'){
+			if(cell.get('subType') === 'Meaning') {
 				cell.attr('.name-text/ref-x', .5);
 				cell.attr('.name-text/ref-y', .2);
 			}

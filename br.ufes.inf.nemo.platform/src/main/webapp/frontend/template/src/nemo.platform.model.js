@@ -626,24 +626,24 @@ nemo.platform.Model = Backbone.Model.extend({
 	},
 	
 	/**
-	 * CONNECTION METHODS
+	 * RELATIONSHIPS METHODS
 	 */
 	
-	 getConnections: function(source, target){
+	 getRelationships: function(source, target){
 
-		var connections = {};
+		var eRelationships = {};
 		
 		$.each(relationships[source][target], function (index, relationKey) {
 			
 			if(relationshipsKeys[relationKey]) {
-				connections[index] = relationshipsKeys[relationKey];
+				eRelationships[index] = relationshipsKeys[relationKey];
 			}
 			else {
-				connections[index] = relationKey;
+				eRelationships[index] = relationKey;
 			}
 		});
 		
-		return connections;
+		return eRelationships;
 	},
 	
 	/**

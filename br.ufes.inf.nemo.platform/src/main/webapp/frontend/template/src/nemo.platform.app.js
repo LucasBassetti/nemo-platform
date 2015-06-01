@@ -20,7 +20,6 @@ nemo.platform.App = Backbone.View.extend({
 		this.initializeTreeProcedures(app);
 		this.initializeTabsProcedures(app);
 		this.initializeGraphProcedures(app);
-		this.initializeValidatorProcedures(app);
 		this.initializePaperProcedures(app);
 		this.initializeRelationshipsProcedures(app);
 		
@@ -365,10 +364,8 @@ nemo.platform.App = Backbone.View.extend({
 				var targetId = cell.get('target').id;
 				
 				if(!(sourceId && targetId)){
-					var node = model.getNode(cell.id);
-					model.deleteNode(node.id);
+					model.deleteNode(cell.id);
 				}
-				
 			}
 			
 			$('.inspector-container').hide();
@@ -429,48 +426,6 @@ nemo.platform.App = Backbone.View.extend({
 					node.data = cell;
 				}
 			}
-		});
-		
-	},
-	
-	/**
-	 * Validator Procedures
-	 */
-	initializeValidatorProcedures : function(app) {
-		
-		var graph = app.graph;
-		var validator = app.validator;
-		var model = this.model;
-		
-		//Connection validator
-		validator.validate('change:source change:target change:flowType', function(err, command, next) {
-
-			var link = graph.getCell(command.data.id);
-			
-			if(link.isLink()) {
-			
-				var source = graph.getCell(link.get('source').id);
-				var target = graph.getCell(link.get('target').id);
-				
-				if(!(source && target)) { return; }
-				
-				var node = model.getNode(link.id);
-				node.data = link;
-				
-				//if tab is the current, update it
-				var currentTabIndex = $(".ui-tabs-active").find("a").attr("id");
-				if(model.isCurrentTabIndex(currentTabIndex)) {
-					model.updateCurrentTab(graph);
-				}
-				
-				//update cell in all graphs
-				model.updateGraphsCell(link.id, graph);
-				
-				//load updated current graph
-				model.updateCurrentGraph(graph);
-				
-			};
-			
 		});
 		
 	},
@@ -611,7 +566,7 @@ nemo.platform.App = Backbone.View.extend({
 		var validator = app.validator;
 		var model = this.model;
 		
-		//Create relatiohips options
+		//Create relatiohips options 
 		validator.validate('change:target change:source', function(err, command, next) {
 
 			var link = graph.getCell(command.data.id);
@@ -623,6 +578,9 @@ nemo.platform.App = Backbone.View.extend({
 			var sourceElement = graph.getCell(link.get('source').id);
 			var targetElement = graph.getCell(link.get('target').id);
 
+			console.log('OI 1');
+			
+			//Remove if link does't have source or target
 			if(!(sourceElement && targetElement)){
 				link.remove();
 				return;
@@ -630,13 +588,29 @@ nemo.platform.App = Backbone.View.extend({
 			
 			var sourceSubType = sourceElement.get('subType').replace(" ", "");
 			var targetSubType = targetElement.get('subType').replace(" ", "");
-
-			if(!relationships[sourceSubType][targetSubType]) {
+			
+			console.log('OI 2');
+			
+			//Remove if link does't present in relationships source
+			if(!relationships[sourceSubType]) {
 				link.remove();
+				model.deleteNode(link.id);
 				return;
 			}
 			
-			connections = model.getConnections(sourceSubType, targetSubType);
+			console.log('OI 3');
+			
+			//Remove if link does't present in relationships target
+			if(!relationships[sourceSubType][targetSubType]) {
+				link.remove();
+				model.deleteNode(link.id);
+				return;
+			}
+			
+			console.log('OI 4');
+			
+			//Get relationships
+			var eRelationships = model.getRelationships(sourceSubType, targetSubType);
 			
 			var source = sourceElement.get('name');
 			var target = targetElement.get('name');
@@ -645,10 +619,10 @@ nemo.platform.App = Backbone.View.extend({
 				target = "Junction";
 			}
 			
-			var content = '<table class="connection-container">' +
+			var content = '<table class="relationships-container">' +
 							'<tr><th>' + source + ' -> ' + target + '</tr></th>';
 			
-			$.each(connections, function(index, value){
+			$.each(eRelationships, function(index, value){
 				content = content + '<tr><td id="'+ value + '">' + value + '</td></tr>';
 			});
 				
@@ -657,7 +631,7 @@ nemo.platform.App = Backbone.View.extend({
 			var dialog = new joint.ui.Dialog({
 				width: 300,
 				type: 'neutral',
-				title: 'Create Connection',
+				title: 'Create Relationship',
 				content: content,
 				buttons: [
 				          { action: 'cancel', content: 'Cancel', position: 'left' },
@@ -667,17 +641,35 @@ nemo.platform.App = Backbone.View.extend({
 			dialog.on('action:close', cancel);
 			dialog.open();
 			
+			console.log('OPEN');
+			
 			function cancel() {
 				link.remove();
 				model.deleteNode(link.id, graph);
 				dialog.close();
+				
+				console.log('CLOSE 1');
 			};
 			
-			$('.connection-container td').click(function(){
+			$('.relationships-container td').click(function(){
 				
-				var connectionType = $(this).attr('id');
+				var relationshipType = $(this).attr('id');
 				
-				link.set('flowType', connectionType);
+				link.set('flowType', relationshipType);
+				
+				var node = model.getNode(link.id);
+				node.data = link;
+				
+				//Update current tab
+				model.updateCurrentTab(graph);
+				
+				//update cell in all graphs
+				model.updateGraphsCell(link.id, graph);
+				
+				//load updated current graph
+				model.updateCurrentGraph(graph);
+				
+				//close dialog
 				dialog.close();
 				
 			});

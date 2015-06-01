@@ -72,7 +72,8 @@ Stencil.shapes = {
 	],
 	
 	relationships: [
-	   new joint.shapes.archimate.Junction({attrs: { '.name-text': { 'font-size': 7 } }}),             
+	   new joint.shapes.archimate.Junction({attrs: { '.name-text': { 'font-size': 7 } }}),     
+	   new joint.shapes.archimate.Group({name: 'Group', attrs: { '.name-text': { 'font-size': 8 } }}),
 	],
     
 };

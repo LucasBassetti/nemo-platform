@@ -164,5 +164,6 @@ var InspectorDefs = {
 	'archimate.Gap': archimateInputs,
 	
 	'archimate.Junction': archimateRelationshipsInputs,
+	'archimate.Group': archimateInputs,
 
 };

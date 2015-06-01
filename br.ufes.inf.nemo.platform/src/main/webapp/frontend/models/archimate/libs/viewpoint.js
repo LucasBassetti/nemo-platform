@@ -67,6 +67,7 @@ var viewpoint =
 		"Gap",
 		
 		"Junction",
+		"Group",
 	],
 
 	"Actor Co-operation": [

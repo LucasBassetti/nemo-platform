@@ -97,16 +97,16 @@ tabs-one-line ul {
 	width:200px;
 }
 
-.connection-container, .connection-container tr, .connection-container th, .connection-container td {
+.relationships-container, .relationships-container tr, .relationships-container th, .relationships-container td {
 	width: 100%;
 	padding: 5px;
 	border-bottom: 1px solid #e7e7e7;
 }
 
-.connection-container td {
+.relationships-container td {
 	cursor: pointer;
 }
 
-.connection-container td:hover {
+.relationships-container td:hover {
 	background-color: #e7e7e7;
 }
