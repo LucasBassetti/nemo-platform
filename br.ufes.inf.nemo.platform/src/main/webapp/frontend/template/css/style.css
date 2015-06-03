@@ -110,3 +110,15 @@ tabs-one-line ul {
 .relationships-container td:hover {
 	background-color: #e7e7e7;
 }
+
+.dialog #save-filename{
+	width: 75%;
+	padding: 5px;
+	font-size: 14px;
+}
+
+.dialog #name-error-message{
+	margin-top: 5px;
+	display: none;
+	color: red;
+}

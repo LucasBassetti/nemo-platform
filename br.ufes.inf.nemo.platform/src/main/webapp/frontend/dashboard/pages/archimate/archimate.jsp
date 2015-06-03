@@ -9,7 +9,7 @@
 
 	<div id="wrapper">
 		<%@include file="/frontend/dashboard/content/menu.jsp"%>
-		<%@include file="/frontend/dashboard/content/about-content.jsp"%>
+		<%@include file="/frontend/dashboard/pages/archimate/archimate-content.jsp"%>
 	</div>
 	<!-- /#wrapper -->
 	

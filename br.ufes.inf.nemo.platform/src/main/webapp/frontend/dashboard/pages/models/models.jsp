@@ -9,7 +9,7 @@
 
 	<div id="wrapper">
 		<%@include file="/frontend/dashboard/content/menu.jsp"%>
-		<%@include file="/frontend/dashboard/content/models/ontouml-content.jsp"%>
+		<%@include file="/frontend/dashboard/pages/models/models-content.jsp"%>
 	</div>
 	<!-- /#wrapper -->
 	

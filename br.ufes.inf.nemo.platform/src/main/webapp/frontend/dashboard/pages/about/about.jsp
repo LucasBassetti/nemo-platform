@@ -9,7 +9,7 @@
 
 	<div id="wrapper">
 		<%@include file="/frontend/dashboard/content/menu.jsp"%>
-		<%@include file="/frontend/dashboard/content/models/models-content.jsp"%>
+		<%@include file="/frontend/dashboard/pages/about/about-content.jsp"%>
 	</div>
 	<!-- /#wrapper -->
 	

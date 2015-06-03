@@ -14,6 +14,29 @@ import br.ufes.inf.nemo.platform.util.FileUtil;
 @Controller
 public class PlatformFileController {
 
+	/**
+	 * Procedure to check if a Topology file exist.
+	 * @param filename
+	 * @return
+	 */
+	@RequestMapping(value = "/checkModelFile", method = RequestMethod.POST)
+	protected @ResponseBody String checkModelFile(@RequestParam("stencil") String stencil, @RequestParam("filename") String filename){
+
+		filename = FileUtil.replaceSlash(stencil + "/" + filename + "/" + filename + FileUtil.NP_EXTENSION);
+		if(FileUtil.checkRepositoryFileExist(filename)){
+			return "exist";
+		}
+		
+		return null;
+	}
+	
+	
+	/**
+	 * Procedure to save tree
+	 * @param stencil
+	 * @param filename
+	 * @param tree
+	 */
 	@RequestMapping(value = "/saveTree", method = RequestMethod.POST)
 	public @ResponseBody void saveTree(@RequestParam("stencil") String stencil, @RequestParam("filename") String filename, @RequestParam("tree") String tree) {
 		// TODO Auto-generated method stub
@@ -29,6 +52,12 @@ public class PlatformFileController {
 		}
 	}
 	
+	/**
+	 * Procedure to save graph
+	 * @param stencil
+	 * @param filename
+	 * @param graph
+	 */
 	@RequestMapping(value = "/saveGraph", method = RequestMethod.POST)
 	public @ResponseBody void saveGraph(@RequestParam("stencil") String stencil, @RequestParam("filename") String filename, @RequestParam("graph") String graph) {
 		// TODO Auto-generated method stub
@@ -44,6 +73,22 @@ public class PlatformFileController {
 		}
 	}
 	
+	/**
+	 * Procedure to get all Model saved files.
+	 * @return
+	 */
+	@RequestMapping(value = "/getAllModels", method = RequestMethod.POST)
+	protected @ResponseBody String getAllModels(@RequestParam("stencil") String stencil){
+		String[] models = FileUtil.getAllRepositoryJSONFileNames(stencil);
+		return FileUtil.parseStringToJSON("model", models);
+	}
+	
+	/**
+	 * Procedure to open tree
+	 * @param stencil
+	 * @param filename
+	 * @return
+	 */
 	@RequestMapping(value = "/openTree", method = RequestMethod.POST)
 	public @ResponseBody String openTree(@RequestParam("stencil") String stencil, @RequestParam("filename") String filename){
 		
@@ -52,6 +97,12 @@ public class PlatformFileController {
 		
 	}
 	
+	/**
+	 * Procedure to open graph
+	 * @param stencil
+	 * @param filename
+	 * @return
+	 */
 	@RequestMapping(value = "/openGraph", method = RequestMethod.POST)
 	public @ResponseBody String openGraph(@RequestParam("stencil") String stencil, @RequestParam("filename") String filename){
 		

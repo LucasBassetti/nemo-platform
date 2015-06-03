@@ -37,17 +37,26 @@ nemo.platform.App = Backbone.View.extend({
 		var paper = app.paper;
 		var model = this.model;
 		
-		$('#btn-save').click(function(){
-			
+		//SaveAs tree
+		$('#btn-saveAs').click(function(){
 			model.updateCurrentTab(graph);
-			
-			model.saveTree("test");
-			model.saveGraph("test");
+			model.saveAsTree();
 		});
 		
+		//Save tree
+		$('#btn-save').click(function(){
+			model.updateCurrentTab(graph);
+			if($('#filename').val() === "") {
+				model.saveAsTree();
+			} 
+			else {
+				model.saveTree();
+			}
+		});
+		
+		//Open tree
 		$('#btn-open').click(function(){
-			model.openTree("test");
-			model.openGraph("test");
+			model.openTreeFromDialog();
 		});
 		
 		//Show inpector paper when click on blank position  

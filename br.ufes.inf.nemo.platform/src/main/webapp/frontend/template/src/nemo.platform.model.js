@@ -637,11 +637,93 @@ nemo.platform.Model = Backbone.Model.extend({
 		return false;
 	},
 	
+	//saveAs tree core data in file
+	saveAsTree : function() {
+		
+		var $this = this;
+		
+		var content = '<div id="save-dialog" title="Save Model">'
+			+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
+			+ '</div>'
+			+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
+			
+		var dialog = new joint.ui.Dialog({
+			width: 300,
+			type: 'neutral',
+			title: 'Save Model',
+			content: content,
+			buttons: [
+				{ action: 'cancel', content: 'Cancel', position: 'left' },
+				{ action: 'save', content: 'Save', position: 'left' }
+			]
+		});
+		
+		dialog.on('action:save', save);
+		dialog.on('action:cancel', cancel);
+		dialog.open();
+		
+		function cancel(){
+			dialog.close();
+		}
+
+		function save() {
+			if($('#save-filename').val() === "") {
+				$('#name-error-message').show();
+			}
+			else {
+				$('#filename').val($('#save-filename').val());
+				$this.checkTreeExist(dialog);
+			}
+		}
+	},
+	
+	//check if tree file exist
+	checkTreeExist : function(dialog) {
+		
+		var $this = this;
+		
+		$.ajax({
+			type: "POST",
+			url: "checkModelFile.htm",
+			data: {
+				'stencil' : $this.stencil,
+				'filename': $("#filename").val(),
+			},
+			success: function(data){ 		   
+
+				if(data == "exist"){		   
+					if (confirm('The file already exist, do you want to replace it?')) {
+						$this.saveTree();
+						dialog.close();
+					} 
+				}
+				else{
+					$this.saveTree();
+					dialog.close();
+				}
+			},
+			error : function(e) {
+				alert("error: " + e.status);
+				dialog.close();
+			}
+		});
+		
+	},
+	
 	//save tree core data in a file
-	saveTree : function(filename) {
+	saveTree : function() {
 		
 		var $this = this;
 		var jsonTree = this.getJSONTree();
+		
+		var saveDialog = new joint.ui.Dialog({
+			type: 'neutral' ,
+			width: 420,
+			draggable: false,
+			title: 'Model Saved! ',
+			content: 'The model ' + $('#filename').val() + ' was saved!',
+			open: function() {}
+		});
 		
 		$.ajax({
 		   type: "POST",
@@ -649,11 +731,13 @@ nemo.platform.Model = Backbone.Model.extend({
 		   url: 'saveTree.htm',
 		   data: {
 			 'stencil': $this.stencil,
-			 'filename': filename,
+			 'filename': $('#filename').val(),
 			 'tree': JSON.stringify(jsonTree)
 		   },
 		   success: function(){ 		   
 			   console.log('SAVE: ' + JSON.stringify(jsonTree));
+			   $this.saveGraph();
+			   saveDialog.open();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -662,10 +746,71 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
-	//open tree core data
-	openTree : function(filename) {
+	
+	openTreeFromDialog : function() {
 		
 		var $this = this;
+		
+		$.ajax({
+			type: "POST",
+			url: "getAllModels.htm",
+			dataType: 'json',
+			data: {
+				'stencil': $this.stencil,
+			},
+			success: function(data){ 		   
+				generateOpenTreeDialog(data);
+			},
+			error : function(e) {
+				alert("error: " + e.status);
+			}
+		});
+		
+		function generateOpenTreeDialog(data) {
+			
+			var content = '<form id="open">';
+			for(var i = 0; i < Object.keys(data).length; i++){
+				if(i == 0){
+					content = content + '<input type="radio" name="model" value="' + data[i].model + '" checked>' 
+					+ '<label>' + data[i].model + '</label> <br>';
+				}
+				else{
+					content = content + '<input type="radio" name="model" value="' + data[i].model + '">' 
+					+ '<label>' + data[i].model + '</label><br>';
+				}
+
+			}
+			content = content +  '</form>';
+
+			var dialog = new joint.ui.Dialog({
+				width: 300,
+				type: 'neutral',
+				title: 'Open Model',
+				content: content,
+				buttons: [
+				          { action: 'cancel', content: 'Cancel', position: 'left' },
+				          { action: 'open', content: 'Open', position: 'left' }
+				          ]
+			});
+			dialog.on('action:open', open);
+			dialog.on('action:cancel', dialog.close);
+			dialog.open();
+			
+			function open() {
+				$this.openTree();
+				dialog.close();
+			}
+		}
+		
+	},
+	
+	//open tree core data
+	openTree : function() {
+		
+		var filename = $('input[name=model]:checked', '#open').val();
+		var $this = this;
+		
+		console.log("FILE: " + filename);
 		
 		$.ajax({
 		   type: "POST",
@@ -677,9 +822,11 @@ nemo.platform.Model = Backbone.Model.extend({
 		   },
 		   dataType: 'json',
 		   success: function(jsonTree){ 	
+			   $("#filename").val(filename);
 			   $('.ui-tabs-nav').empty();
 			   $('#tabs').hide();
 			   $this.setJSONTree(jsonTree);
+			   $this.openGraph(filename);
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -700,7 +847,7 @@ nemo.platform.Model = Backbone.Model.extend({
 	},
 	
 	//save graph in a file
-	saveGraph : function(filename) {
+	saveGraph : function() {
 		
 		var $this = this;
 		var jsonGraph = this.getGraph();
@@ -711,7 +858,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		   url: 'saveGraph.htm',
 		   data: {
 			 'stencil': $this.stencil,
-			 'filename': filename,
+			 'filename': $('#filename').val(),
 			 'graph': JSON.stringify(jsonGraph),
 		   },
 		   success: function(){ 		   

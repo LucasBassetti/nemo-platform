@@ -7,6 +7,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 public class FileUtil {
 
 	public static String NP_EXTENSION = ".np";
@@ -56,6 +59,20 @@ public class FileUtil {
 			}
 		}
 		
+	}
+	
+	/**
+	 * Procedure to check if model file already exist in repository.
+	 * @param filename
+	 * @return
+	 */
+	public static Boolean checkRepositoryFileExist(String filename){
+		
+		if(FileUtil.checkFileExist(FileUtil.repositoryFolder + filename)){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -122,6 +139,14 @@ public class FileUtil {
 		printStream.print(content);
 		printStream.close();				
    	}
+    
+    /**
+     * Procedure to get all repository JSON file names. 
+     * @return
+     */
+    public static String[] getAllRepositoryJSONFileNames(String path){
+    	return getAllFolderNames(FileUtil.repositoryFolder + path);
+    }
     
     /**
     * Generic procedure to gett all folder names
@@ -195,6 +220,26 @@ public class FileUtil {
 		}
 		
 		return content;
+    	
+    }
+    
+    /**
+     * Procedure to parse a String[] to a JSON String file.
+     * @param filename
+     * @return
+     */
+    public static String parseStringToJSON(String property, String[] elements){
+    	
+    	JsonArray json = new JsonArray();
+
+		for(String element : elements){
+			JsonObject j = new JsonObject();
+			j.addProperty(property, element);
+			
+			json.add(j);
+		}
+		
+		return json.toString();
     	
     }
     

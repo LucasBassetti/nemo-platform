@@ -15,17 +15,17 @@ public class PlatformController {
 	
 	@RequestMapping("/models")
 	public String models(HttpServletRequest request) {		
-		return "dashboard/pages/models";
+		return "dashboard/pages/models/models";
 	}
 	
 	@RequestMapping("/about")
 	public String about(HttpServletRequest request) {		
-		return "dashboard/pages/about";
+		return "dashboard/pages/about/about";
 	}
 	
 	@RequestMapping("/archimate")
 	public String archimate(HttpServletRequest request) {		
-		return "dashboard/pages/archimate";
+		return "dashboard/pages/archimate/archimate";
 	}
 	
 	@RequestMapping("/archimate-model")
@@ -35,7 +35,7 @@ public class PlatformController {
 	
 	@RequestMapping("/ontouml")
 	public String ontouml(HttpServletRequest request) {		
-		return "dashboard/pages/ontouml";
+		return "dashboard/pages/ontouml/ontouml";
 	}
 	
 	@RequestMapping("/ontouml-model")
@@ -45,7 +45,7 @@ public class PlatformController {
 	
 	@RequestMapping("/mlt")
 	public String mlt(HttpServletRequest request) {		
-		return "dashboard/pages/mlt";
+		return "dashboard/pages/mlt/mlt";
 	}
 	
 	@RequestMapping("/mlt-model")

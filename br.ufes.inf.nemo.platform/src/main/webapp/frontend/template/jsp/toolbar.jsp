@@ -192,3 +192,5 @@
 	</div>
 </div>
 
+<!-- DIALOGS -->
+<input type="text" id="filename" style="display: none" />
