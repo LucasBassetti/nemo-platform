@@ -14,8 +14,27 @@ import br.ufes.inf.nemo.platform.util.FileUtil;
 @Controller
 public class PlatformFileController {
 
+	
 	/**
-	 * Procedure to check if a Topology file exist.
+	 * Procedure to delete a model.
+	 * @param filename
+	 */	
+	@RequestMapping("/deleteModel")
+	public @ResponseBody void deleteModel(@RequestParam("stencil") String stencil, @RequestParam("filename") String filename) {
+		
+		String path = FileUtil.replaceSlash(FileUtil.repositoryFolder + stencil + "/" + filename + "/");
+		File dir = new File(path);
+		
+		for(File file : dir.listFiles()){ 
+			file.delete();
+		}
+		
+		dir.delete();
+	}
+	
+	
+	/**
+	 * Procedure to check if a model file exist.
 	 * @param filename
 	 * @return
 	 */

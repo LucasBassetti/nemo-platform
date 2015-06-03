@@ -1,6 +1,7 @@
 var nemo = {
 		
 		platform : {},
+		dashboard : {},
 		
 };
 

@@ -26,6 +26,12 @@ nemo.platform.App = Backbone.View.extend({
 		this.initializePaperProcedures(app);
 		this.initializeRelationshipsProcedures(app);
 		
+		//Open from url
+		if (this.model.getUrlParameter('model')) {
+			var filename = this.model.getUrlParameter('model');
+			this.model.openTree(filename);
+		}
+		
 	},
 	
 	/**

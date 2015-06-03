@@ -14,6 +14,14 @@
 	<!-- /#wrapper -->
 	
 	<%@include file="/core/sb-admin/sb-admin-script.jsp"%>
+	<%@include file="/frontend/template/jsp/script.jsp"%>
+	
+	<script>
+		
+		var dashboard = new nemo.dashboard.Model();
+		dashboard.start("ontouml");
+	
+	</script>
 	
 </body>
 

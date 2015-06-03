@@ -746,6 +746,19 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
+	getUrlParameter : function(sParam)
+	{
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) 
+		{
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) 
+			{
+				return sParameterName[1];
+			}
+		}
+	},
 	
 	openTreeFromDialog : function() {
 		
@@ -797,7 +810,8 @@ nemo.platform.Model = Backbone.Model.extend({
 			dialog.open();
 			
 			function open() {
-				$this.openTree();
+				var filename = $('input[name=model]:checked', '#open').val();
+				$this.openTree(filename);
 				dialog.close();
 			}
 		}
@@ -805,12 +819,9 @@ nemo.platform.Model = Backbone.Model.extend({
 	},
 	
 	//open tree core data
-	openTree : function() {
+	openTree : function(filename) {
 		
-		var filename = $('input[name=model]:checked', '#open').val();
 		var $this = this;
-		
-		console.log("FILE: " + filename);
 		
 		$.ajax({
 		   type: "POST",

@@ -36,3 +36,4 @@
 <script src="frontend/template/src/core.js"></script>
 <script src="frontend/template/src/nemo.platform.model.js"></script>
 <script src="frontend/template/src/nemo.platform.app.js"></script>
+<script src="frontend/template/src/nemo.dashboard.model.js"></script>
