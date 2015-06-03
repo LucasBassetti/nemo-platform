@@ -6,12 +6,15 @@ nemo.platform.App = Backbone.View.extend({
 		console.log("INITIALIZE APP!");
 	},
 	
-	start : function(app) {
-		
+	start : function(app, stencil) {
+
 		console.log("START APP!");
 		
 		//create model
 		this.model = new nemo.platform.Model;
+		
+		//set stencil
+		this.model.setStencil(stencil);
 		
 		//initialize model
 		this.model.newTab("diagram1", app.graph);
@@ -35,7 +38,16 @@ nemo.platform.App = Backbone.View.extend({
 		var model = this.model;
 		
 		$('#btn-save').click(function(){
-			model.saveTree();
+			
+			model.updateCurrentTab(graph);
+			
+			model.saveTree("test");
+			model.saveGraph("test");
+		});
+		
+		$('#btn-open').click(function(){
+			model.openTree("test");
+			model.openGraph("test");
 		});
 		
 		//Show inpector paper when click on blank position  
@@ -165,8 +177,9 @@ nemo.platform.App = Backbone.View.extend({
 				
 				//If mouse position is in paper 
 				if(X1 == X2 || Y1 == Y2){
-					cell.get('position').x = paperPosition.X;
-					cell.get('position').y = paperPosition.Y;
+					//cell.get('position').x = paperPosition.X;
+					cell.position.x = paperPosition.X;
+					cell.position.y = paperPosition.Y;
 					graph.addCell(cell);
 					addConnectedLinks(cell);
 					model.updateCurrentTab(graph);
@@ -238,7 +251,6 @@ nemo.platform.App = Backbone.View.extend({
 			if(model.isCurrentTabIndex(tabIndex)) { return; }
 			
 			//If current tab index is NOT empty, update the current tab
-			console.log(!(model.isEmptyCurrentTabIndex()));
 			if(!(model.isEmptyCurrentTabIndex())) {
 				model.updateCurrentTab(graph);
 			}
@@ -615,8 +627,8 @@ nemo.platform.App = Backbone.View.extend({
 			var source = sourceElement.get('name');
 			var target = targetElement.get('name');
 				
-			if(target === "Junction"){
-				target = "Junction";
+			if(target === undefined){
+				target = targetElement.get('subType');
 			}
 			
 			var content = '<table class="relationships-container">' +

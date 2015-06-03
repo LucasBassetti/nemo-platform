@@ -88,10 +88,11 @@ var archimateRelationshipsInputs = {
 	    inputs: _.extend({
 	        attrs: {
 	            '.name-rect': inp({
-	                fill: { group: 'name', index: 4 },
-	                'stroke-width': { group: 'name', index: 5, min: 0, max: 30, defaultValue: 1 },
-	                'stroke-dasharray': { group: 'name', index: 6 },
+	                fill: { group: 'name', index: 2 },
+	                'stroke-width': { group: 'name', index: 3, min: 0, max: 30, defaultValue: 1 },
+	                'stroke-dasharray': { group: 'name', index: 4 },
 	            }),
+	            option: { type: 'select', options: ['AND', 'OR'], group: 'name', label: "Type", index: 1 },
 	        },
 	    }),
 	    

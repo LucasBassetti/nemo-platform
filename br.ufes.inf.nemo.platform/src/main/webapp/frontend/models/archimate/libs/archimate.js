@@ -13,7 +13,6 @@ if (typeof exports === 'object') {
     var _ = require('lodash');
 }
 
-
 joint.shapes.archimate = {}
 
 //Generic View

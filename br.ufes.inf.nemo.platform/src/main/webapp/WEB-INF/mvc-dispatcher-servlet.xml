@@ -25,5 +25,14 @@
 		</property>
 	</bean>
 	
+	<bean
+		class="br.ufes.inf.nemo.platform.util.FileUtil">
+		<!-- 
+			Default Folder Mac/Linux: /Users/{username}
+			Default Folder Windows: C:\\Users\\{username}  
+			NOTE: If you want, you can put in the property 'value' below the folders inside your {username} folder, ( e.g., "/example" , "/example/sub1/sub2" ) 
+		-->
+		<property name="path" value =""/>
+	</bean>
 	
 </beans>

@@ -38,7 +38,7 @@
 		Backbone.history.start();
 		
 		var nemoApp = new nemo.platform.App;
-		nemoApp.start(app);
+		nemoApp.start(app, "archimate");
 		
 		var archimate = new nemo.platform.ArchiMate;
 		archimate.start(app, nemoApp);

@@ -34,7 +34,7 @@
 		Backbone.history.start();
 		
 		var nemoApp = new nemo.platform.App;
-		nemoApp.start(app);
+		nemoApp.start(app, "ontouml");
 		
 		var ontouml = new nemo.platform.OntoUML;
 		ontouml.start(app, nemoApp);

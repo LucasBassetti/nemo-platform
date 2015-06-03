@@ -5,10 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.ufes.inf.nemo.platform.service.DBPediaService;
-
 @Controller
-public class platformController {
+public class PlatformController {
 
 	@RequestMapping("/index")
 	public String index(HttpServletRequest request) {		

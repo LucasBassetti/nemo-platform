@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.ufes.inf.nemo.platform.service.DBPediaService;
 
 @Controller
-public class archimateController {
+public class ArchimateController {
 
 	@RequestMapping(value = "/getDefinition", method = RequestMethod.POST)
 	public @ResponseBody String getDefinition(@RequestParam("cellName") String cellName){
-		
 		String definition = DBPediaService.getDefiniton(cellName);
-		
 		return definition;
 	}
+	
 	
 }

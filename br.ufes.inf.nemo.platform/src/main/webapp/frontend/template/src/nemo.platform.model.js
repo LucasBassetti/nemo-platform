@@ -8,6 +8,7 @@ nemo.platform.Model = Backbone.Model.extend({
 	tree : undefined,
 	tabs : undefined,
 	
+	stencil : undefined,
 	
 	initialize : function() {
 
@@ -16,6 +17,10 @@ nemo.platform.Model = Backbone.Model.extend({
 		this.initializeTabs();
 		
 		console.log("INITIALIZE NEMO PLATFORM MODEL!");
+	},
+	
+	setStencil : function(stencil) {
+		this.stencil = stencil;
 	},
 	
 	//Procedure to initialize the layout
@@ -501,7 +506,18 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 		if(!(source && target)) return;
 		
-		var newLinkName = link.get('flowType') + " (" + source.get('name') + " -> " +  target.get('name') + ")"
+		var newLinkName = undefined;
+		
+		if(source.get('name') && target.get('name') ) {
+			newLinkName = link.get('flowType') + " (" + source.get('name') + " -> " +  target.get('name') + ")"
+		}
+		else if (source.get('name')) {
+			newLinkName = link.get('flowType') + " (" + source.get('name') + " -> " +  target.get('subType') + ")"
+		}
+		else if (target.get('name')) {
+			newLinkName = link.get('flowType') + " (" + source.get('subType') + " -> " +  target.get('name') + ")"
+		}
+		
 		this.renameTreeNode(linkNode, newLinkName);
 	},
 	
@@ -540,9 +556,17 @@ nemo.platform.Model = Backbone.Model.extend({
 	},
 	
 	newCell : function(cell, graph) {
+		
+		var text = undefined;
+		if(cell.get('name')) {
+			text = cell.get('name') + " (" + cell.get('subType') + ")";
+		} else {
+			text = cell.get('subType') + " (" + cell.get('subType') + ")";
+		}
+		
 		var new_data = { 
 				"id": cell.id, 
-				"text": cell.get('name') + " (" + cell.get('subType') + ")",
+				"text": text,
 				"icon":"glyphicon glyphicon-stop", 
 				"type":"cell", 
 				"data" : graph.getCell(cell.id) 
@@ -613,16 +637,129 @@ nemo.platform.Model = Backbone.Model.extend({
 		return false;
 	},
 	
-	saveTree : function() {
+	//save tree core data in a file
+	saveTree : function(filename) {
 		
-		var json = this.getJSONTree();
-		console.log('SAVE: ' + JSON.stringify(json));
+		var $this = this;
+		var jsonTree = this.getJSONTree();
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: 'saveTree.htm',
+		   data: {
+			 'stencil': $this.stencil,
+			 'filename': filename,
+			 'tree': JSON.stringify(jsonTree)
+		   },
+		   success: function(){ 		   
+			   console.log('SAVE: ' + JSON.stringify(jsonTree));
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
 		
 	},
 	
-	//get tree in JSON format
+	//open tree core data
+	openTree : function(filename) {
+		
+		var $this = this;
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: 'openTree.htm',
+		   data: {
+			 'stencil': $this.stencil,
+			 'filename': filename,
+		   },
+		   dataType: 'json',
+		   success: function(jsonTree){ 	
+			   $('.ui-tabs-nav').empty();
+			   $('#tabs').hide();
+			   $this.setJSONTree(jsonTree);
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	//get tree core data in JSON format
 	getJSONTree : function() {
 		return this.tree.get_json();
+	},
+	
+	//set tree core data
+	setJSONTree : function(jsonTree) {
+		this.tree.settings.core.data = jsonTree;
+		this.tree.refresh(-1);
+	},
+	
+	//save graph in a file
+	saveGraph : function(filename) {
+		
+		var $this = this;
+		var jsonGraph = this.getGraph();
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: 'saveGraph.htm',
+		   data: {
+			 'stencil': $this.stencil,
+			 'filename': filename,
+			 'graph': JSON.stringify(jsonGraph),
+		   },
+		   success: function(){ 		   
+			   console.log('SAVE: ' + JSON.stringify(jsonGraph));
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	//open graph
+	openGraph : function(filename) {
+		
+		var $this = this;
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: 'openGraph.htm',
+		   data: {
+			 'stencil': $this.stencil,
+			 'filename': filename,
+		   },
+		   dataType: 'json',
+		   success: function(jsonGraph){ 	
+			   $this.setGraph(jsonGraph);
+			   //just to tab index not be empty
+			   $this.updateCurrentTabIndex("loaded");
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	//get graph
+	getGraph : function() {
+		return this.graph;
+		console.log('GET: ' + JSON.stringify(this.graph));
+	},
+	
+	//set graph
+	setGraph : function(jsonGraph) {
+		this.graph = jsonGraph;
+		console.log('OPEN: ' + JSON.stringify(jsonGraph));
 	},
 	
 	/**
