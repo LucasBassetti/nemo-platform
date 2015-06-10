@@ -9,6 +9,7 @@ nemo.dashboard.Model = Backbone.Model.extend({
 	start : function(stencil) {
 		
 		this.stencil = stencil;
+		this.initializeLoadingProcedure();
 		this.initializeDashboard();
 	},
 	
@@ -16,6 +17,18 @@ nemo.dashboard.Model = Backbone.Model.extend({
 		
 		console.log('STENCIL: ' + this.stencil);
 		this.getModels();
+	},
+	
+	initializeLoadingProcedure : function () {
+		
+		$('#loading')
+	    .hide()  // hide it initially
+	    .ajaxStart(function() {
+	        $(this).show();
+	    })
+	    .ajaxStop(function() {
+	        $(this).hide();
+	    });
 		
 	},
 	

@@ -32,4 +32,13 @@
   	font-weight: normal;
 }
 
+#loading
+{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -32px; /* -1 * image width / 2 */
+  margin-top: -32px; /* -1 * image height / 2 */
+}
+
 </style>

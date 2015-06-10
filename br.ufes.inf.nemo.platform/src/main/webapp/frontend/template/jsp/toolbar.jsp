@@ -137,6 +137,8 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#" id="btn-png">Export to PNG</a></li>
 						<li><a href="#" id="btn-svg">Export to SVG</a></li>
+						<li class="divider"></li>
+						<li><a href="#" id="btn-owl-exporter">Export to OWL</a></li>
 					</ul></li>
 			</ul>
 			

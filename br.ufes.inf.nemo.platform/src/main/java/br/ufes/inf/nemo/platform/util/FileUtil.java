@@ -7,6 +7,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -242,5 +244,21 @@ public class FileUtil {
 		return json.toString();
     	
     }
+    
+    /**
+     * Transform a JSON String to a Generic Java object
+     * @param json
+     * @param cls
+     * @return
+     */
+	public static <T> Object getJavaFromJSON(String json, Class<T> cls){
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return (T) mapper.readValue(json, cls);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
     
 }

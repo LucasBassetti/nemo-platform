@@ -23,3 +23,6 @@
 	</div>
 </div>
 <!-- /#page-wrapper -->
+
+<!-- LOADING -->
+<img id="loading" src="frontend/template/img/ajax-loader.gif">

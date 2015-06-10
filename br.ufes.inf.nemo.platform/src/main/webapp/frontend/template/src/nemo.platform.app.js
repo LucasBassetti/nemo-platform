@@ -77,6 +77,10 @@ nemo.platform.App = Backbone.View.extend({
 			$('.inspector-container').show();
 		});	
 		
+		$('#btn-owl-exporter').click(function() {
+			model.exportToOWL();
+		});
+		
 	},
 	
 	/**

@@ -942,6 +942,131 @@ nemo.platform.Model = Backbone.Model.extend({
 	},
 	
 	/**
+	 * EXPORT METHODS
+	 */
+	
+	//get all elements
+	getAllTreeElements : function(jsonElements) {
+		
+		var $this = this;
+		var elements = [];
+		
+		$.each(jsonElements, function(index, element) {
+			
+			elements.push(element);
+			
+			if(element.children !== "[]") {
+				elements = $.merge(elements, $this.getAllTreeElements(element.children))
+			}
+			
+		});
+		
+		return elements;
+	},
+	
+	//Export to OWL
+	exportToOWL: function() {
+		
+		var $this = this;
+		
+		var jsonTree = this.getJSONTree();
+		var jsonElements = this.getAllTreeElements(jsonTree);
+		
+		var namespace = "http://localhost:8080/nemo-platform/"
+		var model = { 
+				'nodes' : [],
+				'links' : [],
+		}
+		var links = {}
+			
+		$.each(jsonElements, function(index, e) {
+			
+			var element = $.parseJSON(JSON.stringify(e));
+			
+			if(element.type === 'cell') {
+				model['nodes'].push({
+					"iri": namespace + 'node#' + $this.cleanString(element.data.name),
+					"id": element.data.id,
+					"name": $this.cleanString(element.data.name),
+				});
+			}
+			
+			else if(element.type === 'link') {
+				
+				var s = $this.getNode(element.data.source.id)
+				var t = $this.getNode(element.data.target.id)
+				
+				var source = $.parseJSON(JSON.stringify(s));
+				var target = $.parseJSON(JSON.stringify(t));
+				
+				var sourceIri = namespace + 'node#' + $this.cleanString(source.data.name);
+				var targetIri = namespace + 'node#' + $this.cleanString(target.data.name);
+				
+				model['links'].push({
+					"iri": namespace + 'link#' + $this.cleanString(element.text),
+					"id": element.data.id,
+					"name": $this.cleanString(element.text),
+					"source": sourceIri,
+					"target": targetIri
+				});
+			}
+			
+		});
+		
+		$.ajax({
+		   type: "POST",
+		   url: "exportToOWL.htm",
+		   data : {
+			   "iri": namespace,
+			   "nodes": JSON.stringify(model['nodes']),
+			   "links": JSON.stringify(model['links']),
+		   },
+		   success: function(data){   
+			   $this.openXMLWindow(data);
+			   //$this.openDownloadWindows(data, "file.owl");
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	//replace characteres in string
+	cleanString : function(content) {
+		
+		content = content
+					.replace(/\ /g, "")
+					.replace(/\n/g,"")
+					.replace(/\r/g,"")
+					.replace("->", "_")
+					.replace(/\(/g, "_")
+					.replace(/\)/g, "")
+					
+		return content; 
+		
+	},
+	
+	//open XML window
+	openXMLWindow : function(content) {
+		var win = window.open(
+		   'data:application/xml,' + encodeURIComponent(
+		     content
+		   ),
+		   '_blank', "resizable=yes,width=600,height=600,toolbar=0,scrollbars=yes"
+		);
+	},
+	
+	//open download windoes
+	openDownloadWindows : function(content, file) {
+		var blob = new Blob([content]);
+		var link = document.createElement('a');
+		link.href = window.URL.createObjectURL(blob);
+		link.download = file;
+		link.click();
+	},
+	
+	/**
 	 * WEB SPEECH METHODS
 	 */
 	
