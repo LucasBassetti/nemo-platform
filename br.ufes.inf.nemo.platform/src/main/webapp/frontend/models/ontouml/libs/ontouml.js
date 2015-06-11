@@ -374,21 +374,45 @@ joint.shapes.ontouml.Relationships = joint.dia.Link.extend({
             }
         });
     	
-    	this.label(1, {
-            position: .08,
-            attrs: {
-                rect: { fill: 'none' },
-                text: { fill: 'black', 'font-size': 10, dx:12, dy:12, text: this.getSourceMultiplicity() }
-            }
-        });
+    	if(this.get('flowType') === 'specialization') {
+    		
+    		this.label(1, {
+                position: .08,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dx:12, dy:12, text: "" }
+                }
+            });
+        	
+        	this.label(2, {
+                position: .92,
+                attrs: {
+                    rect: { fill: 'none' },
+                    text: { fill: 'black', 'font-size': 10, dx:-12, dy:-8, text: "" }
+                }
+            });
+    		
+        	//console.log($('[data-name="Multiplicity"]'));
+    	}
     	
-    	this.label(2, {
-            position: .92,
-            attrs: {
-                rect: { fill: 'none' },
-                text: { fill: 'black', 'font-size': 10, dx:-12, dy:-8, text: this.getTargetMultiplicity() }
-            }
-        });
+    	else {
+	    	this.label(1, {
+	            position: .08,
+	            attrs: {
+	                rect: { fill: 'none' },
+	                text: { fill: 'black', 'font-size': 10, dx:12, dy:-8, text: this.getSourceMultiplicity() }
+	            }
+	        });
+	    	
+	    	this.label(2, {
+	            position: .92,
+	            attrs: {
+	                rect: { fill: 'none' },
+	                text: { fill: 'black', 'font-size': 10, dx:-12, dy:-8, text: this.getTargetMultiplicity() }
+	            }
+	        });
+	    	
+    	}
     	
     	this.label(3, {
             position: .5,

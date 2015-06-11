@@ -18,9 +18,9 @@ public class PlatformExporterController {
 	@RequestMapping(value = "/exportToOWL", method = RequestMethod.POST)
 	public @ResponseBody String exportToOWL(@RequestParam("iri") String iri, @RequestParam("nodes") String nodes, @RequestParam("links") String links) {
 		
-		System.out.println(iri);
-		System.out.println(nodes);
-		System.out.println(links);
+//		System.out.println(iri);
+//		System.out.println(nodes);
+//		System.out.println(links);
 		
 		ENode[] eNodes = (ENode[]) FileUtil.getJavaFromJSON(nodes, ENode[].class);
 		ELink[] eLinks = (ELink[]) FileUtil.getJavaFromJSON(links, ELink[].class);

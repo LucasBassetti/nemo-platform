@@ -92,7 +92,7 @@ var ontoumlRelationshipsInputs = {
 		inputs: _.extend({
 	        label: { type: 'text', group: 'label', index: 1, label: 'Label' },
 			sourceMultiplicity: { type: 'text', group: 'Multiplicity', index: 1, label: 'Source' },
-	        targetMultiplicity: { type: 'text', group: 'Multiplicity', index: 2, label: 'Target' }
+	        targetMultiplicity: { type: 'text', group: 'Multiplicity', index: 3, label: 'Target' },
 		}),	
 }
 

@@ -987,6 +987,54 @@ nemo.platform.Model = Backbone.Model.extend({
 		return elements;
 	},
 	
+	generateExportWizard : function(type) {
+		
+		var jsonTree = this.getJSONTree();
+		var jsonElements = this.getAllTreeElements(jsonTree);
+		
+		var content = '<form id="export" style="max-height:350px;overflow-y:scroll;overflow-x:hidden;">';
+		
+		content = content + 'Namespace: <input type="text" name="iri" value="http://localhost:8080/nemo-platform/" style="width:80%;"/> <br><hr>'
+		
+		$.each(jsonElements, function(index, e) {
+			var element = $.parseJSON(JSON.stringify(e));
+			if(element.type === 'cell' || element.type === 'link') {
+				content = content + '<input type="checkbox" name="element" value="' + element.id + '" checked>' 
+					+ '<label>' + element.text + '</label> <br>';
+			}
+		});
+		
+		content = content +  '</form>';
+
+		var $this = this;
+		var dialog = new joint.ui.Dialog({
+			width: 600,
+			type: 'neutral',
+			title: 'Export Wizard',
+			content: content,
+			buttons: [
+			          { action: 'cancel', content: 'Cancel', position: 'left' },
+			          { action: 'export', content: 'Export', position: 'left' }
+			          ]
+		});
+		dialog.on('action:export', exportElements);
+		dialog.on('action:cancel', dialog.close);
+		dialog.open();
+		
+		function exportElements() {
+			
+			switch(type) {
+				case 'owl':
+					$this.exportToOWL();
+					break;
+				default:
+					break;
+			}
+			
+			dialog.close();
+		}
+	},
+	
 	//Export to OWL
 	exportToOWL: function() {
 		

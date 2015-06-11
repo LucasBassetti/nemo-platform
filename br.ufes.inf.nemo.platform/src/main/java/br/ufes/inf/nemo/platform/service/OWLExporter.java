@@ -27,6 +27,11 @@ import br.ufes.inf.nemo.platform.model.ELink;
 import br.ufes.inf.nemo.platform.model.EModel;
 import br.ufes.inf.nemo.platform.model.ENode;
 
+/**
+ * OWL Exporter
+ * @author lucas
+ *
+ */
 public class OWLExporter implements Exporter {
 
 	private OWLOntologyManager manager;

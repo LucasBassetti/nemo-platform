@@ -23,6 +23,14 @@ nemo.platform.OntoUML = Backbone.View.extend({
 		var graph = this.app.graph;
 		var model = this.nemoApp.model;
 		
+		$.each(['show', 'hide'], function (i, ev) {
+			var el = $.fn[ev];
+			$.fn[ev] = function () {
+				this.trigger(ev);
+				return el.apply(this, arguments);
+			};
+		});
+		
 		graph.on('add', function(cell, collection, opt) {
 
 			if (!opt.stencil) return;
