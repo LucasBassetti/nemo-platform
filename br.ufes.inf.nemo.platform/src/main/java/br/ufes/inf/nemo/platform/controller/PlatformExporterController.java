@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.ufes.inf.nemo.platform.model.ELink;
-import br.ufes.inf.nemo.platform.model.EModel;
-import br.ufes.inf.nemo.platform.model.ENode;
+import br.ufes.inf.nemo.platform.model.JointLink;
+import br.ufes.inf.nemo.platform.model.JointGraph;
+import br.ufes.inf.nemo.platform.model.JointElement;
 import br.ufes.inf.nemo.platform.service.OWLExporter;
 import br.ufes.inf.nemo.platform.util.FileUtil;
 
@@ -22,13 +22,13 @@ public class PlatformExporterController {
 //		System.out.println(nodes);
 //		System.out.println(links);
 		
-		ENode[] eNodes = (ENode[]) FileUtil.getJavaFromJSON(nodes, ENode[].class);
-		ELink[] eLinks = (ELink[]) FileUtil.getJavaFromJSON(links, ELink[].class);
+		JointElement[] jointElements = (JointElement[]) FileUtil.getJavaFromJSON(nodes, JointElement[].class);
+		JointLink[] jointLinks = (JointLink[]) FileUtil.getJavaFromJSON(links, JointLink[].class);
 		
-		EModel eModel = new EModel(iri, eNodes, eLinks);
+		JointGraph jointGraph = new JointGraph(iri, jointElements, jointLinks);
 		
-		OWLExporter owlExporter = new OWLExporter(eModel.getIri());
-		return owlExporter.export(eModel);
+		OWLExporter owlExporter = new OWLExporter(jointGraph.getIri());
+		return owlExporter.export(jointGraph);
 		
 	}
 	

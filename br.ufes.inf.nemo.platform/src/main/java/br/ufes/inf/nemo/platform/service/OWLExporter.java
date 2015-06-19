@@ -23,9 +23,9 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 
 import br.ufes.inf.nemo.platform.interfaces.Exporter;
-import br.ufes.inf.nemo.platform.model.ELink;
-import br.ufes.inf.nemo.platform.model.EModel;
-import br.ufes.inf.nemo.platform.model.ENode;
+import br.ufes.inf.nemo.platform.model.JointLink;
+import br.ufes.inf.nemo.platform.model.JointGraph;
+import br.ufes.inf.nemo.platform.model.JointElement;
 
 /**
  * OWL Exporter
@@ -52,17 +52,17 @@ public class OWLExporter implements Exporter {
 	}
 	
 	@Override
-	public String export(EModel model) {
+	public String export(JointGraph graph) {
 		
 		//Generate Classes
-		for(ENode node : model.geteNodes()) {
-			String classIri = node.getIri();
+		for(JointElement element : graph.geteElements()) {
+			String classIri = element.getIri();
 			OWLClass owlClass = factory.getOWLClass(IRI.create(classIri));				
 			generateOWLDeclarationAxiom(owlClass);
 		}
 		
 		//Generate Links
-		for(ELink link : model.geteLinks()) {
+		for(JointLink link : graph.geteLinks()) {
 			String objectPropertyIri = link.getIri();
 			String domainIRI = link.getSource();
 			String rangeIRI = link.getTarget();

@@ -1,9 +1,9 @@
 package br.ufes.inf.nemo.platform.interfaces;
 
-import br.ufes.inf.nemo.platform.model.EModel;
+import br.ufes.inf.nemo.platform.model.JointGraph;
 
 public interface Exporter {
 
-	public String export(EModel model);
+	public String export(JointGraph graph);
 	
 }

@@ -1,10 +1,10 @@
 package br.ufes.inf.nemo.platform.model;
 
-public class ENode {
+public class JointElement {
 
 	String iri, id, name;
 	
-	public ENode() {}
+	public JointElement() {}
 
 	public String getIri() {
 		return iri;

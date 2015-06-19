@@ -1,10 +1,10 @@
 package br.ufes.inf.nemo.platform.model;
 
-public class ELink {
+public class JointLink {
 
 	String iri, id, name, source, target;
 	
-	public ELink() {}
+	public JointLink() {}
 
 	public String getIri() {
 		return iri;
