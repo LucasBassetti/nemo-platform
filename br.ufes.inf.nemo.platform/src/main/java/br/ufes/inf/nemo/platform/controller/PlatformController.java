@@ -18,6 +18,11 @@ public class PlatformController {
 		return "dashboard/pages/models/models";
 	}
 	
+	@RequestMapping("/settings")
+	public String settings(HttpServletRequest request) {		
+		return "dashboard/pages/settings/settings";
+	}
+	
 	@RequestMapping("/about")
 	public String about(HttpServletRequest request) {		
 		return "dashboard/pages/about/about";

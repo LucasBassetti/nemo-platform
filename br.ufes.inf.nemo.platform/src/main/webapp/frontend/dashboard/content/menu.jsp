@@ -50,7 +50,7 @@
 				<!-- MODELS -->
 				<li id="dropdown">
                      <a data-toggle="collapse" href="#dropdown-lvl2">
-                         <span class="fa fa-cogs fa-fw"></span> Models <span class="caret"></span>
+                         <span class="fa fa-sitemap fa-fw"></span> Models <span class="caret"></span>
                      </a>
                      <div id="dropdown-lvl2" class="panel-collapse collapse">
                      	<div class="panel-body">
@@ -68,6 +68,10 @@
 						</div>
 					</div>
                  </li>
+				
+				<!-- SETTINGS -->
+				<li><a href="settings.htm"><i class="fa fa-cogs fa-fw"></i>
+						Settings</a></li>
 				
 				<!-- ABOUT -->
 				<li><a href="about.htm"><i class="fa fa-question-circle fa-fw"></i>

@@ -82,6 +82,13 @@
 			<version>2.1</version>
 		</dependency>
 
+		<!-- URL Rewrite -->
+		<dependency>
+		    <groupId>org.tuckey</groupId>
+		    <artifactId>urlrewritefilter</artifactId>
+		    <version>4.0.3</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>

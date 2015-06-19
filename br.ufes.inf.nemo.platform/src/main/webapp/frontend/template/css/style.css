@@ -5,6 +5,10 @@ html, body{
 	background-color: #f8f8f8;
 }
 
+.jstree-contextmenu, .ui-menu {
+	z-index: 3;
+}
+
 tabs-one-line .scroller { 
     overflow: auto; 
 } 

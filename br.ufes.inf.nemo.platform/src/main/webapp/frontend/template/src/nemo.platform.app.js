@@ -500,7 +500,10 @@ nemo.platform.App = Backbone.View.extend({
 		    menu: [
 		        {title: "Delete from view", cmd: "deleteFromView", uiIcon: "ui-icon-circle-close"},
 		        {title: "Delete from model", cmd: "deleteFromModel", uiIcon: "ui-icon-close"},
+		        {title: "----"},
 		        {title: "Show connected links", cmd: "showConnectedLinks", uiIcon: "ui-icon-shuffle"},
+		        {title: "----"},
+		        {title: "Show LOD properties", cmd: "showLODProperties", uiIcon: "ui-icon-pencil"},
 //		        {title: "More", children: [
 //		            {title: "Sub 1", cmd: "sub1"},
 //		            {title: "Sub 2", cmd: "sub1"}
@@ -516,6 +519,9 @@ nemo.platform.App = Backbone.View.extend({
 		        }
 		        else if(ui.cmd === 'showConnectedLinks') {
 		        	showConnectedLinks();
+		        }
+		        else if(ui.cmd === 'showLODProperties') {
+		        	showLODProperties();
 		        }
 		    }
 		
@@ -571,6 +577,12 @@ nemo.platform.App = Backbone.View.extend({
 				}
 				
 			});
+		}
+		
+		function showLODProperties() {
+			
+			
+			
 		}
 		
 		var ed;

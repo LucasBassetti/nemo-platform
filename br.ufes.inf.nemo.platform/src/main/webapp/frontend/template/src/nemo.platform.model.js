@@ -1073,6 +1073,8 @@ nemo.platform.Model = Backbone.Model.extend({
 				var sourceIri = namespace + 'node#' + $this.cleanString(source.data.name);
 				var targetIri = namespace + 'node#' + $this.cleanString(target.data.name);
 				
+				console.log('LINK: ' + JSON.stringify(element.data.label));
+				
 				model['links'].push({
 					"iri": namespace + 'link#' + $this.cleanString(element.text),
 					"id": element.data.id,
