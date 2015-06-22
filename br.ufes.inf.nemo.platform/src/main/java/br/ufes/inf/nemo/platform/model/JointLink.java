@@ -1,8 +1,8 @@
 package br.ufes.inf.nemo.platform.model;
 
-public class JointLink {
-
-	String iri, id, name, source, target;
+public class JointLink implements JointCell {
+	
+	String iri, id, type, name, documentation, source, target;
 	
 	public JointLink() {}
 
@@ -13,7 +13,7 @@ public class JointLink {
 	public void setIri(String iri) {
 		this.iri = iri;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -22,12 +22,28 @@ public class JointLink {
 		this.id = id;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDocumentation() {
+		return documentation;
+	}
+
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
 	}
 
 	public String getSource() {

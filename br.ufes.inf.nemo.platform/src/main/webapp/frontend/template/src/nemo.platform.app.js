@@ -49,6 +49,7 @@ nemo.platform.App = Backbone.View.extend({
 		this.initializeGraphProcedures(app);
 		this.initializePaperProcedures(app);
 		this.initializeRelationshipsProcedures(app);
+		this.initializeLikedDataProcedures(app);
 		
 		//Open from url
 		if (this.model.getUrlParameter('model')) {
@@ -100,10 +101,6 @@ nemo.platform.App = Backbone.View.extend({
 			$('.inspector-paper').hide();
 			$('.inspector-container').show();
 		});	
-		
-		$('#btn-owl-exporter').click(function() {
-			model.generateExportWizard('owl');
-		});
 		
 	},
 	
@@ -645,8 +642,6 @@ nemo.platform.App = Backbone.View.extend({
 			var sourceElement = graph.getCell(link.get('source').id);
 			var targetElement = graph.getCell(link.get('target').id);
 
-			console.log('OI 1');
-			
 			//Remove if link does't have source or target
 			if(!(sourceElement && targetElement)){
 				link.remove();
@@ -673,8 +668,6 @@ nemo.platform.App = Backbone.View.extend({
 				model.deleteNode(link.id);
 				return;
 			}
-			
-			console.log('OI 4');
 			
 			//Get relationships
 			var eRelationships = model.getRelationships(sourceSubType, targetSubType);
@@ -708,14 +701,10 @@ nemo.platform.App = Backbone.View.extend({
 			dialog.on('action:close', cancel);
 			dialog.open();
 			
-			console.log('OPEN');
-			
 			function cancel() {
 				link.remove();
 				model.deleteNode(link.id, graph);
 				dialog.close();
-				
-				console.log('CLOSE 1');
 			};
 			
 			$('.relationships-container td').click(function(){
@@ -740,6 +729,82 @@ nemo.platform.App = Backbone.View.extend({
 				dialog.close();
 				
 			});
+		});
+		
+	},
+	
+	/**
+	 * Liked Data Procedures
+	 */
+	initializeLikedDataProcedures : function(app) {
+		
+		var graph = app.graph;
+		var model = this.model;
+		
+		$('#btn-owl-exporter').click(function() {
+			
+			var jsonTree = model.getJSONTree();
+			var jsonElements = model.getAllTreeElements(jsonTree);
+			
+			var content = '<form class="export">';
+			content = content + 'Prefix: <input type="text" id="ontologyPrefix" name="iri" value="' + model.ontology.prefix + '" readonly/>'
+			content = content + ' IRI: <input type="text" id="ontologyIRI" name="iri" value="' + model.ontology.iri + '" readonly/> <br>'
+			
+			var firstLink = true, firstElement = true;
+			$.each(jsonElements, function(index, e) {
+				var element = $.parseJSON(JSON.stringify(e));
+				
+				if(element.type === 'cell') {
+					
+					if(firstElement) {
+						content = content + '<h4> Elements </h4>';
+						firstElement = false;
+					}
+					
+					content = content + '<input type="checkbox" id="exportElement" name="element" value="' + element.id + '" checked>'
+					+ '<label>' + element.text + '</label> <br>';
+					
+				}
+				else if(element.type === 'link') {
+					
+					if(firstLink) {
+						content = content + '<h4> Relationships </h4>';
+						firstLink = false;
+					}
+					
+					content = content + '<input type="checkbox" id="exportElement" name="element" value="' + element.id + '" checked>'
+					+ '<label>' + element.text + '</label> <br>'; 
+				}
+			});
+			
+			content = content +  '</form>';
+
+			var $this = this;
+			var dialog = new joint.ui.Dialog({
+				width: 600,
+				type: 'neutral',
+				title: 'OWL Exporter Wizard',
+				content: content,
+				buttons: [
+				          { action: 'cancel', content: 'Cancel', position: 'left' },
+				          { action: 'export', content: 'Export', position: 'left' }
+				]
+			});
+			dialog.on('action:export', exportElements);
+			dialog.on('action:cancel', dialog.close);
+			dialog.open();
+			
+			function exportElements() {
+				model.exportToOWL();
+				dialog.close();
+			};
+		
+		});
+		
+		$('btn-prefix').click(function(){
+			
+			
+			
 		});
 		
 	},

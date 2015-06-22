@@ -24,14 +24,25 @@
 
 nemo.platform.Model = Backbone.Model.extend({
 	
+	//TEMPLATE VARS
 	currentTabIndex : "",
 	graph : {},
-	
 	layout: undefined,
 	tree : undefined,
 	tabs : undefined,
 	
+	//STENCIL VARS
 	stencil : undefined,
+	
+	//LOD VARS
+	ontology : {
+		prefix : "np",
+		iri : "http://localhost:8080/nemo-platform/ontology#",
+	},
+	namespacePrefixes : {
+		prefix : undefined,
+		iri : undefined,
+	},
 	
 	initialize : function() {
 
@@ -42,6 +53,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		console.log("INITIALIZE NEMO PLATFORM MODEL!");
 	},
 	
+	//Set stencil (when start application)
 	setStencil : function(stencil) {
 		this.stencil = stencil;
 	},
@@ -854,12 +866,19 @@ nemo.platform.Model = Backbone.Model.extend({
 			 'stencil': $this.stencil,
 			 'filename': filename,
 		   },
-		   dataType: 'json',
+		   //dataType: 'json',
 		   success: function(jsonTree){ 	
+			   
+			   console.log('TREE LOAD: ' + JSON.stringify(jsonTree));
+			   
+			   //set filename
 			   $("#filename").val(filename);
+			   //clean tabs
 			   $('.ui-tabs-nav').empty();
 			   $('#tabs').hide();
-			   $this.setJSONTree(jsonTree);
+			   //load tree
+			   $this.setJSONTree(JSON.parse(jsonTree));
+			   //load graph
 			   $this.openGraph(filename);
 		   },
 		   error : function(e) {
@@ -918,9 +937,9 @@ nemo.platform.Model = Backbone.Model.extend({
 			 'stencil': $this.stencil,
 			 'filename': filename,
 		   },
-		   dataType: 'json',
+		   //dataType: 'json',
 		   success: function(jsonGraph){ 	
-			   $this.setGraph(jsonGraph);
+			   $this.setGraph(JSON.parse(jsonGraph));
 			   //just to tab index not be empty
 			   $this.updateCurrentTabIndex("loaded");
 		   },
@@ -987,126 +1006,45 @@ nemo.platform.Model = Backbone.Model.extend({
 		return elements;
 	},
 	
-	generateExportWizard : function(type) {
-		
-		var jsonTree = this.getJSONTree();
-		var jsonElements = this.getAllTreeElements(jsonTree);
-		
-		var content = '<form id="export" style="max-height:350px;overflow-y:scroll;overflow-x:hidden;">';
-		
-		content = content + 'Namespace: <input type="text" name="iri" value="http://localhost:8080/nemo-platform/" style="width:80%;"/> <br><hr>'
-		
-		$.each(jsonElements, function(index, e) {
-			var element = $.parseJSON(JSON.stringify(e));
-			if(element.type === 'cell' || element.type === 'link') {
-				content = content + '<input type="checkbox" name="element" value="' + element.id + '" checked>' 
-					+ '<label>' + element.text + '</label> <br>';
-			}
-		});
-		
-		content = content +  '</form>';
-
-		var $this = this;
-		var dialog = new joint.ui.Dialog({
-			width: 600,
-			type: 'neutral',
-			title: 'Export Wizard',
-			content: content,
-			buttons: [
-			          { action: 'cancel', content: 'Cancel', position: 'left' },
-			          { action: 'export', content: 'Export', position: 'left' }
-			          ]
-		});
-		dialog.on('action:export', exportElements);
-		dialog.on('action:cancel', dialog.close);
-		dialog.open();
-		
-		function exportElements() {
-			
-			switch(type) {
-				case 'owl':
-					$this.exportToOWL();
-					break;
-				default:
-					break;
-			}
-			
-			dialog.close();
-		}
-	},
-	
-	//Export to OWL
-	exportToOWL: function() {
-		
-		var $this = this;
-		
-		var jsonTree = this.getJSONTree();
-		var jsonElements = this.getAllTreeElements(jsonTree);
-		
-		var namespace = "http://localhost:8080/nemo-platform/"
-		var model = { 
-				'nodes' : [],
-				'links' : [],
-		}
-		var links = {}
-			
-		$.each(jsonElements, function(index, e) {
-			
-			var element = $.parseJSON(JSON.stringify(e));
-			
-			if(element.type === 'cell') {
-				model['nodes'].push({
-					"iri": namespace + 'node#' + $this.cleanString(element.data.name),
-					"id": element.data.id,
-					"name": $this.cleanString(element.data.name),
-				});
-			}
-			
-			else if(element.type === 'link') {
-				
-				var s = $this.getNode(element.data.source.id)
-				var t = $this.getNode(element.data.target.id)
-				
-				var source = $.parseJSON(JSON.stringify(s));
-				var target = $.parseJSON(JSON.stringify(t));
-				
-				var sourceIri = namespace + 'node#' + $this.cleanString(source.data.name);
-				var targetIri = namespace + 'node#' + $this.cleanString(target.data.name);
-				
-				console.log('LINK: ' + JSON.stringify(element.data.label));
-				
-				model['links'].push({
-					"iri": namespace + 'link#' + $this.cleanString(element.text),
-					"id": element.data.id,
-					"name": $this.cleanString(element.text),
-					"source": sourceIri,
-					"target": targetIri
-				});
-			}
-			
-		});
-		
-		$.ajax({
-		   type: "POST",
-		   url: "exportToOWL.htm",
-		   data : {
-			   "iri": namespace,
-			   "nodes": JSON.stringify(model['nodes']),
-			   "links": JSON.stringify(model['links']),
-		   },
-		   success: function(data){   
-			   $this.openXMLWindow(data);
-			   //$this.openDownloadWindows(data, "file.owl");
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
-	},
-	
-	//replace characteres in string
+	//replace special characteres in string
 	cleanString : function(content) {
+		
+		var a = decodeURIComponent("%C3%A1%C3%A0%C3%A3%C3%A2%C3%A4"); //áàãâä
+		var e = decodeURIComponent("%C3%A9%C3%A8%C3%AA%C3%AB"); //éèêë
+		var i = decodeURIComponent("%C3%AD%C3%AC%C3%AE%C3%AF"); //íìîï
+		var o = decodeURIComponent("%C3%B3%C3%B2%C3%B5%C3%B4%C3%B6"); //óòõôö
+		var u = decodeURIComponent("%C3%BA%C3%B9%C3%BB%C3%BC"); //úùûü
+		var c = decodeURIComponent("%C3%A7"); //ç
+		
+		var A = decodeURIComponent("%C3%81%C3%80%C3%83%C3%82%C3%84"); //ÁÀÃÂÄ
+		var E = decodeURIComponent("%C3%89%C3%88%C3%8A%C3%8B"); //ÉÈÊË
+		var I = decodeURIComponent("%C3%8D%C3%8C%C3%8E%C3%8F"); //ÍÌÎÏ
+		var O = decodeURIComponent("%C3%93%C3%92%C3%95%C3%94%C3%96"); //ÓÒÕÔÖ
+		var U = decodeURIComponent("%C3%9A%C3%99%C3%9B%C3%9C"); //ÚÙÛÜ
+		var C = decodeURIComponent("%C3%87"); //Ç
+		
+		var specialChars = [
+        	{val:"a",let: a},
+        	{val:"e",let: e},
+        	{val:"i",let: i},
+        	{val:"o",let: o},
+        	{val:"u",let: u},
+        	{val:"c",let: c},
+        	{val:"A",let: A},
+        	{val:"E",let: E},
+        	{val:"I",let: I},
+        	{val:"O",let: O},
+        	{val:"U",let: U},
+        	{val:"C",let: C},
+        ];
+		
+		var $spaceSymbol = '-';
+		var regex;
+		for (var i = 0; i < specialChars.length; i++) {
+			regex = new RegExp("["+specialChars[i].let+"]", "g");
+			content = content.replace(regex, specialChars[i].val);
+			regex = null;
+		}
 		
 		content = content
 					.replace(/\ /g, "")
@@ -1115,6 +1053,10 @@ nemo.platform.Model = Backbone.Model.extend({
 					.replace("->", "_")
 					.replace(/\(/g, "_")
 					.replace(/\)/g, "")
+					.replace(/[^a-z0-9_\s]/gi, '')
+					.replace(/[_\s]/g, '_')
+					.replace(/__/g, '_')
+					
 					
 		return content; 
 		
@@ -1137,6 +1079,84 @@ nemo.platform.Model = Backbone.Model.extend({
 		link.href = window.URL.createObjectURL(blob);
 		link.download = file;
 		link.click();
+	},
+	
+	/**
+	 * LiNKED DATA METHODS
+	 */
+	
+	//Export to OWL
+	exportToOWL: function() {
+		
+		var $this = this;
+		
+		var jsonTree = this.getJSONTree();
+		var jsonElements = this.getAllTreeElements(jsonTree);
+		
+		var model = { 
+				'nodes' : [],
+				'links' : [],
+		}
+		var links = {}
+			
+		$.each(jsonElements, function(index, e) {
+			
+			var element = $.parseJSON(JSON.stringify(e));
+			
+			if(element.type === 'cell') {
+				model['nodes'].push({
+					"iri": $this.ontology.iri + $this.cleanString(element.data.name),
+					"id": element.data.id,
+					"name": $this.cleanString(element.data.name),
+				});
+			}
+			
+			else if(element.type === 'link') {
+				
+				var s = $this.getNode(element.data.source.id)
+				var t = $this.getNode(element.data.target.id)
+				
+				var source = $.parseJSON(JSON.stringify(s));
+				var target = $.parseJSON(JSON.stringify(t));
+				
+				var sourceIri = $this.ontology.iri + $this.cleanString(source.data.name);
+				var targetIri = $this.ontology.iri + $this.cleanString(target.data.name);
+				
+				console.log('LINK: ' + JSON.stringify(element.data.label));
+				
+				model['links'].push({
+					"iri": $this.ontology.iri + $this.cleanString(element.text),
+					"id": element.data.id,
+					"name": $this.cleanString(element.text),
+					"source": sourceIri,
+					"target": targetIri
+				});
+			}
+			
+		});
+		
+		$.ajax({
+		   type: "POST",
+		   url: "exportToOWL.htm",
+		   data : {
+			   "iri": $this.ontology.iri,
+			   "prefix": $this.ontology.prefix,
+			   "nodes": JSON.stringify(model['nodes']),
+			   "links": JSON.stringify(model['links']),
+		   },
+		   success: function(data){   
+			   $this.openXMLWindow(data);
+			   //$this.openDownloadWindows(data, "file.owl");
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	loadOntology : function(prefix, iri) {
+		
 	},
 	
 	/**

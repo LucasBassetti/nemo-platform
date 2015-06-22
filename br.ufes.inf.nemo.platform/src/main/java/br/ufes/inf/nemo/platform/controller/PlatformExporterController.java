@@ -16,18 +16,14 @@ import br.ufes.inf.nemo.platform.util.FileUtil;
 public class PlatformExporterController {
 
 	@RequestMapping(value = "/exportToOWL", method = RequestMethod.POST)
-	public @ResponseBody String exportToOWL(@RequestParam("iri") String iri, @RequestParam("nodes") String nodes, @RequestParam("links") String links) {
-		
-//		System.out.println(iri);
-//		System.out.println(nodes);
-//		System.out.println(links);
+	public @ResponseBody String exportToOWL(@RequestParam("iri") String iri, @RequestParam("prefix") String prefix, @RequestParam("nodes") String nodes, @RequestParam("links") String links) {
 		
 		JointElement[] jointElements = (JointElement[]) FileUtil.getJavaFromJSON(nodes, JointElement[].class);
 		JointLink[] jointLinks = (JointLink[]) FileUtil.getJavaFromJSON(links, JointLink[].class);
 		
-		JointGraph jointGraph = new JointGraph(iri, jointElements, jointLinks);
+		JointGraph jointGraph = new JointGraph(iri, prefix, jointElements, jointLinks);
 		
-		OWLExporter owlExporter = new OWLExporter(jointGraph.getIri());
+		OWLExporter owlExporter = new OWLExporter(jointGraph.getIri(), jointGraph.getPrefix());
 		return owlExporter.export(jointGraph);
 		
 	}

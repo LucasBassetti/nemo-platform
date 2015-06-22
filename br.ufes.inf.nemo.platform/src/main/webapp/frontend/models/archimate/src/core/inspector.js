@@ -61,7 +61,7 @@ function inp(defs) {
     return ret;
 }
 
-var iriNamespace = 'http://localhost:8080/nemo-platform/'
+var namespace = 'http://localhost:8080/nemo-platform/ontology#'
 
 var archimateInputs = {
 		
@@ -78,7 +78,7 @@ var archimateInputs = {
 	            }),
 	        },
 	        name: { type: 'textarea', group: 'general', index: 1, label: 'Name' },
-	        namespace: { type: 'text', group: 'general', index: 2, label: 'Namespace', defaultValue: iriNamespace + 'node#'},
+	        namespace: { type: 'text', group: 'general', index: 2, label: 'Namespace', defaultValue: namespace },
 	        documentation: { type: 'textarea', group: 'general', index: 2, label: 'Documentation' },
 	    }),
 	    groups: {
@@ -110,7 +110,7 @@ var InspectorDefs = {
 		
 		inputs: _.extend({
 	        label: { type: 'text', group: 'label', index: 1, label: 'Label' }, 
-	        namespace: { type: 'text', group: 'label', index: 2, label: 'Namespace', defaultValue: iriNamespace + 'link#'},
+	        namespace: { type: 'text', group: 'label', index: 2, label: 'Namespace', defaultValue: namespace },
 		}),
 		
 		groups: {

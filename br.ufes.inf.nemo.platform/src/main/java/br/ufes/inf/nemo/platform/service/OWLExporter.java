@@ -21,11 +21,12 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 import br.ufes.inf.nemo.platform.interfaces.Exporter;
-import br.ufes.inf.nemo.platform.model.JointLink;
-import br.ufes.inf.nemo.platform.model.JointGraph;
 import br.ufes.inf.nemo.platform.model.JointElement;
+import br.ufes.inf.nemo.platform.model.JointGraph;
+import br.ufes.inf.nemo.platform.model.JointLink;
 
 /**
  * OWL Exporter
@@ -37,13 +38,20 @@ public class OWLExporter implements Exporter {
 	private OWLOntologyManager manager;
 	private OWLOntology ontology;
 	private OWLDataFactory factory;
+	private PrefixOWLOntologyFormat prefixFormat;
 	
-	public OWLExporter(String iriBase) {
+	public OWLExporter(String iriBase, String prefix) {
 		
 		try {
+			//Create Ontology
 			manager = OWLManager.createOWLOntologyManager();		
 			ontology = manager.createOntology(IRI.create(iriBase));
-			factory = manager.getOWLDataFactory();			
+			factory = manager.getOWLDataFactory();	
+			
+			//Set Ontology IRI Prefix
+			prefixFormat = (PrefixOWLOntologyFormat) manager.getOntologyFormat(ontology);
+			prefixFormat.setPrefix(prefix , iriBase);
+			
 		} catch (OWLOntologyCreationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,18 +59,23 @@ public class OWLExporter implements Exporter {
 		
 	}
 	
+	/**
+	 * Procedure to export to OWL
+	 * @param iriBase
+	 * @param prefix
+	 */
 	@Override
 	public String export(JointGraph graph) {
 		
 		//Generate Classes
-		for(JointElement element : graph.geteElements()) {
+		for(JointElement element : graph.getElements()) {
 			String classIri = element.getIri();
 			OWLClass owlClass = factory.getOWLClass(IRI.create(classIri));				
 			generateOWLDeclarationAxiom(owlClass);
 		}
 		
 		//Generate Links
-		for(JointLink link : graph.geteLinks()) {
+		for(JointLink link : graph.getLinks()) {
 			String objectPropertyIri = link.getIri();
 			String domainIRI = link.getSource();
 			String rangeIRI = link.getTarget();

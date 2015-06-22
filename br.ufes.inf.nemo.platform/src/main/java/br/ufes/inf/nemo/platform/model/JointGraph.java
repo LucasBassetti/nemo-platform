@@ -2,14 +2,15 @@ package br.ufes.inf.nemo.platform.model;
 
 public class JointGraph {
 
-	String iri;
+	String iri, prefix;
 	JointElement[] elements;
 	JointLink[] links;
 	
 	public JointGraph() {}
 	
-	public JointGraph(String iri, JointElement[] elements, JointLink[] links) {
+	public JointGraph(String iri, String prefix, JointElement[] elements, JointLink[] links) {
 		this.iri = iri;
+		this.prefix = prefix;
 		this.elements = elements;
 		this.links = links;
 	}
@@ -22,19 +23,27 @@ public class JointGraph {
 		this.iri = iri;
 	}
 	
-	public JointElement[] geteElements() {
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	public JointElement[] getElements() {
 		return elements;
 	}
 
-	public void seteNodes(JointElement[] elements) {
+	public void setElements(JointElement[] elements) {
 		this.elements = elements;
 	}
 
-	public JointLink[] geteLinks() {
+	public JointLink[] getLinks() {
 		return links;
 	}
 
-	public void seteLinks(JointLink[] links) {
+	public void setLinks(JointLink[] links) {
 		this.links = links;
 	}
 
