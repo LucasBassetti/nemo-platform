@@ -2,7 +2,7 @@
  * @param graph
  * @param option
  */
-function viewpointHanlde(graph, model){
+function viewpointHandle(graph, model){
 	
 	addViewpointSelectionButton();
 	

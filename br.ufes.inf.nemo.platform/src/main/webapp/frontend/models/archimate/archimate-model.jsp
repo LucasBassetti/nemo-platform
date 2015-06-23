@@ -22,12 +22,7 @@
 	<script src="frontend/models/archimate/src/core/keyboard.js"></script>
 	<script src="frontend/models/archimate/src/core/stencil.js"></script>
 	
-	<script src="frontend/models/archimate/src/resizing.js"></script>
-	<script src="frontend/models/archimate/src/embed.js"></script>
-	<script src="frontend/models/archimate/src/attributes.js"></script>
-	<script src="frontend/models/archimate/src/magicConnector.js"></script>
-	<script src="frontend/models/archimate/src/viewpointHandle.js"></script>
-
+	<!-- SOURCE -->
 	<script src="frontend/models/archimate/src/nemo.platform.archimate.js"></script>
 
 	<script>
