@@ -445,11 +445,17 @@ var Rappid = Backbone.Router.extend({
 
         this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
 
-        KeyboardJS.on('ctrl + z', _.bind(function() {
-
-            this.commandManager.undo();
-            this.selectionView.cancelSelection();
-        }, this));
+//        KeyboardJS.on('command + z', _.bind(function() {
+//
+//            this.commandManager.undo();
+//            this.selectionView.cancelSelection();
+//        }, this));
+//        
+//        KeyboardJS.on('ctrl + z', _.bind(function() {
+//
+//            this.commandManager.undo();
+//            this.selectionView.cancelSelection();
+//        }, this));
         
         KeyboardJS.on('ctrl + y', _.bind(function() {
 

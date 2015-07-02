@@ -24,6 +24,8 @@
 
 nemo.platform.Model = Backbone.Model.extend({
 	
+	app : undefined,
+	
 	//TEMPLATE VARS
 	currentTabIndex : "",
 	graph : {},
@@ -34,16 +36,6 @@ nemo.platform.Model = Backbone.Model.extend({
 	//STENCIL VARS
 	stencil : undefined,
 	
-	//LOD VARS
-	ontology : {
-		prefix : "np",
-		iri : "http://localhost:8080/nemo-platform/ontology#",
-	},
-	namespacePrefixes : {
-		prefix : undefined,
-		iri : undefined,
-	},
-	
 	initialize : function() {
 
 		this.initializeLayout();
@@ -51,6 +43,13 @@ nemo.platform.Model = Backbone.Model.extend({
 		this.initializeTabs();
 		
 		console.log("INITIALIZE NEMO PLATFORM MODEL!");
+		
+		//var conn = new nemo.platform.Connection();
+		//conn.testQuery();
+	},
+	
+	setApp : function(app) {
+		this.app = app;
 	},
 	
 	//Set stencil (when start application)
@@ -462,6 +461,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		}
 	},
 	
+	//Method to update cell in all graphs
 	updateGraphsCell : function(cellId, graph) {
 		
 		var cell = {};
@@ -479,6 +479,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
+	//Method to delete cell in all graphs
 	deleteGraphsCell : function(cellId, graph) {
 		var cell = {};
 		var $this = this;
@@ -493,6 +494,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
+	//Method to rename cell in all graphs
 	renameGraphsCell : function(cellRenamedName, cellId, graph){
 		var cell = {};
 		var $this = this;
@@ -562,6 +564,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		console.log('NODE RENAMED!')
 	},
 	
+	//Method to delete tree connected links
 	deleteTreeConnectedLinks : function(cellId){
 		
 		var root = this.getNode('root');
@@ -590,6 +593,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
+	//Method to add new cell on tree
 	newCell : function(cell, graph) {
 		
 		var text = undefined;
@@ -644,6 +648,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		return this.tree.get_node(this.currentTabIndex);
 	},
 	
+	//Method to check if node is a diagram
 	isDiagram : function(node) {
 		if(node.type === "diagram") {
 			return true;
@@ -651,6 +656,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		return false;
 	},
 	
+	//Method to check if node is a folder
 	isFolder : function(node) {
 		if(node.type === "default") {
 			return true;
@@ -658,6 +664,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		return false;
 	},
 	
+	//Method to check if node is a cell
 	isCell : function(node) {
 		if(node.type === "cell") {
 			return true;
@@ -665,298 +672,32 @@ nemo.platform.Model = Backbone.Model.extend({
 		return false;
 	},
 	
+	//Method to check if node is a link
 	isLink : function(node) {
 		if(node.type === "link") {
 			return true;
 		}
 		return false;
 	},
-	
-	//saveAs tree core data in file
-	saveAsTree : function() {
-		
-		var $this = this;
-		
-		var content = '<div id="save-dialog" title="Save Model">'
-			+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
-			+ '</div>'
-			+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
-			
-		var dialog = new joint.ui.Dialog({
-			width: 300,
-			type: 'neutral',
-			title: 'Save Model',
-			content: content,
-			buttons: [
-				{ action: 'cancel', content: 'Cancel', position: 'left' },
-				{ action: 'save', content: 'Save', position: 'left' }
-			]
-		});
-		
-		dialog.on('action:save', save);
-		dialog.on('action:cancel', cancel);
-		dialog.open();
-		
-		function cancel(){
-			dialog.close();
-		}
 
-		function save() {
-			if($('#save-filename').val() === "") {
-				$('#name-error-message').show();
-			}
-			else {
-				$('#filename').val($('#save-filename').val());
-				$this.checkTreeExist(dialog);
-			}
-		}
-	},
-	
-	//check if tree file exist
-	checkTreeExist : function(dialog) {
-		
-		var $this = this;
-		
-		$.ajax({
-			type: "POST",
-			url: "checkModelFile.htm",
-			data: {
-				'stencil' : $this.stencil,
-				'filename': $("#filename").val(),
-			},
-			success: function(data){ 		   
-
-				if(data == "exist"){		   
-					if (confirm('The file already exist, do you want to replace it?')) {
-						$this.saveTree();
-						dialog.close();
-					} 
-				}
-				else{
-					$this.saveTree();
-					dialog.close();
-				}
-			},
-			error : function(e) {
-				alert("error: " + e.status);
-				dialog.close();
-			}
-		});
-		
-	},
-	
-	//save tree core data in a file
-	saveTree : function() {
-		
-		var $this = this;
-		var jsonTree = this.getJSONTree();
-		
-		var saveDialog = new joint.ui.Dialog({
-			type: 'neutral' ,
-			width: 420,
-			draggable: false,
-			title: 'Model Saved! ',
-			content: 'The model ' + $('#filename').val() + ' was saved!',
-			open: function() {}
-		});
-		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: 'saveTree.htm',
-		   data: {
-			 'stencil': $this.stencil,
-			 'filename': $('#filename').val(),
-			 'tree': JSON.stringify(jsonTree)
-		   },
-		   success: function(){ 		   
-			   console.log('SAVE: ' + JSON.stringify(jsonTree));
-			   $this.saveGraph();
-			   saveDialog.open();
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
-	},
-	
-	getUrlParameter : function(sParam)
-	{
-		var sPageURL = window.location.search.substring(1);
-		var sURLVariables = sPageURL.split('&');
-		for (var i = 0; i < sURLVariables.length; i++) 
-		{
-			var sParameterName = sURLVariables[i].split('=');
-			if (sParameterName[0] == sParam) 
-			{
-				return sParameterName[1];
-			}
-		}
-	},
-	
-	openTreeFromDialog : function() {
-		
-		var $this = this;
-		
-		$.ajax({
-			type: "POST",
-			url: "getAllModels.htm",
-			dataType: 'json',
-			data: {
-				'stencil': $this.stencil,
-			},
-			success: function(data){ 		   
-				generateOpenTreeDialog(data);
-			},
-			error : function(e) {
-				alert("error: " + e.status);
-			}
-		});
-		
-		function generateOpenTreeDialog(data) {
-			
-			var content = '<form id="open">';
-			for(var i = 0; i < Object.keys(data).length; i++){
-				if(i == 0){
-					content = content + '<input type="radio" name="model" value="' + data[i].model + '" checked>' 
-					+ '<label>' + data[i].model + '</label> <br>';
-				}
-				else{
-					content = content + '<input type="radio" name="model" value="' + data[i].model + '">' 
-					+ '<label>' + data[i].model + '</label><br>';
-				}
-
-			}
-			content = content +  '</form>';
-
-			var dialog = new joint.ui.Dialog({
-				width: 300,
-				type: 'neutral',
-				title: 'Open Model',
-				content: content,
-				buttons: [
-				          { action: 'cancel', content: 'Cancel', position: 'left' },
-				          { action: 'open', content: 'Open', position: 'left' }
-				          ]
-			});
-			dialog.on('action:open', open);
-			dialog.on('action:cancel', dialog.close);
-			dialog.open();
-			
-			function open() {
-				var filename = $('input[name=model]:checked', '#open').val();
-				$this.openTree(filename);
-				dialog.close();
-			}
-		}
-		
-	},
-	
-	//open tree core data
-	openTree : function(filename) {
-		
-		var $this = this;
-		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: 'openTree.htm',
-		   data: {
-			 'stencil': $this.stencil,
-			 'filename': filename,
-		   },
-		   //dataType: 'json',
-		   success: function(jsonTree){ 	
-			   
-			   console.log('TREE LOAD: ' + JSON.stringify(jsonTree));
-			   
-			   //set filename
-			   $("#filename").val(filename);
-			   //clean tabs
-			   $('.ui-tabs-nav').empty();
-			   $('#tabs').hide();
-			   //load tree
-			   $this.setJSONTree(JSON.parse(jsonTree));
-			   //load graph
-			   $this.openGraph(filename);
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
-	},
-	
-	//get tree core data in JSON format
+	//Method to get tree core data in JSON format
 	getJSONTree : function() {
 		return this.tree.get_json();
 	},
 	
-	//set tree core data
+	//Method to set tree core data
 	setJSONTree : function(jsonTree) {
 		this.tree.settings.core.data = jsonTree;
 		this.tree.refresh(-1);
 	},
 	
-	//save graph in a file
-	saveGraph : function() {
-		
-		var $this = this;
-		var jsonGraph = this.getGraph();
-		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: 'saveGraph.htm',
-		   data: {
-			 'stencil': $this.stencil,
-			 'filename': $('#filename').val(),
-			 'graph': JSON.stringify(jsonGraph),
-		   },
-		   success: function(){ 		   
-			   console.log('SAVE: ' + JSON.stringify(jsonGraph));
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
-	},
-	
-	//open graph
-	openGraph : function(filename) {
-		
-		var $this = this;
-		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: 'openGraph.htm',
-		   data: {
-			 'stencil': $this.stencil,
-			 'filename': filename,
-		   },
-		   //dataType: 'json',
-		   success: function(jsonGraph){ 	
-			   $this.setGraph(JSON.parse(jsonGraph));
-			   //just to tab index not be empty
-			   $this.updateCurrentTabIndex("loaded");
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
-	},
-	
-	//get graph
+	//Method to get graph
 	getGraph : function() {
 		return this.graph;
 		console.log('GET: ' + JSON.stringify(this.graph));
 	},
 	
-	//set graph
+	//Method to set graph
 	setGraph : function(jsonGraph) {
 		this.graph = jsonGraph;
 		console.log('OPEN: ' + JSON.stringify(jsonGraph));
@@ -966,7 +707,8 @@ nemo.platform.Model = Backbone.Model.extend({
 	 * RELATIONSHIPS METHODS
 	 */
 	
-	 getRelationships: function(source, target){
+	//Method to relationships
+	getRelationships: function(source, target){
 
 		var eRelationships = {};
 		
@@ -1062,102 +804,6 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
-	//open XML window
-	openXMLWindow : function(content) {
-		var win = window.open(
-		   'data:application/xml,' + encodeURIComponent(
-		     content
-		   ),
-		   '_blank', "resizable=yes,width=600,height=600,toolbar=0,scrollbars=yes"
-		);
-	},
-	
-	//open download windoes
-	openDownloadWindows : function(content, file) {
-		var blob = new Blob([content]);
-		var link = document.createElement('a');
-		link.href = window.URL.createObjectURL(blob);
-		link.download = file;
-		link.click();
-	},
-	
-	/**
-	 * LiNKED DATA METHODS
-	 */
-	
-	//Export to OWL
-	exportToOWL: function() {
-		
-		var $this = this;
-		
-		var jsonTree = this.getJSONTree();
-		var jsonElements = this.getAllTreeElements(jsonTree);
-		
-		var model = { 
-				'nodes' : [],
-				'links' : [],
-		}
-		var links = {}
-			
-		$.each(jsonElements, function(index, e) {
-			
-			var element = $.parseJSON(JSON.stringify(e));
-			
-			if(element.type === 'cell') {
-				model['nodes'].push({
-					"iri": $this.ontology.iri + $this.cleanString(element.data.name),
-					"id": element.data.id,
-					"name": $this.cleanString(element.data.name),
-				});
-			}
-			
-			else if(element.type === 'link') {
-				
-				var s = $this.getNode(element.data.source.id)
-				var t = $this.getNode(element.data.target.id)
-				
-				var source = $.parseJSON(JSON.stringify(s));
-				var target = $.parseJSON(JSON.stringify(t));
-				
-				var sourceIri = $this.ontology.iri + $this.cleanString(source.data.name);
-				var targetIri = $this.ontology.iri + $this.cleanString(target.data.name);
-				
-				console.log('LINK: ' + JSON.stringify(element.data.label));
-				
-				model['links'].push({
-					"iri": $this.ontology.iri + $this.cleanString(element.text),
-					"id": element.data.id,
-					"name": $this.cleanString(element.text),
-					"source": sourceIri,
-					"target": targetIri
-				});
-			}
-			
-		});
-		
-		$.ajax({
-		   type: "POST",
-		   url: "exportToOWL.htm",
-		   data : {
-			   "iri": $this.ontology.iri,
-			   "prefix": $this.ontology.prefix,
-			   "nodes": JSON.stringify(model['nodes']),
-			   "links": JSON.stringify(model['links']),
-		   },
-		   success: function(data){   
-			   $this.openXMLWindow(data);
-			   //$this.openDownloadWindows(data, "file.owl");
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
-	},
-	
-	loadOntology : function(prefix, iri) {
-		
-	},
 	
 	/**
 	 * WEB SPEECH METHODS

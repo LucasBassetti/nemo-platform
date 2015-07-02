@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.ufes.inf.nemo.platform.connection.StardogConnection;
+
 @Controller
 public class PlatformController {
 
@@ -35,6 +37,15 @@ public class PlatformController {
 	
 	@RequestMapping("/archimate-model")
 	public String archmateModel(HttpServletRequest request) {
+		
+//		StardogConnection sc = StardogConnection.getInstance();
+//		try {
+//			sc.getConnection();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		return "models/archimate/archimate-model";
 	}
 	

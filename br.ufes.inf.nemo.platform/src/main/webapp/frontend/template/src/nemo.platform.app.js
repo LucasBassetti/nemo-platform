@@ -25,6 +25,8 @@
 nemo.platform.App = Backbone.View.extend({
 	
 	model : undefined,
+	file : undefined,
+	lod : undefined,
 	
 	initialize : function(){
 		console.log("INITIALIZE APP!");
@@ -34,8 +36,15 @@ nemo.platform.App = Backbone.View.extend({
 
 		console.log("START APP!");
 		
-		//create model
-		this.model = new nemo.platform.Model;
+		//create elements
+		this.model = new nemo.platform.Model();		
+		this.file = new nemo.platform.File();
+		this.lod = new nemo.platform.LOD();			
+		
+		//set 
+		this.model.setApp(this);
+		this.file.setApp(this);
+		this.lod.setApp(this);
 		
 		//set stencil
 		this.model.setStencil(stencil);
@@ -52,9 +61,9 @@ nemo.platform.App = Backbone.View.extend({
 		this.initializeLikedDataProcedures(app);
 		
 		//Open from url
-		if (this.model.getUrlParameter('model')) {
-			var filename = this.model.getUrlParameter('model');
-			this.model.openTree(filename);
+		if (this.file.getUrlParameter('model')) {
+			var filename = this.file.getUrlParameter('model');
+			this.file.openTree(filename);
 		}
 		
 	},
@@ -67,27 +76,28 @@ nemo.platform.App = Backbone.View.extend({
 		var graph = app.graph;
 		var paper = app.paper;
 		var model = this.model;
+		var file = this.file;
 		
 		//SaveAs tree
 		$('#btn-saveAs').click(function(){
 			model.updateCurrentTab(graph);
-			model.saveAsTree();
+			file.saveAsTree();
 		});
 		
 		//Save tree
 		$('#btn-save').click(function(){
 			model.updateCurrentTab(graph);
 			if($('#filename').val() === "") {
-				model.saveAsTree();
+				file.saveAsTree();
 			} 
 			else {
-				model.saveTree();
+				file.saveTree();
 			}
 		});
 		
 		//Open tree
 		$('#btn-open').click(function(){
-			model.openTreeFromDialog();
+			file.openTreeFromDialog();
 		});
 		
 		//Show inpector paper when click on blank position  
@@ -174,7 +184,6 @@ nemo.platform.App = Backbone.View.extend({
 			}
 			
 		});
-		
 		
 		/*
 		 * ====================================
@@ -740,6 +749,7 @@ nemo.platform.App = Backbone.View.extend({
 		
 		var graph = app.graph;
 		var model = this.model;
+		var lod = this.lod;
 		
 		$('#btn-owl-exporter').click(function() {
 			
@@ -747,13 +757,14 @@ nemo.platform.App = Backbone.View.extend({
 			var jsonElements = model.getAllTreeElements(jsonTree);
 			
 			var content = '<form class="export">';
-			content = content + 'Prefix: <input type="text" id="ontologyPrefix" name="iri" value="' + model.ontology.prefix + '" readonly/>'
-			content = content + ' IRI: <input type="text" id="ontologyIRI" name="iri" value="' + model.ontology.iri + '" readonly/> <br>'
+			content = content + 'Prefix: <input type="text" id="ontologyPrefix" name="iri" value="' + lod.ontology.prefix + '" readonly/>'
+			content = content + ' IRI: <input type="text" id="ontologyIRI" name="iri" value="' + lod.ontology.iri + '" readonly/> <br>'
+			
+			console.log('JSON ELEMENTS: ' + JSON.stringify(jsonElements));
 			
 			var firstLink = true, firstElement = true;
 			$.each(jsonElements, function(index, e) {
 				var element = $.parseJSON(JSON.stringify(e));
-				
 				if(element.type === 'cell') {
 					
 					if(firstElement) {
@@ -765,7 +776,10 @@ nemo.platform.App = Backbone.View.extend({
 					+ '<label>' + element.text + '</label> <br>';
 					
 				}
-				else if(element.type === 'link') {
+			});
+			$.each(jsonElements, function(index, e) {
+				var element = $.parseJSON(JSON.stringify(e));
+				if(element.type === 'link') {
 					
 					if(firstLink) {
 						content = content + '<h4> Relationships </h4>';
@@ -795,7 +809,7 @@ nemo.platform.App = Backbone.View.extend({
 			dialog.open();
 			
 			function exportElements() {
-				model.exportToOWL();
+				lod.exportToOWL();
 				dialog.close();
 			};
 		

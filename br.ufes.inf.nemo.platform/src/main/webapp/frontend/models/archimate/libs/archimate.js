@@ -1819,21 +1819,6 @@ joint.shapes.archimate.Junction = joint.shapes.basic.Generic.extend({
 //Relations
 joint.shapes.archimate.Relationships = joint.dia.Link.extend({
 	
-//	markup: [
-//	        
-//	         '<path class="connection" stroke="#000000"/>',
-//	         '<path class="marker-source" fill="#000000" stroke="#000000" />',
-//	         '<path class="marker-target" fill="#000000" stroke="#000000" />',
-//	         '<path class="connection-wrap"/>',
-//	         '<g class="label">',
-//	         	'<rect class="label-rect"/>',
-//	         	'<text class="label-text"/>',
-//	         '</g>',
-//	         '<g class="marker-vertices"/>',
-//	         '<g class="marker-arrowheads"/>',
-//	         '<g class="link-tools"/>'
-//	     ].join(''),
-	
     defaults: {
 
         type: "archimate.Relationships",
@@ -1855,21 +1840,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
                 onMouseOver: '',
                 onMouseOut: ''
             },
-//            '.label-rect': {
-//            	'fill': 'none',
-//            	'ref-y': .5, 
-//            	'ref-x': .5, 
-//            	'y-alignment': 'middle',
-//            	'text-anchor': 'middle',
-//            },
-//            '.label-text': {
-//            	'ref': '.label-rect',
-//            	'ref-y': .5, 
-//            	'ref-x': .5, 
-//            	'text-anchor': 'middle',
-//            }
-            
-            
+ 
         },
 
         label: [],
@@ -1881,14 +1852,6 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
         joint.dia.Link.prototype.initialize.apply(this, arguments);
 
         this.listenTo(this, 'change:flowType', this.onFlowTypeChange);
-        
-//        this.label(0, {
-//            position: .5,
-//            attrs: {
-//                rect: { fill: '#FFFFFF' },
-//                text: { fill: '#000000', text: '' }
-//            }
-//        });
         
         this.on('change:label', function() {
             this.updateLabel();

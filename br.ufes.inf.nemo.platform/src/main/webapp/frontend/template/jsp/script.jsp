@@ -32,8 +32,17 @@
 <script src="core/webspeech/platform.js"></script>
 <script src="core/webspeech/webspeech.min.js"></script>
 
+<!-- STARDOG -->
+<script src="core/stardog/stardog.js"></script>
+
 <!-- JS -->
 <script src="frontend/template/src/core.js"></script>
+
+<script src="frontend/template/src/nemo.platform.connection.js"></script>
+<script src="frontend/template/src/nemo.platform.file.js"></script>
+<script src="frontend/template/src/nemo.platform.lod.js"></script>
 <script src="frontend/template/src/nemo.platform.model.js"></script>
 <script src="frontend/template/src/nemo.platform.app.js"></script>
+
 <script src="frontend/template/src/nemo.dashboard.model.js"></script>
+
