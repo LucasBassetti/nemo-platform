@@ -348,6 +348,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		}
 	},
 	
+	//Method to get the tabs
 	getTabs : function(){
 		return this.graph;
 	},

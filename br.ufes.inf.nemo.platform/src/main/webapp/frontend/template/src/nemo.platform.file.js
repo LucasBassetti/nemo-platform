@@ -30,6 +30,7 @@ nemo.platform.File = Backbone.Model.extend({
 	
 	},
 
+	//Method do set the nemo.platform.App
 	setApp : function(app) {
 		this.app = app;
 	},
@@ -87,6 +88,19 @@ nemo.platform.File = Backbone.Model.extend({
 				$this.checkTreeExist(dialog);
 			}
 		}
+	},
+	
+	//save in TripleStore
+	saveInTripleStore : function() {
+		
+		var lod = this.app.lod;
+		var connection = this.app.connection;
+		
+		var namedGraph = location.protocol + '//' + location.host + location.pathname + '?model=' + $('#filename').val();
+		var triples = lod.parseTreeToTripleFormat(namedGraph);
+		
+		connection.save(namedGraph, triples);
+		
 	},
 	
 	//check if tree file exist
@@ -152,6 +166,10 @@ nemo.platform.File = Backbone.Model.extend({
 		   success: function(){ 		   
 			   console.log('SAVE: ' + JSON.stringify(jsonTree));
 			   $this.saveGraph();
+			   
+			   //save in triplestore
+			   $this.saveInTripleStore();
+			   
 			   saveDialog.open();
 		   },
 		   error : function(e) {

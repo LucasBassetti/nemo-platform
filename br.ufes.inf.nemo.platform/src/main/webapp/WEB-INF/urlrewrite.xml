@@ -16,8 +16,8 @@
 <!-- 	</rule> -->
 
 		<rule>
-		    <from>^/node.*$</from> 
-		    <to type="redirect">/nemo-platform/archimate-model.htm</to>
+		    <from>^/ontology.*$</from> 
+		    <to>derreference.htm</to>
 		</rule>
 
 </urlrewrite>

@@ -28,6 +28,8 @@ nemo.platform.App = Backbone.View.extend({
 	file : undefined,
 	lod : undefined,
 	
+	connection : undefined,
+	
 	initialize : function(){
 		console.log("INITIALIZE APP!");
 	},
@@ -40,6 +42,7 @@ nemo.platform.App = Backbone.View.extend({
 		this.model = new nemo.platform.Model();		
 		this.file = new nemo.platform.File();
 		this.lod = new nemo.platform.LOD();			
+		this.connection = new nemo.platform.Connection();
 		
 		//set 
 		this.model.setApp(this);
@@ -120,6 +123,8 @@ nemo.platform.App = Backbone.View.extend({
 	initializeTreeProcedures : function(app) {
 		
 		var graph = app.graph;
+		var paper = app.paper;
+		
 		var model = this.model;
 		
 		//Handle with delete nodes on tree
@@ -193,7 +198,7 @@ nemo.platform.App = Backbone.View.extend({
 		
 		var X1 = 0, Y1 = 0;
 		var X2 = 0, Y2 = 0;
-		var paperPosition = {};
+		var paperPosition = { x: 0, y: 0 };
 		
 		//Get mouse position on document
 		$(document).mousemove(function(e){
@@ -206,13 +211,26 @@ nemo.platform.App = Backbone.View.extend({
 			X2 = e.pageX;
 			Y2 = e.pageY
 			
-			var pos   = $(this).offset();
-		    var elPos = { X: pos.left , Y: pos.top };
-		    paperPosition  = { X: e.clientX-elPos.X, Y: e.clientY-elPos.Y };
+			var pos   = $('.paper').offset();
+		    var elPos = { x: pos.left , y: pos.top };
+		    
+		    if(elPos.X < 0) {
+		    	//paperPosition.x = (700 - $('.paper').width()) + e.clientX + elPos.x }
+		    	paperPosition.x = e.clientX + elPos.x }
+		    else {
+		    	//paperPosition.x = (700 - $('.paper').width()) + e.clientX - elPos.x }
+		    	paperPosition.x = e.clientX - elPos.x }
+		    
+		    if(elPos.Y < 0) {
+		    	paperPosition.y = e.clientY + elPos.y }
+		    else {
+		    	paperPosition.y = e.clientY - elPos.y }
 		});
 		
 		//When  drag a node (cell) element on paper;
 		$ui(document).on('dnd_stop.vakata', function (e, data) {
+			
+			console.log(e);
 			
 		    var nodeId = $(data.element).closest("li").attr("id");
 			var node = model.getNode(nodeId);
@@ -226,9 +244,8 @@ nemo.platform.App = Backbone.View.extend({
 				
 				//If mouse position is in paper 
 				if(X1 == X2 || Y1 == Y2){
-					//cell.get('position').x = paperPosition.X;
-					cell.position.x = paperPosition.X;
-					cell.position.y = paperPosition.Y;
+					cell.get('position').x = paperPosition.x;
+					cell.get('position').y = paperPosition.y;
 					graph.addCell(cell);
 					addConnectedLinks(cell);
 					model.updateCurrentTab(graph);

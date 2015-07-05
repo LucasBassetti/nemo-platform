@@ -44,8 +44,151 @@ nemo.platform.LOD = Backbone.Model.extend({
 		this.app = app;
 	},
 	
+	parseTreeToTripleFormat : function(namedGraph) {
+		
+		var $this = this;
+		var model = this.app.model;
+		var file = this.app.file;
+		
+		var jsonTree = model.getJSONTree();
+		var jsonElements = model.getAllTreeElements(jsonTree);
+		
+		var triples = [];
+		
+		var namedGraphPredicate = '<' + $this.ontology.iri + 'isPresentIn>'
+		
+		$.each(jsonElements, function(index, e) {
+			
+			var element = $.parseJSON(JSON.stringify(e));
+			
+			if(element.type === 'cell' && element.data.name) {
+				
+				var subTypeIRI = '<' + $this.ontology.iri + element.data.subType.replace(' ', '') + '>';
+				//var subTypeLabel = '"' + element.data.subType + '"';
+				
+				var subject = '<' + element.data.namespace + model.cleanString(element.data.name) + '>';
+				
+				var label = '"' + element.data.name.replace(/\n/g," ").replace(/\r/g," ") + '"';
+				var documentation = '"' + element.data.documentation.replace(/\n/g," ").replace(/\r/g," ") + '"';
+				
+				triples.push(
+				{
+					"s" : subject,
+					"p" : namedGraphPredicate,
+					"o" : '<' + namedGraph + '>',
+				},
+				{
+					"s" : subject,
+					"p" : "rdf:type",
+					"o" : "owl:Class",
+				},	
+				{
+					"s" : subject,
+					"p" : "rdf:type",
+					"o" : "owl:NamedIndividual",
+				},	
+				{
+					"s" : subject,
+					"p" : "rdfs:subClassOf",
+					"o" : subTypeIRI,
+				},
+				{
+					"s" : subject,
+					"p" : "rdfs:label",
+					"o" : label,
+				});
+				
+				console.log('Documentation: ' + element.data.documentation);
+				
+				if(element.data.documentation !== "") {
+					triples.push({
+						"s" : subject,
+						"p" : "rdfs:comment",
+						"o" : documentation
+					});
+				}
+				
+			}
+			
+			else if(element.type === 'link') {
+				
+				var s = model.getNode(element.data.source.id)
+				var t = model.getNode(element.data.target.id)
+				
+				var source = $.parseJSON(JSON.stringify(s));
+				var target = $.parseJSON(JSON.stringify(t));
+				
+				if(source.data.name && target.data.name) {
+				
+					var subTypeIRI = '<' + $this.ontology.iri + model.cleanString(element.data.flowType) + '>';
+					//var subTypeLabel = '"' + element.data.flowType + '"';
+					
+					var sourceIri = '<' + source.data.namespace + model.cleanString(source.data.name) + '>';
+					var targetIri = '<' + target.data.namespace + model.cleanString(target.data.name) + '>';
+					
+					var predicate = '<' + $this.ontology.iri + model.cleanString(element.text) + '>';
+					var label = '"' + model.cleanString(element.text) + '"';
+					
+					if(element.flowType === 'specialization' || element.flowType === 'specialisation') {
+						
+						triples.push({
+							"s" : sourceIri,
+							"p" : 'rdfs:subClassOf',
+							"o" : targetIri
+						});
+						
+					}
+					else {
+						
+						triples.push(
+						{
+							"s" : predicate,
+							"p" : namedGraphPredicate,
+							"o" : '<' + namedGraph + '>',
+						},
+						{
+							"s" : predicate,
+							"p" : "rdf:type",
+							"o" : "owl:ObjectProperty"
+						},
+						{
+							"s" : predicate,
+							"p" : "rdfs:label",
+							"o" : label
+						},
+						{
+							"s" : predicate,
+							"p" : "rdfs:subPropertyOf",
+							"o" : subTypeIRI
+						},
+						{
+							"s" : predicate,
+							"p" : "rdfs:domain",
+							"o" : sourceIri
+						},
+						{
+							"s" : predicate,
+							"p" : "rdfs:range",
+							"o" : targetIri
+						},
+						{
+							"s" : sourceIri,
+							"p" : predicate,
+							"o" : targetIri
+						});
+						
+					}
+					
+				}
+			}
+			
+		});
+		
+		return triples;
+	},
+	
 	//Export to OWL
-	exportToOWL: function() {
+	exportToOWL : function() {
 		
 		var $this = this;
 		var model = this.app.model;
@@ -66,9 +209,10 @@ nemo.platform.LOD = Backbone.Model.extend({
 			
 			if(element.type === 'cell' && element.data.name) {
 				graph['nodes'].push({
-					"iri": $this.ontology.iri + model.cleanString(element.data.name),
+					"iri": element.data.namespace + model.cleanString(element.data.name),
 					"id": element.data.id,
 					"name": model.cleanString(element.data.name),
+					"documentation": element.data.documentation,
 				});
 			}
 			

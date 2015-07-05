@@ -1,3 +1,46 @@
+/**
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2015 Lucas Bassetti R. da Fonseca
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE. 
+ */
+
+/*
+	==========================================
+	HTTP Headers: Content-Type & Accept	
+	==========================================
+
+	RDF/XML	application/rdf+xml
+	Turtle application/x-turtle or text/turtle
+	N-Triples text/plain
+	TriG application/x-trig
+	TriX application/trix 
+	NQuads text/x-nquads
+	JSON-LD application/ld+json
+	
+	SPARQL XML Results Format application/sparql-results+xml
+	SPARQL JSON Results Format application/sparql-results+json
+	SPARQL Boolean Results text/boolean
+	SPARQL Binary Results application/x-binary-rdf-results-table
+*/		
+
 nemo.platform.Connection = Backbone.Model.extend({
 	
 	connection : undefined,
@@ -6,7 +49,7 @@ nemo.platform.Connection = Backbone.Model.extend({
 	username : "admin",
 	password : "admin",
 	
-	database : "testDB",
+	database : "lfonseca",
 	
 	initialize : function() {
 
@@ -47,7 +90,7 @@ nemo.platform.Connection = Backbone.Model.extend({
             
             //if database not exist, create it!
             if(!exist) {
-    			$this.createDB(database);
+    			$this.createDB();
     		}
         }); 
 		
@@ -61,7 +104,9 @@ nemo.platform.Connection = Backbone.Model.extend({
 		return this.database;
 	},
 	
-	createDB : function(database) {
+	createDB : function() {
+		
+		var database = this.database;
 		
 		var options = {
 			"database" : database,
@@ -81,9 +126,52 @@ nemo.platform.Connection = Backbone.Model.extend({
 		
 	},
 	
+	save : function(namedGraph, triples) {
+		
+		var database = this.database;
+		var connection = this.connection;
+		
+		$.each(triples, function(index, triple) {
+			
+			var query = 'INSERT DATA { GRAPH <' + namedGraph + '> { ' + triple.s + ' ' + triple.p + ' ' + triple.o + ' . } }';
+			console.log(query);
+			
+			connection.query({
+				"database" : database,
+				"query": query,  
+			},
+			function (data) {});
+			
+		});
+		
+	},
+	
+	insertQuery : function(graph, triples) {
+		
+		
+		
+		//document.
+	},
+	
+	selectQuery : function() {
+		
+		
+		var query = 'SELECT * WHERE { GRAPH ?g { <' + document.URL + '> ?y ?z . } }';
+		var result = "";
+		
+		this.connection.query({
+			database: "testDB",
+			query: query,  
+		},
+		function (data) {
+			console.log(JSON.stringify(data));
+			result = JSON.stringify(data);
+		});
+		
+		return result;
+	},
+	
 	testQuery : function() {
-		
-		
 		
 		var options = {
 				"database" : this.database,

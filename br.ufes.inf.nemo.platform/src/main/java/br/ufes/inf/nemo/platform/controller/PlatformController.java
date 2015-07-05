@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.ufes.inf.nemo.platform.connection.StardogConnection;
-
 @Controller
 public class PlatformController {
 
@@ -28,6 +26,11 @@ public class PlatformController {
 	@RequestMapping("/about")
 	public String about(HttpServletRequest request) {		
 		return "dashboard/pages/about/about";
+	}
+	
+	@RequestMapping("/derreference")
+	public String derreference(HttpServletRequest request) {		
+		return "lod/derreference";
 	}
 	
 	@RequestMapping("/archimate")
