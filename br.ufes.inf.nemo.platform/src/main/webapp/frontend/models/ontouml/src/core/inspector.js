@@ -61,7 +61,6 @@ function inp(defs) {
     return ret;
 }
 
-var iriNamespace = 'http://localhost:8080/nemo-platform/'
 var ontoumlInputs = {
 		
 	    inputs: _.extend({
@@ -77,7 +76,7 @@ var ontoumlInputs = {
 	            }),
 	        },
 	        name: { type: 'textarea', group: 'general', index: 1, label: 'Name' },
-	        namespace: { type: 'text', group: 'general', index: 2, label: 'Namespace', defaultValue: iriNamespace + 'node#'},
+	        namespace: { type: 'text', group: 'general', index: 2, label: 'Namespace' },
 	        documentation: { type: 'textarea', group: 'general', index: 3, label: 'Documentation' },
 	        attributes: { type: 'list', item: { type: 'text' }, group: 'attributes', index: 1, label: 'Attributes' },
             methods: { type: 'list', item: { type: 'text' }, group: 'methods', index: 1, label: 'Methods' }
@@ -92,11 +91,16 @@ var ontoumlInputs = {
 var ontoumlRelationshipsInputs = {
 		
 		inputs: _.extend({
-	        label: { type: 'text', group: 'label', index: 1, label: 'Label' },
-	        namespace: { type: 'text', group: 'label', index: 2, label: 'Namespace', defaultValue: iriNamespace + 'link#'},
-			sourceMultiplicity: { type: 'text', group: 'Multiplicity', index: 1, label: 'Source' },
-	        targetMultiplicity: { type: 'text', group: 'Multiplicity', index: 2, label: 'Target' },
+	        label: { type: 'text', group: 'general', index: 1, label: 'Label' },
+	        namespace: { type: 'text', group: 'general', index: 2, label: 'Namespace' },
+	        documentation: { type: 'textarea', group: 'general', index: 3, label: 'Documentation' },
+			sourceMultiplicity: { type: 'text', group: 'general', index: 4, label: 'Source' },
+	        targetMultiplicity: { type: 'text', group: 'general', index: 5, label: 'Target' },
 		}),	
+		
+		groups: {
+			general: { label: 'General', index: 1 },
+	    }
 }
 
 var InspectorDefs = {

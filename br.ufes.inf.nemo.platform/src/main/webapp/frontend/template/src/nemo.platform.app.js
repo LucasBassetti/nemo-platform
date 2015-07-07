@@ -472,6 +472,16 @@ nemo.platform.App = Backbone.View.extend({
 			
 		});
 		
+		//When rename Node documentation or namespace
+		graph.on('change:documentation change:namespace', function(cell) {
+			
+			var node = model.getNode(cell.id);
+			if(!node) return;
+			
+			model.updateTreeData(cell);
+			
+		});
+		
 		//Rename all graphs when click on document
 		$(document).click(function() {
 			if(isRenamedNode){

@@ -131,18 +131,29 @@ nemo.platform.Connection = Backbone.Model.extend({
 		var database = this.database;
 		var connection = this.connection;
 		
-		$.each(triples, function(index, triple) {
+		var query = 'CLEAR GRAPH <' + namedGraph + '>';
+		connection.query({
+			"database" : database,
+			"query": query,  
+		},
+		function () {
 			
-			var query = 'INSERT DATA { GRAPH <' + namedGraph + '> { ' + triple.s + ' ' + triple.p + ' ' + triple.o + ' . } }';
-			console.log(query);
-			
-			connection.query({
-				"database" : database,
-				"query": query,  
-			},
-			function (data) {});
+			$.each(triples, function(index, triple) {
+				
+				var query = 'INSERT DATA { GRAPH <' + namedGraph + '> { ' + triple.s + ' ' + triple.p + ' ' + triple.o + ' . } }';
+				console.log(query);
+				
+				connection.query({
+					"database" : database,
+					"query": query,  
+				},
+				function (data) {});
+				
+			});
 			
 		});
+		
+		
 		
 	},
 	

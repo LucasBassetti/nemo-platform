@@ -14,6 +14,7 @@ if (typeof exports === 'object') {
 }
 
 joint.shapes.ontouml = {}
+var ns = 'http://localhost:8080/nemo-platform/ontology#';
 
 joint.shapes.ontouml.Class = joint.shapes.basic.Generic.extend({
 
@@ -58,9 +59,11 @@ joint.shapes.ontouml.Class = joint.shapes.basic.Generic.extend({
             }
         },
 
-        name: [],
+        name: '',
         attributes: [],
-        methods: []
+        methods: [],
+        namespace: ns,
+        documentation: ''
 
     }, joint.shapes.basic.Generic.prototype.defaults),
 
@@ -336,7 +339,9 @@ joint.shapes.ontouml.Relationships = joint.dia.Link.extend({
         label: '',
         sourceMultiplicity: '',
         targetMultiplicity: '',
-        flowType: "association"
+        flowType: "association",
+        namespace: ns,
+        documentation: ''
     },
     
     initialize: function() {

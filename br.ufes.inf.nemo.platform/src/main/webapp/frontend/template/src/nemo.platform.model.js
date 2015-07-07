@@ -535,6 +535,13 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 	},
 	
+	//Method to update tree node data 
+	updateTreeData : function(cell) {
+		var node = this.getNode(cell.id);
+		//update node data
+		node.data = cell;
+	},
+	
 	//Method to rename tree link
 	renameTreeLink : function(link, graph) {
 		var linkNode = this.getNode(link.id);

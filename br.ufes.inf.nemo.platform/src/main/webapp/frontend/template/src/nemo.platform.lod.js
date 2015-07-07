@@ -69,7 +69,11 @@ nemo.platform.LOD = Backbone.Model.extend({
 				var subject = '<' + element.data.namespace + model.cleanString(element.data.name) + '>';
 				
 				var label = '"' + element.data.name.replace(/\n/g," ").replace(/\r/g," ") + '"';
-				var documentation = '"' + element.data.documentation.replace(/\n/g," ").replace(/\r/g," ") + '"';
+				
+				var documentation = "";
+				if(element.data.documentation) {
+					documentation = '"' + element.data.documentation.replace(/\n/g," ").replace(/\r/g," ") + '"';
+				}
 				
 				triples.push(
 				{

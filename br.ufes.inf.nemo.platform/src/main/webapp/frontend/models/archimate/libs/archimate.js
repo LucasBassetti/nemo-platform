@@ -14,6 +14,7 @@ if (typeof exports === 'object') {
 }
 
 joint.shapes.archimate = {}
+var ns = 'http://localhost:8080/nemo-platform/ontology#';
 
 //Generic View
 
@@ -91,7 +92,9 @@ joint.shapes.archimate.BusinessActor = joint.shapes.basic.Generic.extend({
 	            
 	        },
 	        
-	        name: [],
+	        name: '',
+	        namespace: ns,
+	        documentation: '',
 		 
 	 }, joint.shapes.basic.Generic.prototype.defaults),
 	
@@ -101,7 +104,7 @@ joint.shapes.archimate.BusinessActor = joint.shapes.basic.Generic.extend({
 	            this.updateRectangles();
 	            this.trigger('update');
 	        }, this);
-
+	        
 	        this.updateRectangles();
 
 		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
@@ -584,7 +587,9 @@ joint.shapes.archimate.ApplicationComponent = joint.shapes.basic.Generic.extend(
 	            
 	        },
 	        
-	        name: [],
+	        name: '',
+	        namespace: ns,
+	        documentation: '',
 		 
 	 }, joint.shapes.basic.Generic.prototype.defaults),
 	
@@ -857,7 +862,9 @@ joint.shapes.archimate.Node = joint.shapes.basic.Generic.extend({
 	            
 	        },
 	        
-	        name: [],
+	        name: '',
+	        namespace: ns,
+	        documentation: '',
 		 
 	 }, joint.shapes.basic.Generic.prototype.defaults),
 	
@@ -1190,7 +1197,9 @@ joint.shapes.archimate.Stakeholder = joint.shapes.basic.Generic.extend({
 	            
 	        },
 	        
-	        name: [],
+	        name: '',
+	        namespace: ns,
+	        documentation: '',
 		 
 	 }, joint.shapes.basic.Generic.prototype.defaults),
 	
@@ -1344,7 +1353,9 @@ joint.shapes.archimate.Goal = joint.shapes.basic.Generic.extend({
 	            
 	        },
 	        
-	        name: [],
+	        name: '',
+	        namespace: ns,
+	        documentation: '',
 		 
 	 }, joint.shapes.basic.Generic.prototype.defaults),
 	
@@ -1524,7 +1535,9 @@ joint.shapes.archimate.WorkPackage = joint.shapes.basic.Generic.extend({
 	            
 	        },
 	        
-	        name: [],
+	        name: '',
+	        namespace: ns,
+	        documentation: '',
 		 
 	 }, joint.shapes.basic.Generic.prototype.defaults),
 	
@@ -1843,8 +1856,10 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
  
         },
 
-        label: [],
-        flowType: "association"
+        label: '',
+        flowType: "association",
+        namespace: ns,
+ 	    documentation: '',
     },
 
     initialize: function() {
