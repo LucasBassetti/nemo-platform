@@ -231,7 +231,7 @@ nemo.platform.ArchiMate = Backbone.View.extend({
 			else{
 				cell.set('size', {
 					width: originalSize.width * 2,
-					height: originalSize.height * 2
+					height: (originalSize.height * 2)/1.5
 				});
 			}
 			

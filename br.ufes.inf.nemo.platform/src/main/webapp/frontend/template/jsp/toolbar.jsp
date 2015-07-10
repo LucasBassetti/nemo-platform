@@ -119,6 +119,7 @@
 						<span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu" role="menu">
+						<li><a href="/nemo-platform/archimate-model.htm" id="btn-new">New</a></li>
 						<li><a href="#" id="btn-open">Open</a></li>
 						<li><a href="#" id="btn-save">Save</a></li>
 						<li><a href="#" id="btn-saveAs">Save as</a></li>

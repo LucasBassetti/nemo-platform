@@ -170,7 +170,7 @@ nemo.platform.LOD = Backbone.Model.extend({
 				},	
 				{
 					"s" : subject,
-					"p" : "rdfs:subClassOf",
+					"p" : "rdf:type",
 					"o" : subTypeIRI,
 				},
 				{
@@ -292,6 +292,7 @@ nemo.platform.LOD = Backbone.Model.extend({
 				graph['nodes'].push({
 					"iri": element.data.namespace + model.cleanString(element.data.name),
 					"id": element.data.id,
+					"type": model.cleanString(element.data.subType),
 					"name": model.cleanString(element.data.name),
 					"documentation": element.data.documentation,
 				});
@@ -315,6 +316,7 @@ nemo.platform.LOD = Backbone.Model.extend({
 					graph['links'].push({
 						"iri": $this.ontology.iri + model.cleanString(element.text),
 						"id": element.data.id,
+						"type": model.cleanString(element.data.relationshipType),
 						"name": model.cleanString(element.text),
 						"source": sourceIri,
 						"target": targetIri
