@@ -25,4 +25,6 @@
 <!-- /#page-wrapper -->
 
 <!-- LOADING -->
-<img id="loading" src="frontend/template/img/ajax-loader.gif">
+<div id="loading">
+	<img src="frontend/template/img/ajax-loader.gif" class="ajax-loader">
+</div>

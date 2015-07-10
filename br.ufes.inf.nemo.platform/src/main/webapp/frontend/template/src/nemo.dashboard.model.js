@@ -45,13 +45,12 @@ nemo.dashboard.Model = Backbone.Model.extend({
 	
 	initializeLoadingProcedure : function () {
 		
-		$('#loading')
-	    .hide()  // hide it initially
-	    .ajaxStart(function() {
-	        $(this).show();
+		$('#loading').hide();
+	    $(document).ajaxStart(function() {
+	    	$('#loading').show();
 	    })
 	    .ajaxStop(function() {
-	        $(this).hide();
+	        $('#loading').hide();
 	    });
 		
 	},

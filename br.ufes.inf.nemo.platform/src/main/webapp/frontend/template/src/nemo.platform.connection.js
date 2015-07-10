@@ -68,7 +68,6 @@ nemo.platform.Connection = Backbone.Model.extend({
 			this.connection = new Stardog.Connection();
 			this.connection.setEndpoint(endpoint);
 			this.connection.setCredentials(username, password);
-			console.log('START CONNECTION!');
 		}
 		
 	},
@@ -153,8 +152,6 @@ nemo.platform.Connection = Backbone.Model.extend({
 			
 		});
 		
-		
-		
 	},
 	
 	insertQuery : function(graph, triples) {
@@ -165,7 +162,6 @@ nemo.platform.Connection = Backbone.Model.extend({
 	},
 	
 	selectQuery : function() {
-		
 		
 		var query = 'SELECT * WHERE { GRAPH ?g { <' + document.URL + '> ?y ?z . } }';
 		var result = "";

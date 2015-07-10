@@ -1,3 +1,27 @@
+/**
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2015 Lucas Bassetti R. da Fonseca
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE. 
+ */
+
 nemo.platform.OntoUML = Backbone.View.extend({
 	
 	app: undefined,
@@ -55,7 +79,10 @@ nemo.platform.OntoUML = Backbone.View.extend({
 	initializeContexMenuProcedures : function() {
 		
 		var graph = this.app.graph;
+		var paper = this.app.paper;
+
 		var model = this.nemoApp.model;
+		var lod = this.nemoApp.lod;
 	
 		$ui('.paper').contextmenu({
 			delegate: '.rotatable',
@@ -64,6 +91,8 @@ nemo.platform.OntoUML = Backbone.View.extend({
 		        {title: "Delete from model", cmd: "deleteFromModel", uiIcon: "ui-icon-close"},
 		        {title: "Show connected links", cmd: "showConnectedLinks", uiIcon: "ui-icon-shuffle"},
 		        {title: "Show/hide attributes and methods", cmd: "showAttributesMethods", uiIcon: "ui-icon-bullet"},
+		        {title: "----"},
+		        {title: "Show LOD properties", cmd: "showLODProperties", uiIcon: "ui-icon-pencil"},
 		        ],
 		    select: function(event, ui) {
 		        if(ui.cmd === 'deleteFromModel') {
@@ -77,6 +106,9 @@ nemo.platform.OntoUML = Backbone.View.extend({
 		        }
 		        else if(ui.cmd === 'showAttributesMethods') {
 		        	showAttributesMethods();
+		        }
+		        else if(ui.cmd === 'showLODProperties') {
+		        	showLODProperties();
 		        }
 		    }
 		
@@ -124,6 +156,13 @@ nemo.platform.OntoUML = Backbone.View.extend({
 		function deleteFromView() {
 			var cell = graph.getCell(cellId);
 			cell.remove();
+		}
+		
+		function showLODProperties() {
+			var cell = graph.getCell(cellId);
+			
+			console.log('CELL: ' + JSON.stringify(cell));
+			lod.generatePropertiesDialog(cell);
 		}
 		
 		function showConnectedLinks() {

@@ -81,6 +81,14 @@ nemo.platform.App = Backbone.View.extend({
 		var model = this.model;
 		var file = this.file;
 		
+		$('#loading').hide();
+	    $(document).ajaxStart(function() {
+	    	$('#loading').show();
+	    })
+	    .ajaxStop(function() {
+	        $('#loading').hide();
+	    });
+		
 		//SaveAs tree
 		$('#btn-saveAs').click(function(){
 			model.updateCurrentTab(graph);
@@ -523,9 +531,10 @@ nemo.platform.App = Backbone.View.extend({
 	 */
 	initializePaperProcedures : function(app) {
 		
-		graph = app.graph;
-		paper = app.paper;
-		model = this.model;
+		var graph = app.graph;
+		var paper = app.paper;
+		var model = this.model;
+		var lod = this.lod;
 		
 		//Create paper contextmenu
 		$ui('.paper').contextmenu({
@@ -614,8 +623,8 @@ nemo.platform.App = Backbone.View.extend({
 		
 		function showLODProperties() {
 			
-			
-			
+			var cell = graph.getCell(cellId);
+			lod.generatePropertiesDialog(cell);
 		}
 		
 		var ed;
@@ -747,7 +756,7 @@ nemo.platform.App = Backbone.View.extend({
 				
 				var relationshipType = $(this).attr('id');
 				
-				link.set('flowType', relationshipType);
+				link.set('relationshipType', relationshipType);
 				
 				var node = model.getNode(link.id);
 				node.data = link;

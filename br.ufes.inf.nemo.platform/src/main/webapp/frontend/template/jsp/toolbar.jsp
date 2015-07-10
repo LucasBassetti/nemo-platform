@@ -206,3 +206,8 @@
 
 <!-- DIALOGS -->
 <input type="text" id="filename" style="display: none" />
+
+<!-- LOADING -->
+<div id="loading">
+	<img src="frontend/template/img/ajax-loader.gif" class="ajax-loader">
+</div>

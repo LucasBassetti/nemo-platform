@@ -44,6 +44,83 @@ nemo.platform.LOD = Backbone.Model.extend({
 		this.app = app;
 	},
 	
+	getWikipediaDefinition : function(cellName) {
+		
+		var definition = '';
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "getDefinition.htm",
+		   data: {
+			   'cellName' : cellName,
+		   },
+		   success: function(data){
+			   definition = data;
+		   },
+		   error : function(e) {
+			   //alert("error: " + e.status);
+		   }
+		});
+		
+		return definition;
+		
+	},
+	
+	generatePropertiesDialog : function(cell) {
+		
+		var $this = this;
+		var model = this.app.model;
+		var cellName = model.cleanString(cell.get('name'));
+		
+		var content = '<div class=lod-properties">' +
+				'IRI: (<a href="' +  cell.get('namespace') + cellName + '" target="_blank"> click here to follow the iri </a>)' +
+				'<input type="text" id="lod-iri" value="' + cell.get('namespace') + cellName + '" readonly/>' + 
+				'Documentation: (<a href="#" id="lod-wikipedia"> click here to get Wikipedia definition </a>)' +
+					'<textarea id="lod-documentation" rows="8" value="' + cell.get('documentation') + '">' + 
+					cell.get('documentation') + '</textarea>' +
+			'</div>';
+		
+		var dialog = new joint.ui.Dialog({
+			width: 500,
+			type: 'neutral',
+			title: 'LOD Properties',
+			content: content,
+			buttons: [
+				{ action: 'cancel', content: 'Cancel', position: 'left' },
+				{ action: 'ok', content: 'Ok', position: 'left' }
+			]
+		});
+		
+		dialog.on('action:ok', ok);
+		dialog.on('action:cancel', cancel);
+		dialog.open();
+		
+		$('#lod-wikipedia').click(function() {
+			var definition = $this.getWikipediaDefinition(cell.get('name').replace(/\n/g,"").replace(/\r/g,""));
+			
+			definition = definition.replace(/\"/g,"")
+									.replace(/\@en/g,"")
+									.replace(/\&/g,"")
+									.replace(/\?/g,"")
+									.replace(/\\/g,"")
+									.replace(/\;/g,"");
+						
+			$('#lod-documentation').text(definition);
+			console.log('DEF: ' + definition)
+		});
+		
+		function ok() {
+			cell.set('documentation', $('#lod-documentation').val());
+			dialog.close();
+		}
+		
+		function cancel() {
+			dialog.close();
+		}
+		
+	},
+	
 	parseTreeToTripleFormat : function(namedGraph) {
 		
 		var $this = this;
@@ -102,9 +179,9 @@ nemo.platform.LOD = Backbone.Model.extend({
 					"o" : label,
 				});
 				
-				console.log('Documentation: ' + element.data.documentation);
-				
-				if(element.data.documentation !== "") {
+				if(documentation !== "") {
+					console.log('Documentation: ' + documentation);
+					
 					triples.push({
 						"s" : subject,
 						"p" : "rdfs:comment",
@@ -124,8 +201,8 @@ nemo.platform.LOD = Backbone.Model.extend({
 				
 				if(source.data.name && target.data.name) {
 				
-					var subTypeIRI = '<' + $this.ontology.iri + model.cleanString(element.data.flowType) + '>';
-					//var subTypeLabel = '"' + element.data.flowType + '"';
+					var subTypeIRI = '<' + $this.ontology.iri + model.cleanString(element.data.relationshipType) + '>';
+					//var subTypeLabel = '"' + element.data.relationshipType + '"';
 					
 					var sourceIri = '<' + source.data.namespace + model.cleanString(source.data.name) + '>';
 					var targetIri = '<' + target.data.namespace + model.cleanString(target.data.name) + '>';
@@ -133,7 +210,7 @@ nemo.platform.LOD = Backbone.Model.extend({
 					var predicate = '<' + $this.ontology.iri + model.cleanString(element.text) + '>';
 					var label = '"' + model.cleanString(element.text) + '"';
 					
-					if(element.flowType === 'specialization' || element.flowType === 'specialisation') {
+					if(element.relationshipType === 'specialization' || element.relationshipType === 'specialisation') {
 						
 						triples.push({
 							"s" : sourceIri,

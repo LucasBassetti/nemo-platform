@@ -1,4 +1,6 @@
 var Stencil = {};
+var ns = 'http://localhost:8080/nemo-platform/ontology#';
+var attr = { '.name-text': { 'font-size': 8 } };
 
 Stencil.groups = {
 		
@@ -14,66 +16,66 @@ Stencil.groups = {
 Stencil.shapes = {
 
     businessLayer: [
-        new joint.shapes.archimate.BusinessActor({name: 'Actor', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessRole({name: 'Role', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessCollaboration({name: 'Collaboration', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessInterface({name: 'Interface', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.Location({name: 'Location', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessProcess({name: 'Process', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessFunction({name: 'Function', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessInteraction({name: 'Interaction', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessEvent({name: 'Event', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessService({name: 'Service', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.BusinessObject({name: 'Object', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.Representation({name: 'Representation', attrs: { '.name-text': { 'font-size': 7 } }}),
-        new joint.shapes.archimate.Value({name: 'Value', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.Meaning({name: 'Meaning', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.Product({name: 'Product', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.Contract({name: 'Contract', attrs: { '.name-text': { 'font-size': 8 } }}),
+        new joint.shapes.archimate.BusinessActor({name: 'Actor', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessRole({name: 'Role', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessCollaboration({name: 'Collaboration', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessInterface({name: 'Interface', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.Location({name: 'Location', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessProcess({name: 'Process', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessFunction({name: 'Function', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessInteraction({name: 'Interaction', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessEvent({name: 'Event', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessService({name: 'Service', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.BusinessObject({name: 'Object', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.Representation({name: 'Representation', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.Value({name: 'Value', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.Meaning({name: 'Meaning', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.Product({name: 'Product', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.Contract({name: 'Contract', namespace: ns, attrs: attr}),
     ],
 
 	applicationLayer: [
-	    new joint.shapes.archimate.ApplicationComponent({name: 'Component', attrs: { '.name-text': { 'font-size': 8 } }}),     
-	    new joint.shapes.archimate.ApplicationCollaboration({name: 'Collaboration', attrs: { '.name-text': { 'font-size': 8 } }}),
-	    new joint.shapes.archimate.ApplicationInterface({name: 'Interface', attrs: { '.name-text': { 'font-size': 8 } }}),
-	    new joint.shapes.archimate.ApplicationFunction({name: 'Function', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.ApplicationInteraction({name: 'Interaction', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.ApplicationService({name: 'Service', attrs: { '.name-text': { 'font-size': 8 } }}),
-        new joint.shapes.archimate.DataObject({name: 'Object', attrs: { '.name-text': { 'font-size': 8 } }}),
+	    new joint.shapes.archimate.ApplicationComponent({name: 'Component', namespace: ns, attrs: attr}),     
+	    new joint.shapes.archimate.ApplicationCollaboration({name: 'Collaboration', namespace: ns, attrs: attr}),
+	    new joint.shapes.archimate.ApplicationInterface({name: 'Interface', namespace: ns, attrs: attr}),
+	    new joint.shapes.archimate.ApplicationFunction({name: 'Function', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.ApplicationInteraction({name: 'Interaction', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.ApplicationService({name: 'Service', namespace: ns, attrs: attr}),
+        new joint.shapes.archimate.DataObject({name: 'Object', namespace: ns, attrs: attr}),
 	],
 	
 	technologyLayer: [
-	   new joint.shapes.archimate.Node({name: 'Node', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Device({name: 'Device', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Network({name: 'Network', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.CommunicationPath({name: 'Com. Path', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.InfrastructureInterface({name: 'Interface', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.SystemSoftware({name: 'Software', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.InfrastructureFunction({name: 'Function', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.InfrastructureService({name: 'Service', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Artifact({name: 'Artifact', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Node({name: 'Node', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Device({name: 'Device', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Network({name: 'Network', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.CommunicationPath({name: 'Com. Path', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.InfrastructureInterface({name: 'Interface', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.SystemSoftware({name: 'Software', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.InfrastructureFunction({name: 'Function', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.InfrastructureService({name: 'Service', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Artifact({name: 'Artifact', namespace: ns, attrs: attr}),
 	],
 	
 	motivationalLayer: [
-	   new joint.shapes.archimate.Stakeholder({name: 'Stakeholder', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Driver({name: 'Driver', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Assessment({name: 'Assessment', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Goal({name: 'Goal', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Requirement({name: 'Requirement', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Constraint({name: 'Constraint', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Principle({name: 'Principle', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Stakeholder({name: 'Stakeholder', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Driver({name: 'Driver', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Assessment({name: 'Assessment', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Goal({name: 'Goal', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Requirement({name: 'Requirement', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Constraint({name: 'Constraint', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Principle({name: 'Principle', namespace: ns, attrs: attr}),
 	],
 	
 	migrationLayer: [
-	   new joint.shapes.archimate.WorkPackage({name: 'Work Package', attrs: { '.name-text': { 'font-size': 7 } }}),
-	   new joint.shapes.archimate.Deliverable({name: 'Deliverable', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Plateau({name: 'Plateau', attrs: { '.name-text': { 'font-size': 8 } }}),
-	   new joint.shapes.archimate.Gap({name: 'Gap', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.WorkPackage({name: 'Work Package', namespace: ns, attrs: { '.name-text': { 'font-size': 7 } }}),
+	   new joint.shapes.archimate.Deliverable({name: 'Deliverable', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Plateau({name: 'Plateau', namespace: ns, attrs: attr}),
+	   new joint.shapes.archimate.Gap({name: 'Gap', namespace: ns, attrs: attr}),
 	],
 	
 	relationships: [
-	   new joint.shapes.archimate.Junction({attrs: { '.name-text': { 'font-size': 7 } }}),     
-	   new joint.shapes.archimate.Group({name: 'Group', attrs: { '.name-text': { 'font-size': 8 } }}),
+	   new joint.shapes.archimate.Junction({namespace: ns, attrs: { '.name-text': { 'font-size': 7 } }}),     
+	   new joint.shapes.archimate.Group({name: 'Group', namespace: ns, attrs: attr}),
 	],
     
 };

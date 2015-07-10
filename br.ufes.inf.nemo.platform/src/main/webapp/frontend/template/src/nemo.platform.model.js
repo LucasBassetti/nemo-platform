@@ -103,6 +103,8 @@ nemo.platform.Model = Backbone.Model.extend({
 	//Procedure to initialize the model tree
 	initializeTree : function(){
 		
+		var $this = this;
+		
 		// Initialize tree
 		this.tree = $ui('.inspector-paper').jstree({ 
 			'core' : {
@@ -132,7 +134,7 @@ nemo.platform.Model = Backbone.Model.extend({
 				}
 			},
 		
-			"sort" : this.sort,
+			"sort" : sort,
 			
 			"plugins" : [ "sort", "json_data", "dnd", "contextmenu", "wholerow", "types" ],
 		
@@ -142,82 +144,87 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 		this.tree = $ui('.inspector-paper').jstree(true);
 		
+		function sort(a, b) {
+			return $this.sort(a, b);
+		}
+		
 	},
 	
 	//Procedure to sort by order (Diagram > Folder > Cell > Link)
 	sort : function(a, b) {
 		
-		var nodeA = model.getNode(a);
-		var nodeB = model.getNode(b);
+		var nodeA = this.getNode(a);
+		var nodeB = this.getNode(b);
 		
 		var textA = nodeA.text;
 		var textB = nodeB.text;
 		
-		if(model.isDiagram(nodeA)) {
+		if(this.isDiagram(nodeA)) {
 			
-			if(model.isCell(nodeB)) {
+			if(this.isCell(nodeB)) {
 				return -1;
 			}
 			
-			if(model.isFolder(nodeB)) {
+			if(this.isFolder(nodeB)) {
 				return 1;
 			}
 			
-			if(model.isLink(nodeB)) {
+			if(this.isLink(nodeB)) {
 				return -1;
 			}
 			
 		}
 		
-		if(model.isFolder(nodeA)) {
+		if(this.isFolder(nodeA)) {
 			
-			if(model.isDiagram(nodeB)) {
+			if(this.isDiagram(nodeB)) {
 				return -1;
 			}
 			
-			if(model.isCell(nodeB)) {
+			if(this.isCell(nodeB)) {
 				return -1;
 			}
 			
-			if(model.isLink(nodeB)) {
-				return -1;
-			}
-			
-		}
-		
-		if(model.isCell(nodeA)) {
-			
-			if(model.isDiagram(nodeB)) {
-				return 1;
-			}
-			
-			if(model.isFolder(nodeB)) {
-				return 1;
-			}
-			
-			if(model.isLink(nodeB)){
+			if(this.isLink(nodeB)) {
 				return -1;
 			}
 			
 		}
 		
-		if(model.isLink(nodeA)) {
+		if(this.isCell(nodeA)) {
 			
-			if(model.isDiagram(nodeB)) {
+			if(this.isDiagram(nodeB)) {
 				return 1;
 			}
 			
-			if(model.isFolder(nodeB)) {
+			if(this.isFolder(nodeB)) {
 				return 1;
 			}
 			
-			if(model.isCell(nodeB)){
+			if(this.isLink(nodeB)){
+				return -1;
+			}
+			
+		}
+		
+		if(this.isLink(nodeA)) {
+			
+			if(this.isDiagram(nodeB)) {
+				return 1;
+			}
+			
+			if(this.isFolder(nodeB)) {
+				return 1;
+			}
+			
+			if(this.isCell(nodeB)){
 				return 1;
 			}
 			
 		}
 		
 		if(textA > textB) {
+			console.log('SORT: ' + textA + ' - ' + textB);
 			return 1;
 		}
 		else {
@@ -540,6 +547,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		var node = this.getNode(cell.id);
 		//update node data
 		node.data = cell;
+		
 	},
 	
 	//Method to rename tree link
@@ -554,13 +562,13 @@ nemo.platform.Model = Backbone.Model.extend({
 		var newLinkName = undefined;
 		
 		if(source.get('name') && target.get('name') ) {
-			newLinkName = link.get('flowType') + " (" + source.get('name') + " -> " +  target.get('name') + ")"
+			newLinkName = link.get('relationshipType') + " (" + source.get('name') + " -> " +  target.get('name') + ")"
 		}
 		else if (source.get('name')) {
-			newLinkName = link.get('flowType') + " (" + source.get('name') + " -> " +  target.get('subType') + ")"
+			newLinkName = link.get('relationshipType') + " (" + source.get('name') + " -> " +  target.get('subType') + ")"
 		}
 		else if (target.get('name')) {
-			newLinkName = link.get('flowType') + " (" + source.get('subType') + " -> " +  target.get('name') + ")"
+			newLinkName = link.get('relationshipType') + " (" + source.get('subType') + " -> " +  target.get('name') + ")"
 		}
 		
 		this.renameTreeNode(linkNode, newLinkName);
@@ -627,7 +635,7 @@ nemo.platform.Model = Backbone.Model.extend({
 		
 		var new_data = { 
 				"id": cell.id, 
-				"text": cell.get('flowType') + " (" + source.get('name') + " -> )",
+				"text": cell.get('relationshipType') + " (" + source.get('name') + " -> )",
 				"icon":"glyphicon glyphicon-arrow-right", 
 				"type":"link", 
 				"data" : graph.getCell(cell.id) 
@@ -708,7 +716,7 @@ nemo.platform.Model = Backbone.Model.extend({
 	//Method to set graph
 	setGraph : function(jsonGraph) {
 		this.graph = jsonGraph;
-		console.log('OPEN: ' + JSON.stringify(jsonGraph));
+		//console.log('OPEN: ' + JSON.stringify(jsonGraph));
 	},
 	
 	/**

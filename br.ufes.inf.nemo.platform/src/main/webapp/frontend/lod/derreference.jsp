@@ -82,7 +82,7 @@
 	
 		$(window).load(function() {
 			
-			console.log(location.protocol + '//' + location.host + location.pathname);
+			//console.log(location.protocol + '//' + location.host + location.pathname);
 			
 			var db = "lfonseca";
 			var stardog = new nemo.platform.Connection();

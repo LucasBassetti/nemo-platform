@@ -1,3 +1,27 @@
+/**
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2015 Lucas Bassetti R. da Fonseca
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE. 
+ */
+
 if (typeof exports === 'object') {
 
     var joint = {
@@ -14,7 +38,6 @@ if (typeof exports === 'object') {
 }
 
 joint.shapes.archimate = {}
-var ns = 'http://localhost:8080/nemo-platform/ontology#';
 
 //Generic View
 
@@ -31,11 +54,127 @@ joint.shapes.basic.GenericView = joint.dia.ElementView.extend({
     }
 });
 
+/** GENERIC LAYER */
+
+joint.shapes.archimate.ArchiMateLayer = joint.shapes.basic.Generic.extend({
+
+	markup: [
+  		'<g class="rotatable">',
+          	'<g class="scalable">',
+  	        	'<rect class="name-rect"/>',	
+  			'</g>',
+  			'<text class="name-text"/>',
+  		'</g>'
+  	].join(''),
+ 	
+ 	defaults: joint.util.deepSupplement({
+ 		 
+ 		 type: 'archimate.ArchiMateLayer',
+ 		 subType: 'ArchiMate Layer',
+
+         attrs: {
+         	rect: {
+                 width: 100,
+                 height: 100
+             },
+             '.name-rect': { 
+             	'stroke': '#000000', 
+             	'stroke-width': 1, 
+             },
+             '.name-text': {
+                 'ref': '.name-rect', 
+                 'ref-y': .5, 
+                 'ref-x': .5, 
+                 'text-anchor': 'middle', 
+                 'y-alignment': 'middle', 
+                 'fill': '#000000', 	                
+                 'font-weight': 'normal',
+                 'font-size': 8,
+                 'font-family': 'Arial'
+             },
+             '.object': {
+             	'ref': '.name-rect', 
+             	'ref-y': 1, 
+             	'ref-x': 0.999, 
+             	'text-anchor': 'end', 
+             	'fill':'none', 
+             	'stroke':'#000000', 
+             	'stroke-width': 1.2, 
+             	'stroke-opacity': 1
+             }
+             
+         },
+         
+         name: '',
+         namespace: '',
+         documentation: '',
+ 	        
+ 	 }, joint.shapes.basic.Generic.prototype.defaults),
+ 	
+ 	 initialize: function() {
+
+         this.on('change:name', function() {
+             this.updateRectangles();
+             this.trigger('update');
+         }, this);
+         
+         this.updateRectangles();
+
+ 	 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
+     },
+
+     getClassName: function() {
+         return this.get('name');
+     },
+
+     updateRectangles: function() {
+
+         var attrs = this.get('attrs');
+
+         var rects = [
+             { type: 'name', text: this.getClassName() }
+         ];
+
+         var offsetY = 0;
+
+         _.each(rects, function(rect) {
+
+             var lines = _.isArray(rect.text) ? rect.text : [rect.text];
+             var rectHeight = lines.length * 20 + 20;
+
+             attrs['.' + rect.type + '-text'].text = lines.join('\n');
+             //attrs['.' + rect.type + '-rect'].height = rectHeight;
+             attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
+
+             offsetY += rectHeight;
+         });
+     }
+ 	 
+ });
+
+	
 /** BUSINESS LAYER */
+
+joint.shapes.archimate.BusinessLayer = joint.shapes.archimate.ArchiMateLayer.extend({
+	
+	defaults: joint.util.deepSupplement({
+		 
+		 type: 'archimate.BusinessLayer',
+		 subType: 'Business Layer',
+
+        attrs: {
+            '.name-rect': { 
+            	'fill': '#FFFFB5' 
+            },
+        }
+	
+	 }, joint.shapes.archimate.ArchiMateLayer.prototype.defaults),
+	 
+});
 
 //BusinessActor
 
-joint.shapes.archimate.BusinessActor = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.BusinessActor = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -56,93 +195,16 @@ joint.shapes.archimate.BusinessActor = joint.shapes.basic.Generic.extend({
 	 defaults: joint.util.deepSupplement({
 		 
 		 type: 'archimate.BusinessActor',
-		 subType: 'Business Actor',
-
-	        attrs: {
-	        	rect: {
-	                width: 100,
-	                height: 100
-	            },
-	            '.name-rect': { 
-	            	'stroke': '#000000', 
-	            	'stroke-width': 1, 
-	            	'fill': '#FFFFB5' 
-	            },
-	            '.name-text': {
-	                'ref': '.name-rect', 
-	                'ref-y': .5, 
-	                'ref-x': .5, 
-	                'text-anchor': 'middle', 
-	                'y-alignment': 'middle', 
-	                'fill': '#000000', 	                
-	                'font-weight': 'normal',
-	                'font-size': 8,
-	                'font-family': 'Arial'
-	            },
-	            '.object': {
-	            	'ref': '.name-rect', 
-	            	'ref-y': 1, 
-	            	'ref-x': 0.999, 
-	            	'text-anchor': 'end', 
-	            	'fill':'none', 
-	            	'stroke':'#000000', 
-	            	'stroke-width': 1.2, 
-	            	'stroke-opacity': 1
-	            }
-	            
-	        },
-	        
-	        name: '',
-	        namespace: ns,
-	        documentation: '',
+		 subType: 'Business Actor',     
 		 
-	 }, joint.shapes.basic.Generic.prototype.defaults),
-	
-	 initialize: function() {
-
-	        this.on('change:name', function() {
-	            this.updateRectangles();
-	            this.trigger('update');
-	        }, this);
-	        
-	        this.updateRectangles();
-
-		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-	    },
-
-	    getClassName: function() {
-	        return this.get('name');
-	    },
-
-	    updateRectangles: function() {
-
-	        var attrs = this.get('attrs');
-
-	        var rects = [
-	            { type: 'name', text: this.getClassName() }
-	        ];
-
-	        var offsetY = 0;
-
-	        _.each(rects, function(rect) {
-
-	            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
-	            var rectHeight = lines.length * 20 + 20;
-
-	            attrs['.' + rect.type + '-text'].text = lines.join('\n');
-	            //attrs['.' + rect.type + '-rect'].height = rectHeight;
-	            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
-
-	            offsetY += rectHeight;
-	        });
-	    }
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessActorView = joint.shapes.basic.GenericView; 
 
 //BusinessRole
 
-joint.shapes.archimate.BusinessRole = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.BusinessRole = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -163,14 +225,14 @@ joint.shapes.archimate.BusinessRole = joint.shapes.archimate.BusinessActor.exten
 		 type: 'archimate.BusinessRole',
 		 subType: 'Business Role',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessRoleView = joint.shapes.basic.GenericView;
 
 //Collaboration
 
-joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -190,14 +252,14 @@ joint.shapes.archimate.BusinessCollaboration = joint.shapes.archimate.BusinessAc
 		 type: 'archimate.BusinessCollaboration',
 		 subType: 'Business Collaboration',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 	
 });
 joint.shapes.archimate.BusinessCollaborationView = joint.shapes.basic.GenericView;
 
 //Business Interface
 
-joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -217,14 +279,14 @@ joint.shapes.archimate.BusinessInterface = joint.shapes.archimate.BusinessActor.
 		 type: 'archimate.BusinessInterface',
 		 subType: 'Business Interface',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessInterfaceView = joint.shapes.basic.GenericView;
 
 //Location
 
-joint.shapes.archimate.Location = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.Location = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -243,14 +305,14 @@ joint.shapes.archimate.Location = joint.shapes.archimate.BusinessActor.extend({
 		 type: 'archimate.Location',
 		 subType: 'Location',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.LocationView = joint.shapes.basic.GenericView;
 
 //Business Process
 
-joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -276,14 +338,14 @@ joint.shapes.archimate.BusinessProcess = joint.shapes.archimate.BusinessActor.ex
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessProcessView = joint.shapes.basic.GenericView;
 
 //Business Function
 
-joint.shapes.archimate.BusinessFunction = joint.shapes.archimate.BusinessProcess.extend({
+joint.shapes.archimate.BusinessFunction = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -302,14 +364,21 @@ joint.shapes.archimate.BusinessFunction = joint.shapes.archimate.BusinessProcess
 		 type: 'archimate.BusinessFunction',
 		 subType: 'Business Function',
 		 
-	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
+		 attrs: {
+	        	rect: {
+	            	rx: 2,
+	                ry: 2,
+	            },
+		 }
+		 
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessFunctionView = joint.shapes.basic.GenericView;
 
 //Business Interaction
 
-joint.shapes.archimate.BusinessInteraction = joint.shapes.archimate.BusinessProcess.extend({
+joint.shapes.archimate.BusinessInteraction = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -329,14 +398,21 @@ joint.shapes.archimate.BusinessInteraction = joint.shapes.archimate.BusinessProc
 		 type: 'archimate.BusinessInteraction',
 		 subType: 'Business Interaction',
 		 
-	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
+		 attrs: {
+	        	rect: {
+	            	rx: 2,
+	                ry: 2,
+	            },
+		 }
+		 
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessInteractionView = joint.shapes.basic.GenericView;
 
 //Business Event
 
-joint.shapes.archimate.BusinessEvent = joint.shapes.archimate.BusinessProcess.extend({
+joint.shapes.archimate.BusinessEvent = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -355,14 +431,21 @@ joint.shapes.archimate.BusinessEvent = joint.shapes.archimate.BusinessProcess.ex
 		 type: 'archimate.BusinessEvent',
 		 subType: 'Business Event',
 		 
-	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
+		 attrs: {
+	        	rect: {
+	            	rx: 2,
+	                ry: 2,
+	            },
+		 }
+		 
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessEventView = joint.shapes.basic.GenericView;
 
 //Business Service
 
-joint.shapes.archimate.BusinessService = joint.shapes.archimate.BusinessProcess.extend({
+joint.shapes.archimate.BusinessService = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -385,14 +468,14 @@ joint.shapes.archimate.BusinessService = joint.shapes.archimate.BusinessProcess.
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.BusinessProcess.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessServiceView = joint.shapes.basic.GenericView;
 
 //Business Object
 
-joint.shapes.archimate.BusinessObject = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.BusinessObject = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -409,14 +492,14 @@ joint.shapes.archimate.BusinessObject = joint.shapes.archimate.BusinessActor.ext
 		 type: 'archimate.BusinessObject',
 		 subType: 'Business Object',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.BusinessObjectView = joint.shapes.basic.GenericView;
 
 //Representation
 
-joint.shapes.archimate.Representation = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.Representation = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -432,14 +515,14 @@ joint.shapes.archimate.Representation = joint.shapes.archimate.BusinessActor.ext
 		 type: 'archimate.Representation',
 		 subType: 'Representation',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.RepresentationView = joint.shapes.basic.GenericView;
 
 //Meaning
 
-joint.shapes.archimate.Meaning = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.Meaning = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -455,14 +538,14 @@ joint.shapes.archimate.Meaning = joint.shapes.archimate.BusinessActor.extend({
 		 type: 'archimate.Meaning',
 		 subType: 'Meaning',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.MeaningView = joint.shapes.basic.GenericView;
 
 //Value
 
-joint.shapes.archimate.Value = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.Value = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -478,14 +561,14 @@ joint.shapes.archimate.Value = joint.shapes.archimate.BusinessActor.extend({
 		 type: 'archimate.Value',
 		 subType: 'Value',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ValueView = joint.shapes.basic.GenericView;
 
 //Product
 
-joint.shapes.archimate.Product = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.Product = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -502,14 +585,14 @@ joint.shapes.archimate.Product = joint.shapes.archimate.BusinessActor.extend({
 		 type: 'archimate.Product',
 		 subType: 'Product',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ProductView = joint.shapes.basic.GenericView;
 
 //Contract
 
-joint.shapes.archimate.Contract = joint.shapes.archimate.BusinessActor.extend({
+joint.shapes.archimate.Contract = joint.shapes.archimate.BusinessLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -526,16 +609,33 @@ joint.shapes.archimate.Contract = joint.shapes.archimate.BusinessActor.extend({
 		 type: 'archimate.Contract',
 		 subType: 'Contract',
 		 
-	 }, joint.shapes.archimate.BusinessActor.prototype.defaults),
+	 }, joint.shapes.archimate.BusinessLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ContractView = joint.shapes.basic.GenericView;
 
 /** APPLICATION LAYER */
 
+joint.shapes.archimate.ApplicationLayer = joint.shapes.archimate.ArchiMateLayer.extend({
+
+	defaults: joint.util.deepSupplement({
+		 
+		 type: 'archimate.ApplicationLayer',
+		 subType: 'Application Layer',
+
+	        attrs: {
+	            '.name-rect': { 
+	            	'fill': '#b5ffff' 
+	            },
+	        },
+	        
+	 }, joint.shapes.archimate.ArchiMateLayer.prototype.defaults),
+	
+});
+	
 //Application Component
 
-joint.shapes.archimate.ApplicationComponent = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.ApplicationComponent = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -553,90 +653,14 @@ joint.shapes.archimate.ApplicationComponent = joint.shapes.basic.Generic.extend(
 		 type: 'archimate.ApplicationComponent',
 		 subType: 'Application Component',
 
-	        attrs: {
-	        	rect: {
-	                width: 100,
-	                height: 100
-	            },
-	            '.name-rect': { 
-	            	'stroke': '#000000', 
-	            	'stroke-width': 1, 
-	            	'fill': '#b5ffff' 
-	            },
-	            '.name-text': {
-	                'ref': '.name-rect', 
-	                'ref-y': .5, 
-	                'ref-x': .5, 
-	                'text-anchor': 'middle', 
-	                'y-alignment': 'middle', 
-	                'fill': '#000000', 
-	                'font-weight': 'normal',
-	                'font-size': 12, 
-	                'font-family': 'Arial'
-	            },
-	            '.object': {
-	            	'ref': '.name-rect', 
-	            	'ref-y': 1, 
-	            	'ref-x': 0.999, 
-	            	'text-anchor': 'end',
-	            	'fill':'none', 
-	            	'stroke':'#000000', 
-	            	'stroke-width': 1.2, 
-	            	'stroke-opacity': 1
-	            }
-	            
-	        },
-	        
-	        name: '',
-	        namespace: ns,
-	        documentation: '',
-		 
-	 }, joint.shapes.basic.Generic.prototype.defaults),
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 	
-	 initialize: function() {
-
-	        this.on('change:name', function() {
-	            this.updateRectangles();
-	            this.trigger('update');
-	        }, this);
-
-	        this.updateRectangles();
-
-		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-	    },
-
-	    getClassName: function() {
-	        return this.get('name');
-	    },
-
-	    updateRectangles: function() {
-
-	        var attrs = this.get('attrs');
-
-	        var rects = [
-	            { type: 'name', text: this.getClassName() }
-	        ];
-
-	        var offsetY = 0;
-
-	        _.each(rects, function(rect) {
-
-	            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
-	            var rectHeight = lines.length * 20 + 20;
-
-	            attrs['.' + rect.type + '-text'].text = lines.join('\n');
-	            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
-
-	            offsetY += rectHeight;
-	        });
-	    }
-
 });
 joint.shapes.archimate.ApplicationComponentView = joint.shapes.basic.GenericView;
 
 //Application Collaboration
 
-joint.shapes.archimate.ApplicationCollaboration = joint.shapes.archimate.ApplicationComponent.extend({
+joint.shapes.archimate.ApplicationCollaboration = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -656,14 +680,14 @@ joint.shapes.archimate.ApplicationCollaboration = joint.shapes.archimate.Applica
 		 type: 'archimate.ApplicationCollaboration',
 		 subType: 'Application Collaboration',
 		 
-	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 	
 });
 joint.shapes.archimate.ApplicationCollaborationView = joint.shapes.basic.GenericView;
 
 //Application Interface
 
-joint.shapes.archimate.ApplicationInterface = joint.shapes.archimate.ApplicationComponent.extend({
+joint.shapes.archimate.ApplicationInterface = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -683,14 +707,14 @@ joint.shapes.archimate.ApplicationInterface = joint.shapes.archimate.Application
 		 type: 'archimate.ApplicationInterface',
 		 subType: 'Application Interface',
 		 
-	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ApplicationInterfaceView = joint.shapes.basic.GenericView;
 
 //Application Function
 
-joint.shapes.archimate.ApplicationFunction = joint.shapes.archimate.ApplicationComponent.extend({
+joint.shapes.archimate.ApplicationFunction = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -716,14 +740,14 @@ joint.shapes.archimate.ApplicationFunction = joint.shapes.archimate.ApplicationC
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ApplicationFunctionView = joint.shapes.basic.GenericView;
 
 //Application Interaction
 
-joint.shapes.archimate.ApplicationInteraction = joint.shapes.archimate.ApplicationFunction.extend({
+joint.shapes.archimate.ApplicationInteraction = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -743,14 +767,21 @@ joint.shapes.archimate.ApplicationInteraction = joint.shapes.archimate.Applicati
 		 type: 'archimate.ApplicationInteraction',
 		 subType: 'Application Interaction',
 		 
-	 }, joint.shapes.archimate.ApplicationFunction.prototype.defaults),
+		 attrs: {
+	        	rect: {
+	            	rx: 2,
+	                ry: 2,
+	            },
+		 }
+		 
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ApplicationInteractionView = joint.shapes.basic.GenericView;
 
 //Application Service
 
-joint.shapes.archimate.ApplicationService = joint.shapes.archimate.ApplicationFunction.extend({
+joint.shapes.archimate.ApplicationService = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -773,14 +804,14 @@ joint.shapes.archimate.ApplicationService = joint.shapes.archimate.ApplicationFu
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.ApplicationFunction.prototype.defaults),
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ApplicationServiceView = joint.shapes.basic.GenericView;
 
 //Data Object
 
-joint.shapes.archimate.DataObject = joint.shapes.archimate.ApplicationComponent.extend({
+joint.shapes.archimate.DataObject = joint.shapes.archimate.ApplicationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -797,16 +828,33 @@ joint.shapes.archimate.DataObject = joint.shapes.archimate.ApplicationComponent.
 		 type: 'archimate.DataObject',
 		 subType: 'Data Object',
 		 
-	 }, joint.shapes.archimate.ApplicationComponent.prototype.defaults),
+	 }, joint.shapes.archimate.ApplicationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.DataObjectView = joint.shapes.basic.GenericView;
 
 /** TECHNOLOGY LAYER */
 
+joint.shapes.archimate.TechnologyLayer = joint.shapes.archimate.ArchiMateLayer.extend({
+
+ 	 defaults: joint.util.deepSupplement({
+ 		 
+ 		 type: 'archimate.TechnologyLayer',
+ 		 subType: 'Technology Layer',
+
+ 	        attrs: {
+ 	            '.name-rect': { 
+ 	            	'fill': '#c9e7b7' 
+ 	            },
+ 	        },
+ 	        
+ 	 }, joint.shapes.archimate.ArchiMateLayer.prototype.defaults),
+ 	
+});
+	
 //Node
 
-joint.shapes.archimate.Node = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.Node = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -827,91 +875,14 @@ joint.shapes.archimate.Node = joint.shapes.basic.Generic.extend({
 		 type: 'archimate.Node',
 		 subType: 'Node',
 
-	        attrs: {
-	        	rect: {
-	                width: 100,
-	                height: 100
-	            },
-	            '.name-rect': { 
-	            	'stroke': '#000000', 
-	            	'stroke-width': 1, 
-	            	'fill': '#c9e7b7' 
-	            },
-	            '.name-text': {
-	                'ref': '.name-rect', 
-	                'ref-y': .5, 
-	                'ref-x': .5, 
-	                'text-anchor': 
-	                'middle', 
-	                'y-alignment': 'middle', 
-	                'fill': '#000000', 
-	                'font-weight': 'normal',
-	                'font-size': 12, 
-	                'font-family': 'Arial'
-	            },
-	            '.object': {
-	            	'ref': '.name-rect', 
-	            	'ref-y': 1, 
-	            	'ref-x': 0.999, 
-	            	'text-anchor': 'end',
-	            	'fill':'none', 
-	            	'stroke':'#000000', 
-	            	'stroke-width': 1.2, 
-	            	'stroke-opacity': 1
-	            }
-	            
-	        },
-	        
-	        name: '',
-	        namespace: ns,
-	        documentation: '',
-		 
-	 }, joint.shapes.basic.Generic.prototype.defaults),
-	
-	 initialize: function() {
-
-	        this.on('change:name', function() {
-	            this.updateRectangles();
-	            this.trigger('update');
-	        }, this);
-
-	        this.updateRectangles();
-
-		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-	    },
-
-	    getClassName: function() {
-	        return this.get('name');
-	    },
-
-	    updateRectangles: function() {
-
-	        var attrs = this.get('attrs');
-
-	        var rects = [
-	            { type: 'name', text: this.getClassName() }
-	        ];
-
-	        var offsetY = 0;
-
-	        _.each(rects, function(rect) {
-
-	            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
-	            var rectHeight = lines.length * 20 + 20;
-
-	            attrs['.' + rect.type + '-text'].text = lines.join('\n');
-	            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
-
-	            offsetY += rectHeight;
-	        });
-	    }
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.NodeView = joint.shapes.basic.GenericView;
 
 //Device
 
-joint.shapes.archimate.Device = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.Device = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -935,14 +906,14 @@ joint.shapes.archimate.Device = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.Device',
 		 subType: 'Device',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.DeviceView = joint.shapes.basic.GenericView;
 
 //Network
 
-joint.shapes.archimate.Network = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.Network = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -965,14 +936,14 @@ joint.shapes.archimate.Network = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.Network',
 		 subType: 'Network',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.NetworkView = joint.shapes.basic.GenericView;
 
 //Communication Path
 
-joint.shapes.archimate.CommunicationPath = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.CommunicationPath = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -993,14 +964,14 @@ joint.shapes.archimate.CommunicationPath = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.CommunicationPath',
 		 subType: 'Communication Path',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.CommunicationPathView = joint.shapes.basic.GenericView;
 
 //Infrastructure Interface
 
-joint.shapes.archimate.InfrastructureInterface = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.InfrastructureInterface = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1020,14 +991,14 @@ joint.shapes.archimate.InfrastructureInterface = joint.shapes.archimate.Node.ext
 		 type: 'archimate.InfrastructureInterface',
 		 subType: 'Infrastructure Interface',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.InfrastructureInterfaceView = joint.shapes.basic.GenericView;
 
 //System Software
 
-joint.shapes.archimate.SystemSoftware = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.SystemSoftware = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1047,14 +1018,14 @@ joint.shapes.archimate.SystemSoftware = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.SystemSoftware',
 		 subType: 'System Software',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.SystemSoftwareView = joint.shapes.basic.GenericView;
 
 //Infrastructure Function
 
-joint.shapes.archimate.InfrastructureFunction = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.InfrastructureFunction = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1080,14 +1051,14 @@ joint.shapes.archimate.InfrastructureFunction = joint.shapes.archimate.Node.exte
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.InfrastructureFunctionView = joint.shapes.basic.GenericView;
 
 //Infrastructure Service
 
-joint.shapes.archimate.InfrastructureService = joint.shapes.archimate.InfrastructureFunction.extend({
+joint.shapes.archimate.InfrastructureService = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1110,14 +1081,14 @@ joint.shapes.archimate.InfrastructureService = joint.shapes.archimate.Infrastruc
 	            },
 		 }
 		 
-	 }, joint.shapes.archimate.InfrastructureFunction.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.InfrastructureServiceView = joint.shapes.basic.GenericView;
 
 //Artifact
 
-joint.shapes.archimate.Artifact = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.Artifact = joint.shapes.archimate.TechnologyLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1134,16 +1105,40 @@ joint.shapes.archimate.Artifact = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.Artifact',
 		 subType: 'Artifact',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+	 }, joint.shapes.archimate.TechnologyLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.ArtifactView = joint.shapes.basic.GenericView;
 
 /** MOTIVATIONAL LAYER*/
 
+joint.shapes.archimate.MotivationalLayer = joint.shapes.archimate.ArchiMateLayer.extend({
+
+	 defaults: joint.util.deepSupplement({
+		 
+		 type: 'archimate.MotivationalLayer',
+		 subType: 'Motivational Layer',
+
+		 attrs: {
+			 '.object': {
+	         	'ref': '.name-rect', 
+	         	'ref-y': 1, 
+	         	'ref-x': .9, 
+	         	'text-anchor': 'end',
+	         	'fill':'none', 
+	         	'stroke':'#000000', 
+	         	'stroke-width': 1.2, 
+	         	'stroke-opacity': 1
+	         }
+		 }
+		 
+	 }, joint.shapes.archimate.ArchiMateLayer.prototype.defaults),
+	
+});
+
 //Stakeholder
 
-joint.shapes.archimate.Stakeholder = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.Stakeholder = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1164,89 +1159,19 @@ joint.shapes.archimate.Stakeholder = joint.shapes.basic.Generic.extend({
 		 type: 'archimate.Stakeholder',
 		 subType: 'Stakeholder',
 
-	        attrs: {
-	        	rect: {
-	                width: 100,
-	                height: 100
-	            },
-	            '.name-rect': { 
-	            	'stroke': '#000000', 
-	            	'stroke-width': 1, 
-	            	'fill': '#FFCBFF' },
-	            '.name-text': {
-	                'ref': '.name-rect', 
-	                'ref-y': .5, 
-	                'ref-x': .5, 
-	                'text-anchor': 'middle', 
-	                'y-alignment': 'middle', 
-	                'font-weight': 'normal',
-	                'fill': '#000000', 
-	                'font-size': 12, 
-	                'font-family': 'Arial'
-	            },
-	            '.object': {
-	            	'ref': '.name-rect', 
-	            	'ref-y': 1, 
-	            	'ref-x': .9, 
-	            	'text-anchor': 'end',
-	            	'fill':'none', 
-	            	'stroke':'#000000', 
-	            	'stroke-width': 1.2, 
-	            	'stroke-opacity': 1
-	            }
-	            
-	        },
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#FFCBFF' },
+		 },
 	        
-	        name: '',
-	        namespace: ns,
-	        documentation: '',
-		 
-	 }, joint.shapes.basic.Generic.prototype.defaults),
-	
-	 initialize: function() {
-
-	        this.on('change:name', function() {
-	            this.updateRectangles();
-	            this.trigger('update');
-	        }, this);
-
-	        this.updateRectangles();
-
-		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-	    },
-
-	    getClassName: function() {
-	        return this.get('name');
-	    },
-
-	    updateRectangles: function() {
-
-	        var attrs = this.get('attrs');
-
-	        var rects = [
-	            { type: 'name', text: this.getClassName() }
-	        ];
-
-	        var offsetY = 0;
-
-	        _.each(rects, function(rect) {
-
-	            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
-	            var rectHeight = lines.length * 20 + 20;
-
-	            attrs['.' + rect.type + '-text'].text = lines.join('\n');
-	            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
-
-	            offsetY += rectHeight;
-	        });
-	    }
+	 }, joint.shapes.archimate.MotivationalLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.StakeholderView = joint.shapes.basic.GenericView;
 
 //Driver
 
-joint.shapes.archimate.Driver = joint.shapes.archimate.Stakeholder.extend({
+joint.shapes.archimate.Driver = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1265,14 +1190,19 @@ joint.shapes.archimate.Driver = joint.shapes.archimate.Stakeholder.extend({
 		 type: 'archimate.Driver',
 		 subType: 'Driver',
 		 
-	 }, joint.shapes.archimate.Stakeholder.prototype.defaults),
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#FFCBFF' },
+		 },
+		 
+	 }, joint.shapes.archimate.MotivationalLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.DriverView = joint.shapes.basic.GenericView;
 
 //Assessment
 
-joint.shapes.archimate.Assessment = joint.shapes.archimate.Stakeholder.extend({
+joint.shapes.archimate.Assessment = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1292,14 +1222,19 @@ joint.shapes.archimate.Assessment = joint.shapes.archimate.Stakeholder.extend({
 		 type: 'archimate.Assessment',
 		 subType: 'Assessment',
 		 
-	 }, joint.shapes.archimate.Stakeholder.prototype.defaults),
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#FFCBFF' },
+		 },
+		 
+	 }, joint.shapes.archimate.MotivationalLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.AssessmentView = joint.shapes.basic.GenericView;
 
 //Goal
 
-joint.shapes.archimate.Goal = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.Goal = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1321,88 +1256,18 @@ joint.shapes.archimate.Goal = joint.shapes.basic.Generic.extend({
 		 subType: 'Goal',
 
 	        attrs: {
-	        	rect: {
-	                width: 100,
-	                height: 100
-	            },
 	            '.name-rect': { 
-	            	'stroke': '#000000', 
-	            	'stroke-width': 1, 
 	            	'fill': '#cacefd' },
-	            '.name-text': {
-	                'ref': '.name-rect', 
-	                'ref-y': .5, 
-	                'ref-x': .5, 
-	                'text-anchor': 'middle', 
-	                'y-alignment': 'middle', 
-	                'font-weight': 'normal',
-	                'fill': '#000000', 
-	                'font-size': 12, 
-	                'font-family': 'Arial'
-	            },
-	            '.object': {
-	            	'ref': '.name-rect', 
-	            	'ref-y': 1, 
-	            	'ref-x': .9, 
-	            	'text-anchor': 'end',
-	            	'fill':'none', 
-	            	'stroke':'#000000', 
-	            	'stroke-width': 1.2, 
-	            	'stroke-opacity': 1
-	            }
-	            
 	        },
 	        
-	        name: '',
-	        namespace: ns,
-	        documentation: '',
-		 
-	 }, joint.shapes.basic.Generic.prototype.defaults),
+	 }, joint.shapes.archimate.MotivationalLayer.prototype.defaults),
 	
-	 initialize: function() {
-
-	        this.on('change:name', function() {
-	            this.updateRectangles();
-	            this.trigger('update');
-	        }, this);
-
-	        this.updateRectangles();
-
-		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-	    },
-
-	    getClassName: function() {
-	        return this.get('name');
-	    },
-
-	    updateRectangles: function() {
-
-	        var attrs = this.get('attrs');
-
-	        var rects = [
-	            { type: 'name', text: this.getClassName() }
-	        ];
-
-	        var offsetY = 0;
-
-	        _.each(rects, function(rect) {
-
-	            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
-	            var rectHeight = lines.length * 20 + 20;
-
-	            attrs['.' + rect.type + '-text'].text = lines.join('\n');
-	            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
-
-	            offsetY += rectHeight;
-	        });
-	    }
-
 });
 joint.shapes.archimate.GoalView = joint.shapes.basic.GenericView;
 
 //Requirement
 
-joint.shapes.archimate.Requirement = joint.shapes.archimate.Goal.extend({
+joint.shapes.archimate.Requirement = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1421,14 +1286,19 @@ joint.shapes.archimate.Requirement = joint.shapes.archimate.Goal.extend({
 		 type: 'archimate.Requirement',
 		 subType: 'Requirement',
 		 
-	 }, joint.shapes.archimate.Goal.prototype.defaults),
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#cacefd' },
+		 },
+		 
+	 }, joint.shapes.archimate.MotivationalLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.RequirementView = joint.shapes.basic.GenericView;
 
 //Constraint
 
-joint.shapes.archimate.Constraint = joint.shapes.archimate.Goal.extend({
+joint.shapes.archimate.Constraint = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1447,6 +1317,11 @@ joint.shapes.archimate.Constraint = joint.shapes.archimate.Goal.extend({
 		 type: 'archimate.Constraint',
 		 subType: 'Constraint',
 		 
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#cacefd' },
+		 },
+		 
 	 }, joint.shapes.archimate.Goal.prototype.defaults),
 
 });
@@ -1454,7 +1329,7 @@ joint.shapes.archimate.ConstraintView = joint.shapes.basic.GenericView;
 
 //Principle
 
-joint.shapes.archimate.Principle = joint.shapes.archimate.Goal.extend({
+joint.shapes.archimate.Principle = joint.shapes.archimate.MotivationalLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1475,16 +1350,32 @@ joint.shapes.archimate.Principle = joint.shapes.archimate.Goal.extend({
 		 type: 'archimate.Principle',
 		 subType: 'Principle',
 		 
-	 }, joint.shapes.archimate.Goal.prototype.defaults),
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#cacefd' },
+		 },
+		 
+	 }, joint.shapes.archimate.MotivationalLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.PrincipleView = joint.shapes.basic.GenericView;
 
 /** IMPLEMENTATION AND MIGRATION LAYER*/
 
+joint.shapes.archimate.ImplementationMigrationLayer = joint.shapes.archimate.ArchiMateLayer.extend({
+
+	 defaults: joint.util.deepSupplement({
+		 
+		 type: 'archimate.ImplementationMigrationLayer',
+		 subType: 'Implementation Migration Layer',
+		 
+	 }, joint.shapes.archimate.ArchiMateLayer.prototype.defaults),
+	
+});
+
 //Work Package
 
-joint.shapes.archimate.WorkPackage = joint.shapes.basic.Generic.extend({
+joint.shapes.archimate.WorkPackage = joint.shapes.archimate.ImplementationMigrationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1508,83 +1399,17 @@ joint.shapes.archimate.WorkPackage = joint.shapes.basic.Generic.extend({
 	                height: 100
 	            },
 	            '.name-rect': { 
-	            	'stroke': '#000000', 
-	            	'stroke-width': 1, 
 	            	'fill': '#fddfe3' },
-	            '.name-text': {
-	                'ref': '.name-rect', 
-	                'ref-y': .5, 
-	                'ref-x': .5, 
-	                'text-anchor': 'middle', 
-	                'y-alignment': 'middle', 
-	                'font-weight': 'normal',
-	                'fill': '#000000', 
-	                'font-size': 12, 
-	                'font-family': 'Arial'
-	            },
-	            '.object': {
-	            	'ref': '.name-rect', 
-	            	'ref-y': 1, 
-	            	'ref-x': 0.999, 
-	            	'text-anchor': 'end',
-	            	'fill':'none', 
-	            	'stroke':'#000000', 
-	            	'stroke-width': 1.2, 
-	            	'stroke-opacity': 1
-	            }
-	            
 	        },
 	        
-	        name: '',
-	        namespace: ns,
-	        documentation: '',
-		 
-	 }, joint.shapes.basic.Generic.prototype.defaults),
+	 }, joint.shapes.archimate.ImplementationMigrationLayer.prototype.defaults),
 	
-	 initialize: function() {
-
-	        this.on('change:name', function() {
-	            this.updateRectangles();
-	            this.trigger('update');
-	        }, this);
-
-	        this.updateRectangles();
-
-		 	joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-	    },
-
-	    getClassName: function() {
-	        return this.get('name');
-	    },
-
-	    updateRectangles: function() {
-
-	        var attrs = this.get('attrs');
-
-	        var rects = [
-	            { type: 'name', text: this.getClassName() }
-	        ];
-
-	        var offsetY = 0;
-
-	        _.each(rects, function(rect) {
-
-	            var lines = _.isArray(rect.text) ? rect.text : [rect.text];
-	            var rectHeight = lines.length * 20 + 20;
-
-	            attrs['.' + rect.type + '-text'].text = lines.join('\n');
-	            attrs['.' + rect.type + '-rect'].transform = 'translate(0,'+ offsetY + ')';
-
-	            offsetY += rectHeight;
-	        });
-	    }
-
 });
 joint.shapes.archimate.WorkPackageView = joint.shapes.basic.GenericView;
 
 //Deliverable
 
-joint.shapes.archimate.Deliverable = joint.shapes.archimate.WorkPackage.extend({
+joint.shapes.archimate.Deliverable = joint.shapes.archimate.ImplementationMigrationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1607,7 +1432,7 @@ joint.shapes.archimate.DeliverableView = joint.shapes.basic.GenericView;
 
 //Plateau
 
-joint.shapes.archimate.Plateau = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.Plateau = joint.shapes.archimate.ImplementationMigrationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1630,14 +1455,20 @@ joint.shapes.archimate.Plateau = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.Plateau',
 		 subType: 'Plateau',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#c9e7b7' 
+			 },
+		 },
+		 
+	 }, joint.shapes.archimate.ImplementationMigrationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.PlateauView = joint.shapes.basic.GenericView;
 
 //Gap
 
-joint.shapes.archimate.Gap = joint.shapes.archimate.Node.extend({
+joint.shapes.archimate.Gap = joint.shapes.archimate.ImplementationMigrationLayer.extend({
 	
 	markup: [
 		'<g class="rotatable">',
@@ -1657,7 +1488,13 @@ joint.shapes.archimate.Gap = joint.shapes.archimate.Node.extend({
 		 type: 'archimate.Gap',
 		 subType: 'Gap',
 		 
-	 }, joint.shapes.archimate.Node.prototype.defaults),
+		 attrs: {
+			 '.name-rect': { 
+				 'fill': '#c9e7b7' 
+			 },
+		 },
+		 
+	 }, joint.shapes.archimate.ImplementationMigrationLayer.prototype.defaults),
 
 });
 joint.shapes.archimate.GapView = joint.shapes.basic.GenericView;
@@ -1835,7 +1672,8 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
     defaults: {
 
         type: "archimate.Relationships",
-
+        subType: "ArchiMate Relationships",
+        
         attrs: {
 
             '.marker-source': {
@@ -1857,22 +1695,22 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
         },
 
         label: '',
-        flowType: "association",
-        namespace: ns,
- 	    documentation: '',
+        relationshipType: "association",
+        namespace: '',
+        documentation: '',
     },
 
     initialize: function() {
 
         joint.dia.Link.prototype.initialize.apply(this, arguments);
 
-        this.listenTo(this, 'change:flowType', this.onFlowTypeChange);
+        this.listenTo(this, 'change:relationshipType', this.onRelationshipTypeChange);
         
         this.on('change:label', function() {
             this.updateLabel();
         }, this);
         
-        this.onFlowTypeChange(this, this.get('flowType'));
+        this.onRelationshipTypeChange(this, this.get('relationshipType'));
     },
     
     getLabel: function() {
@@ -1891,7 +1729,7 @@ joint.shapes.archimate.Relationships = joint.dia.Link.extend({
     	
     },
     
-    onFlowTypeChange: function(cell, type) {
+    onRelationshipTypeChange: function(cell, type) {
 
         var attrs;
 

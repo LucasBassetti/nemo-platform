@@ -256,8 +256,6 @@ nemo.platform.File = Backbone.Model.extend({
 		   //dataType: 'json',
 		   success: function(jsonTree){ 	
 			   
-			   console.log('TREE LOAD: ' + JSON.stringify(jsonTree));
-			   
 			   //set filename
 			   $("#filename").val(filename);
 			   //clean tabs

@@ -11,6 +11,21 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
  or from the Rappid archive as was distributed by client IO. See the LICENSE file.*/
 
 
+/* LOD DIALOG */
+
+#lod-iri, #lod-documentation {
+	width: 100%;
+	padding: 5px;
+	border: 1px solid #DCDDEE;
+	margin-bottom: 10px;
+}
+
+#lod-iri:read-only {
+	background-color: #E7E7E7;
+}
+
+/* DIALOG */
+
 .dialog {
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
 }
